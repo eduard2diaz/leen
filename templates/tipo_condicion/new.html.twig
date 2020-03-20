@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-
-<title>New TipoCondicion</title>
-
-{% block body %}
-    <h1>Create new TipoCondicion</h1>
-
-    {{ include('tipo_condicion/_form.html.twig') }}
-
-    <a href="{{ path('tipo_condicion_index') }}">back to list</a>
-{% endblock %}
+<div class="modal-dialog modal-md">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                {{ title| default('Nuevo tipo de condición') }}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div>
+            {{ include('tipo_condicion/_form.html.twig') }}
+        </div>
+    </div>
+</div>
