@@ -2,93 +2,142 @@
 
 namespace App\Controller;
 
+use App\Entity\ControlGastos;
 use App\Entity\TipoComprobante;
 use App\Form\TipoComprobanteType;
-use App\Repository\TipoComprobanteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/tipo/comprobante")
+ * @Route("/tipocomprobante")
  */
 class TipoComprobanteController extends AbstractController
 {
     /**
      * @Route("/", name="tipo_comprobante_index", methods={"GET"})
      */
-    public function index(TipoComprobanteRepository $tipoComprobanteRepository): Response
+    public function index(): Response
     {
+        $tipocomprobante = $this->getDoctrine()
+            ->getRepository(TipoComprobante::class)
+            ->findAll();
+
         return $this->render('tipo_comprobante/index.html.twig', [
-            'tipo_comprobantes' => $tipoComprobanteRepository->findAll(),
+            'tipo_comprobantes' => $tipocomprobante,
         ]);
     }
 
     /**
-     * @Route("/new", name="tipo_comprobante_new", methods={"GET","POST"})
+     * @Route("/new", name="tipo_comprobante_new", methods={"GET","POST"},options={"expose"=true})
      */
     public function new(Request $request): Response
     {
-        $tipoComprobante = new TipoComprobante();
-        $form = $this->createForm(TipoComprobanteType::class, $tipoComprobante);
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        $tipocomprobante = new TipoComprobante();
+        $form = $this->createForm(TipoComprobanteType::class, $tipocomprobante, ['action' => $this->generateUrl('tipo_comprobante_new')]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($tipoComprobante);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('tipo_comprobante_index');
-        }
+        if ($form->isSubmitted())
+            if ($form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($tipocomprobante);
+                $entityManager->flush();
+                return $this->json(['mensaje' => 'El tipo de comprobante fue registrado satisfactoriamente',
+                    'comprobante' => $tipocomprobante->getComprobante(),
+                    'estatus' => $tipocomprobante->getEstatus()->getEstatus(),
+                    'id' => $tipocomprobante->getId(),
+                ]);
+            } else {
+                $page = $this->renderView('tipo_comprobante/_form.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+                return $this->json(['form' => $page, 'error' => true,]);
+            }
 
         return $this->render('tipo_comprobante/new.html.twig', [
-            'tipo_comprobante' => $tipoComprobante,
+            'tipocomprobante' => $tipocomprobante,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="tipo_comprobante_show", methods={"GET"})
+     * @Route("/{id}/show", name="tipo_comprobante_show", methods={"GET","POST"},options={"expose"=true})
      */
-    public function show(TipoComprobante $tipoComprobante): Response
+    public function show(Request $request, TipoComprobante $tipocomprobante): Response
     {
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
         return $this->render('tipo_comprobante/show.html.twig', [
-            'tipo_comprobante' => $tipoComprobante,
+            'tipocomprobante' => $tipocomprobante,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="tipo_comprobante_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="tipo_comprobante_edit", methods={"GET","POST"},options={"expose"=true})
      */
-    public function edit(Request $request, TipoComprobante $tipoComprobante): Response
+    public function edit(Request $request, TipoComprobante $tipocomprobante): Response
     {
-        $form = $this->createForm(TipoComprobanteType::class, $tipoComprobante);
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        $form = $this->createForm(TipoComprobanteType::class, $tipocomprobante, ['action' => $this->generateUrl('tipo_comprobante_edit', ['id' => $tipocomprobante->getId()])]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $eliminable=$this->esEliminable($tipocomprobante);
+        if ($form->isSubmitted())
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($tipocomprobante);
+                $em->flush();
+                return $this->json(['mensaje' => 'El tipo de acción fue actualizado satisfactoriamente',
+                    'comprobante' => $tipocomprobante->getComprobante(),
+                    'estatus' => $tipocomprobante->getEstatus()->getEstatus(),
+                ]);
+            } else {
+                $page = $this->renderView('tipo_comprobante/_form.html.twig', [
+                    'tipocomprobante' => $tipocomprobante,
+                    'eliminable'=>$eliminable,
+                    'form' => $form->createView(),
+                    'form_id' => 'tipo_comprobante_edit',
+                    'action' => 'Actualizar',
+                ]);
+                return $this->json(['form' => $page, 'error' => true]);
+            }
 
-            return $this->redirectToRoute('tipo_comprobante_index');
-        }
-
-        return $this->render('tipo_comprobante/edit.html.twig', [
-            'tipo_comprobante' => $tipoComprobante,
+        return $this->render('tipo_comprobante/new.html.twig', [
+            'tipocomprobante' => $tipocomprobante,
+            'eliminable'=>$eliminable,
+            'title' => 'Editar tipo de acción',
+            'action' => 'Actualizar',
+            'form_id' => 'tipocomprobante_edit',
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="tipo_comprobante_delete", methods={"DELETE"})
+     * @Route("/{id}", name="tipo_comprobante_delete")
      */
-    public function delete(Request $request, TipoComprobante $tipoComprobante): Response
+    public function delete(Request $request, TipoComprobante $tipocomprobante): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$tipoComprobante->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($tipoComprobante);
-            $entityManager->flush();
-        }
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $tipocomprobante->getId(), $request->query->get('_token')) || false==$this->esEliminable($tipocomprobante))
+            throw $this->createAccessDeniedException();
 
-        return $this->redirectToRoute('tipo_comprobante_index');
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($tipocomprobante);
+        $em->flush();
+        return $this->json(['mensaje' => 'El tipo de acción fue eliminado satisfactoriamente']);
     }
+
+    private function esEliminable(TipoComprobante $tipocomprobante)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $controlGastos=$em->getRepository(ControlGastos::class)->findOneByTipoComprobante($tipocomprobante);
+        return $controlGastos==null;
+    }
+
 }

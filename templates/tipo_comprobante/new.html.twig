@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-
-<title>New TipoComprobante</title>
-
-{% block body %}
-    <h1>Create new TipoComprobante</h1>
-
-    {{ include('tipo_comprobante/_form.html.twig') }}
-
-    <a href="{{ path('tipo_comprobante_index') }}">back to list</a>
-{% endblock %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                {{ title| default('Nuevo tipo de comprobante') }}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div>
+            {{ include('tipo_comprobante/_form.html.twig') }}
+        </div>
+    </div>
+</div>
