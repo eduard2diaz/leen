@@ -2,93 +2,144 @@
 
 namespace App\Controller;
 
+use App\Entity\PlanTrabajo;
+use App\Entity\RendicionCuentas;
 use App\Entity\TipoAccion;
 use App\Form\TipoAccionType;
-use App\Repository\TipoAccionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/tipo/accion")
+ * @Route("/tipoaccion")
  */
 class TipoAccionController extends AbstractController
 {
     /**
      * @Route("/", name="tipo_accion_index", methods={"GET"})
      */
-    public function index(TipoAccionRepository $tipoAccionRepository): Response
+    public function index(): Response
     {
+        $tipoaccions = $this->getDoctrine()
+            ->getRepository(TipoAccion::class)
+            ->findAll();
+
         return $this->render('tipo_accion/index.html.twig', [
-            'tipo_accions' => $tipoAccionRepository->findAll(),
+            'tipo_accions' => $tipoaccions,
         ]);
     }
 
     /**
-     * @Route("/new", name="tipo_accion_new", methods={"GET","POST"})
+     * @Route("/new", name="tipo_accion_new", methods={"GET","POST"},options={"expose"=true})
      */
     public function new(Request $request): Response
     {
-        $tipoAccion = new TipoAccion();
-        $form = $this->createForm(TipoAccionType::class, $tipoAccion);
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        $tipoaccion = new TipoAccion();
+        $form = $this->createForm(TipoAccionType::class, $tipoaccion, ['action' => $this->generateUrl('tipo_accion_new')]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($tipoAccion);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('tipo_accion_index');
-        }
+        if ($form->isSubmitted())
+            if ($form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($tipoaccion);
+                $entityManager->flush();
+                return $this->json(['mensaje' => 'El tipo de acción fue registrado satisfactoriamente',
+                    'accion' => $tipoaccion->getAccion(),
+                    'estatus' => $tipoaccion->getEstatus()->getEstatus(),
+                    'id' => $tipoaccion->getId(),
+                ]);
+            } else {
+                $page = $this->renderView('tipo_accion/_form.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+                return $this->json(['form' => $page, 'error' => true,]);
+            }
 
         return $this->render('tipo_accion/new.html.twig', [
-            'tipo_accion' => $tipoAccion,
+            'tipoaccion' => $tipoaccion,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="tipo_accion_show", methods={"GET"})
+     * @Route("/{id}/show", name="tipo_accion_show", methods={"GET","POST"},options={"expose"=true})
      */
-    public function show(TipoAccion $tipoAccion): Response
+    public function show(Request $request, TipoAccion $tipoaccion): Response
     {
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
         return $this->render('tipo_accion/show.html.twig', [
-            'tipo_accion' => $tipoAccion,
+            'tipoaccion' => $tipoaccion,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="tipo_accion_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="tipo_accion_edit", methods={"GET","POST"},options={"expose"=true})
      */
-    public function edit(Request $request, TipoAccion $tipoAccion): Response
+    public function edit(Request $request, TipoAccion $tipoaccion): Response
     {
-        $form = $this->createForm(TipoAccionType::class, $tipoAccion);
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        $form = $this->createForm(TipoAccionType::class, $tipoaccion, ['action' => $this->generateUrl('tipo_accion_edit', ['id' => $tipoaccion->getId()])]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $eliminable=$this->esEliminable($tipoaccion);
+        if ($form->isSubmitted())
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($tipoaccion);
+                $em->flush();
+                return $this->json(['mensaje' => 'El tipo de acción fue actualizado satisfactoriamente',
+                    'accion' => $tipoaccion->getAccion(),
+                    'estatus' => $tipoaccion->getEstatus()->getEstatus(),
+                ]);
+            } else {
+                $page = $this->renderView('tipo_accion/_form.html.twig', [
+                    'tipoaccion' => $tipoaccion,
+                    'eliminable'=>$eliminable,
+                    'form' => $form->createView(),
+                    'form_id' => 'tipo_accion_edit',
+                    'action' => 'Actualizar',
+                ]);
+                return $this->json(['form' => $page, 'error' => true]);
+            }
 
-            return $this->redirectToRoute('tipo_accion_index');
-        }
-
-        return $this->render('tipo_accion/edit.html.twig', [
-            'tipo_accion' => $tipoAccion,
+        return $this->render('tipo_accion/new.html.twig', [
+            'tipoaccion' => $tipoaccion,
+            'eliminable'=>$eliminable,
+            'title' => 'Editar tipo de acción',
+            'action' => 'Actualizar',
+            'form_id' => 'tipoaccion_edit',
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="tipo_accion_delete", methods={"DELETE"})
+     * @Route("/{id}", name="tipo_accion_delete")
      */
-    public function delete(Request $request, TipoAccion $tipoAccion): Response
+    public function delete(Request $request, TipoAccion $tipoaccion): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$tipoAccion->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($tipoAccion);
-            $entityManager->flush();
-        }
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $tipoaccion->getId(), $request->query->get('_token')) || false==$this->esEliminable($tipoaccion))
+            throw $this->createAccessDeniedException();
 
-        return $this->redirectToRoute('tipo_accion_index');
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($tipoaccion);
+        $em->flush();
+        return $this->json(['mensaje' => 'El tipo de acción fue eliminado satisfactoriamente']);
     }
+
+    private function esEliminable(TipoAccion $tipoaccion)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $rendicionCuenta=$em->getRepository(RendicionCuentas::class)->findOneByTipoAccion($tipoaccion);
+        $planTrabajo=$em->getRepository(PlanTrabajo::class)->findOneByTipoAccion($tipoaccion);
+        return $rendicionCuenta==null && $planTrabajo==null;
+    }
+
 }

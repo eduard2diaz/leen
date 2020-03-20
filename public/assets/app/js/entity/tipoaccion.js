@@ -11,11 +11,18 @@ var tipoaccion = function () {
             columns: [
                 {data: 'numero'},
                 {data: 'accion'},
-                {data: 'descripcion'},
+                {data: 'estatus'},
                 {data: 'acciones'}
             ]
         });
     }
+
+    var configurarFormulario = function () {
+        $('select#tipo_accion_estatus').select2({
+            dropdownParent: $("#basicmodal"),
+        });
+    }
+
 
     var edicion = function () {
         $('body').on('click', 'a.edicion', function (evento) {
@@ -31,6 +38,7 @@ var tipoaccion = function () {
                 },
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
+                        configurarFormulario();
                         $('div#basicmodal').modal('show');
                     }
                 },
@@ -63,19 +71,23 @@ var tipoaccion = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
+                        configurarFormulario();
                     } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
+                        tipoAccionCounter++;
                         objeto = table.row.add({
-                            "numero": data['identificador'],
+                            "numero": tipoAccionCounter,
                             "accion": data['accion'],
-                            "descripcion": data['descripcion'],
+                            "estatus": data['estatus'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='btn btn-primary edicion' data-href=" + Routing.generate('tipoaccion_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
+                                "<a class='btn btn-info btn-sm edicion' data-href=" + Routing.generate('tipo_accion_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
+                                "<li class='list-inline-item'>" +
+                                "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('tipo_accion_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",
                         });
                         objeto.draw();
@@ -115,9 +127,8 @@ var tipoaccion = function () {
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(1)').html(data['identificador']);
                         obj.parents('tr').children('td:nth-child(2)').html(data['accion']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['descripcion']);
+                        obj.parents('tr').children('td:nth-child(3)').html(data['estatus']);
                     }
                 },
                 error: function () {
@@ -135,7 +146,7 @@ var tipoaccion = function () {
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar tipoaccion',
+                title: 'Eliminar tipo de acción',
                 message: '¿Está seguro que desea eliminar este tipo de acción?',
                 buttons: {
                     confirm: {

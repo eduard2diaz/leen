@@ -37,6 +37,11 @@ class TipoAccion
      */
     private $estatus;
 
+    public function __construct()
+    {
+        $this->setFechacaptura(new \DateTime());
+    }
+
     public function getId(): ?int
     {
         return $this->id;

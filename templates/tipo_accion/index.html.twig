@@ -33,6 +33,7 @@
                         <tr>
                             <th>#</th>
                             <th>Acción</th>
+                            <th>Estatus</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -42,10 +43,12 @@
                             <tr>
                                 <td>{{ i }}</td>
                                 <td>{{ tipo_accion.accion }}</td>
-                                <td>{{ tipo_accion.descripcion }}</td>
+                                <td>{{ tipo_accion.estatus }}</td>
                                 <td>
-                                    <a href="{{ path('tipo_accion_show', {'id': tipo_accion.id}) }}">show</a>
-                                    <a href="{{ path('tipo_accion_edit', {'id': tipo_accion.id}) }}">edit</a>
+                                    <ul class="hidden_element list-inline pull-right">
+                                        <li class="list-inline-item"><a class="btn btn-info btn-sm edicion" data-href="{{ path('tipo_accion_show', {'id': tipo_accion.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
+                                        <li class="list-inline-item"><a class="btn btn-primary btn-sm edicion" data-href="{{ path('tipo_accion_edit', {'id': tipo_accion.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
+                                    </ul>
                                 </td>
                             </tr>
                             {% set i=1+i %}
@@ -65,6 +68,7 @@
     <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
     <script src="{{ asset('js/entity/tipoaccion.js','app') }}" type="text/javascript"></script>
     <script>
+        var tipoAccionCounter='{{ tipo_accions|length }}';
         tipoaccion.init();
     </script>
 {% endblock %}
