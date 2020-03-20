@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-
-<title>New TipoAccion</title>
-
-{% block body %}
-    <h1>Create new TipoAccion</h1>
-
-    {{ include('tipo_accion/_form.html.twig') }}
-
-    <a href="{{ path('tipo_accion_index') }}">back to list</a>
-{% endblock %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                {{ title| default('Nuevo tipo de acción') }}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div>
+            {{ include('tipo_accion/_form.html.twig') }}
+        </div>
+    </div>
+</div>

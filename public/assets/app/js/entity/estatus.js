@@ -1,16 +1,16 @@
-var estado = function () {
+var estatus = function () {
     var table = null;
     var obj = null;
 
     var configurarDataTable = function () {
-        table = $('table#estado_entity_table').DataTable({
+        table = $('table#estatus_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
                 url: datatable_url
             },
             columns: [
                 {data: 'numero'},
-                {data: 'nombre'},
+                {data: 'estatus'},
                 {data: 'acciones'}
             ]
         });
@@ -45,7 +45,7 @@ var estado = function () {
 
 
     var newAction = function () {
-        $('div#basicmodal').on('submit', 'form#estado_new', function (evento) {
+        $('div#basicmodal').on('submit', 'form#estatus_new', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -68,12 +68,13 @@ var estado = function () {
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
+                        estatusCounter++;
                         objeto = table.row.add({
-                            "numero": data['identificador'],
-                            "nombre": data['nombre'],
+                            "numero": estatusCounter,
+                            "estatus": data['estatus'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='btn btn-primary edicion' data-href=" + Routing.generate('estado_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
+                                "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('estatus_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",
                         });
                         objeto.draw();
@@ -88,7 +89,7 @@ var estado = function () {
     }
 
     var edicionAction = function () {
-        $('div#basicmodal').on('submit', 'form#estado_edit', function (evento) {
+        $('div#basicmodal').on('submit', 'form#estatus_edit', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -111,8 +112,7 @@ var estado = function () {
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(1)').html(data['identificador']);
-                        obj.parents('tr').children('td:nth-child(2)').html(data['nombre']);
+                        obj.parents('tr').children('td:nth-child(2)').html(data['estatus']);
                     }
                 },
                 error: function () {
@@ -123,15 +123,15 @@ var estado = function () {
     }
 
     var eliminar = function () {
-        $('div#basicmodal').on('click', 'a.eliminar_estado', function (evento) {
+        $('div#basicmodal').on('click', 'a.eliminar_estatus', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
             var token = $(this).attr('data-csrf');
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar estado',
-                message: '¿Está seguro que desea eliminar este estado?',
+                title: 'Eliminar estatus',
+                message: '¿Está seguro que desea eliminar este estatus?',
                 buttons: {
                     confirm: {
                         label: 'Si, estoy seguro',
@@ -175,7 +175,6 @@ var estado = function () {
     return {
         init: function () {
             $().ready(function () {
-                    alert(1);
                     configurarDataTable();
                     newAction();
                     edicion();

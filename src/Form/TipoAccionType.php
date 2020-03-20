@@ -14,7 +14,7 @@ class TipoAccionType extends AbstractType
         $builder
             ->add('accion')
             ->add('descripcion')
-            ->add('fechacaptura')
+    //        ->add('fechacaptura')
             ->add('estatus')
         ;
     }

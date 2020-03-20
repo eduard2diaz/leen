@@ -1,25 +1,19 @@
-var alcaldia = function () {
+var tipoaccion = function () {
     var table = null;
     var obj = null;
 
     var configurarDataTable = function () {
-        table = $('table#alcaldia_entity_table').DataTable({
+        table = $('table#tipoaccion_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
                 url: datatable_url
             },
             columns: [
                 {data: 'numero'},
-                {data: 'nombre'},
-                {data: 'estado'},
+                {data: 'accion'},
+                {data: 'descripcion'},
                 {data: 'acciones'}
             ]
-        });
-    }
-
-    var configurarFormulario = function () {
-        $('select#alcaldia_estado').select2({
-            dropdownParent: $("#basicmodal"),
         });
     }
 
@@ -37,7 +31,6 @@ var alcaldia = function () {
                 },
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
-                        configurarFormulario();
                         $('div#basicmodal').modal('show');
                     }
                 },
@@ -53,7 +46,7 @@ var alcaldia = function () {
 
 
     var newAction = function () {
-        $('div#basicmodal').on('submit', 'form#alcaldia_new', function (evento) {
+        $('div#basicmodal').on('submit', 'form#tipoaccion_new', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -70,7 +63,6 @@ var alcaldia = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
-                        configurarFormulario();
                     } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
@@ -79,11 +71,11 @@ var alcaldia = function () {
                         var pagina = table.page();
                         objeto = table.row.add({
                             "numero": data['identificador'],
-                            "nombre": data['nombre'],
-                            "estado": data['estado'],
+                            "accion": data['accion'],
+                            "descripcion": data['descripcion'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='btn btn-primary edicion' data-href=" + Routing.generate('alcaldia_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
+                                "<a class='btn btn-primary edicion' data-href=" + Routing.generate('tipoaccion_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",
                         });
                         objeto.draw();
@@ -98,7 +90,7 @@ var alcaldia = function () {
     }
 
     var edicionAction = function () {
-        $('div#basicmodal').on('submit', 'form#alcaldia_edit', function (evento) {
+        $('div#basicmodal').on('submit', 'form#tipoaccion_edit', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -124,8 +116,8 @@ var alcaldia = function () {
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
                         obj.parents('tr').children('td:nth-child(1)').html(data['identificador']);
-                        obj.parents('tr').children('td:nth-child(2)').html(data['nombre']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['estado']);
+                        obj.parents('tr').children('td:nth-child(2)').html(data['accion']);
+                        obj.parents('tr').children('td:nth-child(3)').html(data['descripcion']);
                     }
                 },
                 error: function () {
@@ -136,15 +128,15 @@ var alcaldia = function () {
     }
 
     var eliminar = function () {
-        $('div#basicmodal').on('click', 'a.eliminar_alcaldia', function (evento) {
+        $('div#basicmodal').on('click', 'a.eliminar_tipoaccion', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
             var token = $(this).attr('data-csrf');
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar alcaldia',
-                message: '¿Está seguro que desea eliminar esta alcaldía?',
+                title: 'Eliminar tipoaccion',
+                message: '¿Está seguro que desea eliminar este tipo de acción?',
                 buttons: {
                     confirm: {
                         label: 'Si, estoy seguro',
