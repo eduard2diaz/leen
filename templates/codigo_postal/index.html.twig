@@ -1,59 +1,88 @@
-<!DOCTYPE html>
+{% extends 'layout/autenticado.html.twig' %}
 
-<title>CodigoPostal index</title>
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
+{% endblock %}
 {% block body %}
-    <h1>CodigoPostal index</h1>
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Códigos postales</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <a href="{{ path('codigo_postal_new') }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10">
+                Nuevo
+            </a>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>D_Asenta</th>
-                <th>D_tipoasenta</th>
-                <th>D_mpio</th>
-                <th>D_estado</th>
-                <th>D_ciudad</th>
-                <th>D_cp</th>
-                <th>C_estado</th>
-                <th>C_CP</th>
-                <th>C_tipoasenta</th>
-                <th>C_municipio</th>
-                <th>Id_asenta_cpcons</th>
-                <th>D_zona</th>
-                <th>C_cve_ciudad</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for codigo_postal in codigo_postals %}
-            <tr>
-                <td>{{ codigo_postal.id }}</td>
-                <td>{{ codigo_postal.dAsenta }}</td>
-                <td>{{ codigo_postal.dTipoasenta }}</td>
-                <td>{{ codigo_postal.dMpio }}</td>
-                <td>{{ codigo_postal.dEstado }}</td>
-                <td>{{ codigo_postal.dCiudad }}</td>
-                <td>{{ codigo_postal.dCp }}</td>
-                <td>{{ codigo_postal.cEstado }}</td>
-                <td>{{ codigo_postal.cCP }}</td>
-                <td>{{ codigo_postal.cTipoasenta }}</td>
-                <td>{{ codigo_postal.cMunicipio }}</td>
-                <td>{{ codigo_postal.idAsentaCpcons }}</td>
-                <td>{{ codigo_postal.dZona }}</td>
-                <td>{{ codigo_postal.cCveCiudad }}</td>
-                <td>
-                    <a href="{{ path('codigo_postal_show', {'id': codigo_postal.id}) }}">show</a>
-                    <a href="{{ path('codigo_postal_edit', {'id': codigo_postal.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="15">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Daily Sales-->
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-widget14">
+                    <div class="kt-widget14__header kt-margin-b-30">
+                        <h3 class="kt-widget14__title">
+                            Listado
+                        </h3>
+                    </div>
+                    <table class="table" id="codigo_postal_entity_table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>D_Asenta</th>
+                            <th>D_tipoasenta</th>
+                            <th>D_mpio</th>
+                            <th>D_estado</th>
+                            <th>D_ciudad</th>
+                            <th>D_cp</th>
+                            <th>C_estado</th>
+                            <th>C_CP</th>
+                            <th>C_tipoasenta</th>
+                            <th>C_municipio</th>
+                            <th>Id_asenta_cpcons</th>
+                            <th>D_zona</th>
+                            <th>C_cve_ciudad</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set i=1 %}
+                        {% for condicion in codigo_postals %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ codigo_postal.dAsenta }}</td>
+                                <td>{{ codigo_postal.dTipoasenta }}</td>
+                                <td>{{ codigo_postal.dMpio }}</td>
+                                <td>{{ codigo_postal.dEstado }}</td>
+                                <td>{{ codigo_postal.dCiudad }}</td>
+                                <td>{{ codigo_postal.dCp }}</td>
+                                <td>{{ codigo_postal.cEstado }}</td>
+                                <td>{{ codigo_postal.cCP }}</td>
+                                <td>{{ codigo_postal.cTipoasenta }}</td>
+                                <td>{{ codigo_postal.cMunicipio }}</td>
+                                <td>{{ codigo_postal.idAsentaCpcons }}</td>
+                                <td>{{ codigo_postal.dZona }}</td>
+                                <td>{{ codigo_postal.cCveCiudad }}</td>
+                                <td>
+                                    <ul class="hidden_element list-inline pull-right">
+                                        <li class="list-inline-item"><a class="btn btn-primary btn-sm edicion" data-href="{{ path('codigo_postal_show', {'id': codigo_postal.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
+                                        <li class="list-inline-item"><a class="btn btn-primary btn-sm" href="{{ path('codigo_postal_edit', {'id': codigo_postal.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% set i=1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
 
-    <a href="{{ path('codigo_postal_new') }}">Create new</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/codigo_postal.js','app') }}" type="text/javascript"></script>
+    <script>
+        codigo_postal.init();
+    </script>
 {% endblock %}

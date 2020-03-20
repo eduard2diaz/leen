@@ -1,4 +1,183 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form,{'attr':{
+    'id': form_id|default('tipo_condicion_new'),
+    'class': 'm-form m-form--state'
+}}) }}
+<div class="modal-body" id="modal-body">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.d_Asenta) }}
+                </label>
+                <div>
+                    {{ form_widget(form.d_Asenta) }}
+                    {{ form_errors(form.d_Asenta) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.d_tipoasenta) }}
+                </label>
+                <div>
+                    {{ form_widget(form.d_tipoasenta) }}
+                    {{ form_errors(form.d_tipoasenta) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.c_tipoasenta) }}
+                </label>
+                <div>
+                    {{ form_widget(form.c_tipoasenta) }}
+                    {{ form_errors(form.c_tipoasenta) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.d_mpio) }}
+                </label>
+                <div>
+                    {{ form_widget(form.d_mpio) }}
+                    {{ form_errors(form.d_mpio) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.c_municipio) }}
+                </label>
+                <div>
+                    {{ form_widget(form.c_municipio) }}
+                    {{ form_errors(form.c_municipio) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.d_estado) }}
+                </label>
+                <div>
+                    {{ form_widget(form.d_estado) }}
+                    {{ form_errors(form.d_estado) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.c_estado) }}
+                </label>
+                <div>
+                    {{ form_widget(form.c_estado) }}
+                    {{ form_errors(form.c_estado) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.d_cp) }}
+                </label>
+                <div>
+                    {{ form_widget(form.d_cp) }}
+                    {{ form_errors(form.d_cp) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.c_CP) }}
+                </label>
+                <div>
+                    {{ form_widget(form.c_CP) }}
+                    {{ form_errors(form.c_CP) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.d_ciudad) }}
+                </label>
+                <div>
+                    {{ form_widget(form.d_ciudad) }}
+                    {{ form_errors(form.d_ciudad) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.id_asenta_cpcons) }}
+                </label>
+                <div>
+                    {{ form_widget(form.id_asenta_cpcons) }}
+                    {{ form_errors(form.id_asenta_cpcons) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.d_zona) }}
+                </label>
+                <div>
+                    {{ form_widget(form.d_zona) }}
+                    {{ form_errors(form.d_zona) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.c_cve_ciudad) }}
+                </label>
+                <div>
+                    {{ form_widget(form.c_cve_ciudad) }}
+                    {{ form_errors(form.c_cve_ciudad) }}
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<ul class="list-inline pull-right">
+    <li class="list-inline-item">
+        <a class="btn btn-sm btn-secondary" href="{{ path('codigo_postal_index') }}"><i class="flaticon-cancel"></i> Cancelar</a>
+    </li>
+    {% if eliminable is defined %}
+    <li class="list-inline-item">
+        <a class="btn btn-danger btn-sm  eliminar_codigo_postal"
+           data-href="{{ path('codigo_postal_delete', { 'id': codigo_postal.id }) }}"
+           data-csrf="{{ csrf_token('delete' ~ codigo_postal.id) }}">
+            <i class="flaticon-delete-1"></i> Eliminar</a>
+    </li>
+    {% endif %}
+    <li class="list-inline-item">
+        <button class="btn btn-sm btn-primary mt-ladda-btn ladda-button" data-style="expand-right" type="submit">
+            <i class="flaticon-edit"></i>
+            <span class="ladda-label">{{ action |default('Guardar') }}</span>
+            <span class="ladda-spinner"></span>
+        </button>
+    </li>
+</ul>
 {{ form_end(form) }}
