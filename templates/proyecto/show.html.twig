@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<title>Proyecto</title>
+
+{% block body %}
+    <h1>Proyecto</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ proyecto.id }}</td>
+            </tr>
+            <tr>
+                <th>Fechainicio</th>
+                <td>{{ proyecto.fechainicio ? proyecto.fechainicio|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Fechafin</th>
+                <td>{{ proyecto.fechafin ? proyecto.fechafin|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Montoasignado</th>
+                <td>{{ proyecto.montoasignado }}</td>
+            </tr>
+            <tr>
+                <th>Montogastado</th>
+                <td>{{ proyecto.montogastado }}</td>
+            </tr>
+            <tr>
+                <th>Saldofinal</th>
+                <td>{{ proyecto.saldofinal }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('proyecto_index') }}">back to list</a>
+
+    <a href="{{ path('proyecto_edit', {'id': proyecto.id}) }}">edit</a>
+
+    {{ include('proyecto/_delete_form.html.twig') }}
+{% endblock %}

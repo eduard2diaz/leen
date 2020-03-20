@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<title>ControlGastos</title>
+
+{% block body %}
+    <h1>ControlGastos</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ control_gasto.id }}</td>
+            </tr>
+            <tr>
+                <th>Fechacaptura</th>
+                <td>{{ control_gasto.fechacaptura ? control_gasto.fechacaptura|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Concepto</th>
+                <td>{{ control_gasto.concepto }}</td>
+            </tr>
+            <tr>
+                <th>Numerocomprobante</th>
+                <td>{{ control_gasto.numerocomprobante }}</td>
+            </tr>
+            <tr>
+                <th>Monto</th>
+                <td>{{ control_gasto.monto }}</td>
+            </tr>
+            <tr>
+                <th>Controlarchivos</th>
+                <td>{{ control_gasto.controlarchivos }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('control_gastos_index') }}">back to list</a>
+
+    <a href="{{ path('control_gastos_edit', {'id': control_gasto.id}) }}">edit</a>
+
+    {{ include('control_gastos/_delete_form.html.twig') }}
+{% endblock %}

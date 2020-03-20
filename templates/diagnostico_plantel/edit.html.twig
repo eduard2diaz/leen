@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit DiagnosticoPlantel</title>
+
+{% block body %}
+    <h1>Edit DiagnosticoPlantel</h1>
+
+    {{ include('diagnostico_plantel/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('diagnostico_plantel_index') }}">back to list</a>
+
+    {{ include('diagnostico_plantel/_delete_form.html.twig') }}
+{% endblock %}

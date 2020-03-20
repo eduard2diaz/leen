@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<title>PlanTrabajo index</title>
+
+{% block body %}
+    <h1>PlanTrabajo index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fechacaptura</th>
+                <th>Descripcionaccion</th>
+                <th>Tiempoestimado</th>
+                <th>Costoestimado</th>
+                <th>Totalrecursosasignados</th>
+                <th>Planarchivo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for plan_trabajo in plan_trabajos %}
+            <tr>
+                <td>{{ plan_trabajo.id }}</td>
+                <td>{{ plan_trabajo.fechacaptura ? plan_trabajo.fechacaptura|date('Y-m-d') : '' }}</td>
+                <td>{{ plan_trabajo.descripcionaccion }}</td>
+                <td>{{ plan_trabajo.tiempoestimado }}</td>
+                <td>{{ plan_trabajo.costoestimado }}</td>
+                <td>{{ plan_trabajo.totalrecursosasignados }}</td>
+                <td>{{ plan_trabajo.planarchivo }}</td>
+                <td>
+                    <a href="{{ path('plan_trabajo_show', {'id': plan_trabajo.id}) }}">show</a>
+                    <a href="{{ path('plan_trabajo_edit', {'id': plan_trabajo.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('plan_trabajo_new') }}">Create new</a>
+{% endblock %}

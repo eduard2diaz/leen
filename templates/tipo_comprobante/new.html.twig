@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>New TipoComprobante</title>
+
+{% block body %}
+    <h1>Create new TipoComprobante</h1>
+
+    {{ include('tipo_comprobante/_form.html.twig') }}
+
+    <a href="{{ path('tipo_comprobante_index') }}">back to list</a>
+{% endblock %}

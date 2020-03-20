@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<title>Escuela index</title>
+
+{% block body %}
+    <h1>Escuela index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Escuela</th>
+                <th>Ccts</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for escuela in escuelas %}
+            <tr>
+                <td>{{ escuela.id }}</td>
+                <td>{{ escuela.escuela }}</td>
+                <td>{{ escuela.ccts }}</td>
+                <td>
+                    <a href="{{ path('escuela_show', {'id': escuela.id}) }}">show</a>
+                    <a href="{{ path('escuela_edit', {'id': escuela.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('escuela_new') }}">Create new</a>
+{% endblock %}

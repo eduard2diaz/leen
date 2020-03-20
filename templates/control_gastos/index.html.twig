@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<title>ControlGastos index</title>
+
+{% block body %}
+    <h1>ControlGastos index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fechacaptura</th>
+                <th>Concepto</th>
+                <th>Numerocomprobante</th>
+                <th>Monto</th>
+                <th>Controlarchivos</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for control_gasto in control_gastos %}
+            <tr>
+                <td>{{ control_gasto.id }}</td>
+                <td>{{ control_gasto.fechacaptura ? control_gasto.fechacaptura|date('Y-m-d') : '' }}</td>
+                <td>{{ control_gasto.concepto }}</td>
+                <td>{{ control_gasto.numerocomprobante }}</td>
+                <td>{{ control_gasto.monto }}</td>
+                <td>{{ control_gasto.controlarchivos }}</td>
+                <td>
+                    <a href="{{ path('control_gastos_show', {'id': control_gasto.id}) }}">show</a>
+                    <a href="{{ path('control_gastos_edit', {'id': control_gasto.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('control_gastos_new') }}">Create new</a>
+{% endblock %}

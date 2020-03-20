@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<title>DiagnosticoPlantel index</title>
+
+{% block body %}
+    <h1>DiagnosticoPlantel index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Numeroaulas</th>
+                <th>IdcondicionesAula</th>
+                <th>Numerosanitarios</th>
+                <th>Idcondicionessanitarios</th>
+                <th>Numerooficinas</th>
+                <th>Idcondicionoficina</th>
+                <th>Numerobibliotecas</th>
+                <th>Idcondicionesbliblioteca</th>
+                <th>Numeroaulasmedios</th>
+                <th>Idcondicionaulamedios</th>
+                <th>Numeropatio</th>
+                <th>Idcondicionpatio</th>
+                <th>Numerocanchasdeportivas</th>
+                <th>Idcondicioncanchasdeportivas</th>
+                <th>Numerobarda</th>
+                <th>Idcondicionbarda</th>
+                <th>Aguapotable</th>
+                <th>Idcondicionagua</th>
+                <th>Drenaje</th>
+                <th>Idcondiciondrenaje</th>
+                <th>Energiaelectrica</th>
+                <th>Idcondicionenergia</th>
+                <th>Telefono</th>
+                <th>Idcondiciontelefono</th>
+                <th>Internet</th>
+                <th>Idcondicioninternet</th>
+                <th>Iddiagnosticoplantel</th>
+                <th>Diagnosticoarchivo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for diagnostico_plantel in diagnostico_plantels %}
+            <tr>
+                <td>{{ diagnostico_plantel.id }}</td>
+                <td>{{ diagnostico_plantel.numeroaulas }}</td>
+                <td>{{ diagnostico_plantel.idcondicionesAula }}</td>
+                <td>{{ diagnostico_plantel.numerosanitarios }}</td>
+                <td>{{ diagnostico_plantel.idcondicionessanitarios }}</td>
+                <td>{{ diagnostico_plantel.numerooficinas }}</td>
+                <td>{{ diagnostico_plantel.idcondicionoficina }}</td>
+                <td>{{ diagnostico_plantel.numerobibliotecas }}</td>
+                <td>{{ diagnostico_plantel.idcondicionesbliblioteca }}</td>
+                <td>{{ diagnostico_plantel.numeroaulasmedios }}</td>
+                <td>{{ diagnostico_plantel.idcondicionaulamedios }}</td>
+                <td>{{ diagnostico_plantel.numeropatio }}</td>
+                <td>{{ diagnostico_plantel.idcondicionpatio }}</td>
+                <td>{{ diagnostico_plantel.numerocanchasdeportivas }}</td>
+                <td>{{ diagnostico_plantel.idcondicioncanchasdeportivas }}</td>
+                <td>{{ diagnostico_plantel.numerobarda }}</td>
+                <td>{{ diagnostico_plantel.idcondicionbarda }}</td>
+                <td>{{ diagnostico_plantel.aguapotable ? 'Yes' : 'No' }}</td>
+                <td>{{ diagnostico_plantel.idcondicionagua }}</td>
+                <td>{{ diagnostico_plantel.drenaje ? 'Yes' : 'No' }}</td>
+                <td>{{ diagnostico_plantel.idcondiciondrenaje }}</td>
+                <td>{{ diagnostico_plantel.energiaelectrica ? 'Yes' : 'No' }}</td>
+                <td>{{ diagnostico_plantel.idcondicionenergia }}</td>
+                <td>{{ diagnostico_plantel.telefono ? 'Yes' : 'No' }}</td>
+                <td>{{ diagnostico_plantel.idcondiciontelefono }}</td>
+                <td>{{ diagnostico_plantel.internet ? 'Yes' : 'No' }}</td>
+                <td>{{ diagnostico_plantel.idcondicioninternet }}</td>
+                <td>{{ diagnostico_plantel.iddiagnosticoplantel }}</td>
+                <td>{{ diagnostico_plantel.diagnosticoarchivo }}</td>
+                <td>
+                    <a href="{{ path('diagnostico_plantel_show', {'id': diagnostico_plantel.id}) }}">show</a>
+                    <a href="{{ path('diagnostico_plantel_edit', {'id': diagnostico_plantel.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="30">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('diagnostico_plantel_new') }}">Create new</a>
+{% endblock %}

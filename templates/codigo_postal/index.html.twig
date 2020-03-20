@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<title>CodigoPostal index</title>
+
+{% block body %}
+    <h1>CodigoPostal index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>D_Asenta</th>
+                <th>D_tipoasenta</th>
+                <th>D_mpio</th>
+                <th>D_estado</th>
+                <th>D_ciudad</th>
+                <th>D_cp</th>
+                <th>C_estado</th>
+                <th>C_CP</th>
+                <th>C_tipoasenta</th>
+                <th>C_municipio</th>
+                <th>Id_asenta_cpcons</th>
+                <th>D_zona</th>
+                <th>C_cve_ciudad</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for codigo_postal in codigo_postals %}
+            <tr>
+                <td>{{ codigo_postal.id }}</td>
+                <td>{{ codigo_postal.dAsenta }}</td>
+                <td>{{ codigo_postal.dTipoasenta }}</td>
+                <td>{{ codigo_postal.dMpio }}</td>
+                <td>{{ codigo_postal.dEstado }}</td>
+                <td>{{ codigo_postal.dCiudad }}</td>
+                <td>{{ codigo_postal.dCp }}</td>
+                <td>{{ codigo_postal.cEstado }}</td>
+                <td>{{ codigo_postal.cCP }}</td>
+                <td>{{ codigo_postal.cTipoasenta }}</td>
+                <td>{{ codigo_postal.cMunicipio }}</td>
+                <td>{{ codigo_postal.idAsentaCpcons }}</td>
+                <td>{{ codigo_postal.dZona }}</td>
+                <td>{{ codigo_postal.cCveCiudad }}</td>
+                <td>
+                    <a href="{{ path('codigo_postal_show', {'id': codigo_postal.id}) }}">show</a>
+                    <a href="{{ path('codigo_postal_edit', {'id': codigo_postal.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('codigo_postal_new') }}">Create new</a>
+{% endblock %}

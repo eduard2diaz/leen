@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>New ControlGastos</title>
+
+{% block body %}
+    <h1>Create new ControlGastos</h1>
+
+    {{ include('control_gastos/_form.html.twig') }}
+
+    <a href="{{ path('control_gastos_index') }}">back to list</a>
+{% endblock %}

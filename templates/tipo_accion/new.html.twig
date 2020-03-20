@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>New TipoAccion</title>
+
+{% block body %}
+    <h1>Create new TipoAccion</h1>
+
+    {{ include('tipo_accion/_form.html.twig') }}
+
+    <a href="{{ path('tipo_accion_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit RendicionCuentas</title>
+
+{% block body %}
+    <h1>Edit RendicionCuentas</h1>
+
+    {{ include('rendicion_cuentas/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('rendicion_cuentas_index') }}">back to list</a>
+
+    {{ include('rendicion_cuentas/_delete_form.html.twig') }}
+{% endblock %}

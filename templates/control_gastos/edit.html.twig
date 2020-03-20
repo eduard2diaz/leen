@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit ControlGastos</title>
+
+{% block body %}
+    <h1>Edit ControlGastos</h1>
+
+    {{ include('control_gastos/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('control_gastos_index') }}">back to list</a>
+
+    {{ include('control_gastos/_delete_form.html.twig') }}
+{% endblock %}

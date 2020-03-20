@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<title>Direccion index</title>
+
+{% block body %}
+    <h1>Direccion index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Calle</th>
+                <th>Numero_exterior</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for direccion in direccions %}
+            <tr>
+                <td>{{ direccion.id }}</td>
+                <td>{{ direccion.calle }}</td>
+                <td>{{ direccion.numeroExterior }}</td>
+                <td>
+                    <a href="{{ path('direccion_show', {'id': direccion.id}) }}">show</a>
+                    <a href="{{ path('direccion_edit', {'id': direccion.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('direccion_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<title>PlanTrabajo</title>
+
+{% block body %}
+    <h1>PlanTrabajo</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ plan_trabajo.id }}</td>
+            </tr>
+            <tr>
+                <th>Fechacaptura</th>
+                <td>{{ plan_trabajo.fechacaptura ? plan_trabajo.fechacaptura|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Descripcionaccion</th>
+                <td>{{ plan_trabajo.descripcionaccion }}</td>
+            </tr>
+            <tr>
+                <th>Tiempoestimado</th>
+                <td>{{ plan_trabajo.tiempoestimado }}</td>
+            </tr>
+            <tr>
+                <th>Costoestimado</th>
+                <td>{{ plan_trabajo.costoestimado }}</td>
+            </tr>
+            <tr>
+                <th>Totalrecursosasignados</th>
+                <td>{{ plan_trabajo.totalrecursosasignados }}</td>
+            </tr>
+            <tr>
+                <th>Planarchivo</th>
+                <td>{{ plan_trabajo.planarchivo }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('plan_trabajo_index') }}">back to list</a>
+
+    <a href="{{ path('plan_trabajo_edit', {'id': plan_trabajo.id}) }}">edit</a>
+
+    {{ include('plan_trabajo/_delete_form.html.twig') }}
+{% endblock %}

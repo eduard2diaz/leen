@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit CodigoPostal</title>
+
+{% block body %}
+    <h1>Edit CodigoPostal</h1>
+
+    {{ include('codigo_postal/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('codigo_postal_index') }}">back to list</a>
+
+    {{ include('codigo_postal/_delete_form.html.twig') }}
+{% endblock %}

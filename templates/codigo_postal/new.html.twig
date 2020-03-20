@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>New CodigoPostal</title>
+
+{% block body %}
+    <h1>Create new CodigoPostal</h1>
+
+    {{ include('codigo_postal/_form.html.twig') }}
+
+    <a href="{{ path('codigo_postal_index') }}">back to list</a>
+{% endblock %}

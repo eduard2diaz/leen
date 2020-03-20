@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<title>TipoComprobante index</title>
+
+{% block body %}
+    <h1>TipoComprobante index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Comprobante</th>
+                <th>Descripcion</th>
+                <th>Fechacaptura</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tipo_comprobante in tipo_comprobantes %}
+            <tr>
+                <td>{{ tipo_comprobante.id }}</td>
+                <td>{{ tipo_comprobante.comprobante }}</td>
+                <td>{{ tipo_comprobante.descripcion }}</td>
+                <td>{{ tipo_comprobante.fechacaptura ? tipo_comprobante.fechacaptura|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('tipo_comprobante_show', {'id': tipo_comprobante.id}) }}">show</a>
+                    <a href="{{ path('tipo_comprobante_edit', {'id': tipo_comprobante.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('tipo_comprobante_new') }}">Create new</a>
+{% endblock %}

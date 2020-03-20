@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<title>CondicionDocenteEducativa</title>
+
+{% block body %}
+    <h1>CondicionDocenteEducativa</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ condicion_docente_educativa.id }}</td>
+            </tr>
+            <tr>
+                <th>Ccts</th>
+                <td>{{ condicion_docente_educativa.ccts }}</td>
+            </tr>
+            <tr>
+                <th>Curp</th>
+                <td>{{ condicion_docente_educativa.curp }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ condicion_docente_educativa.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Grado</th>
+                <td>{{ condicion_docente_educativa.grado }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('condicion_docente_educativa_index') }}">back to list</a>
+
+    <a href="{{ path('condicion_docente_educativa_edit', {'id': condicion_docente_educativa.id}) }}">edit</a>
+
+    {{ include('condicion_docente_educativa/_delete_form.html.twig') }}
+{% endblock %}

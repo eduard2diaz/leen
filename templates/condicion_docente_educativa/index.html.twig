@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<title>CondicionDocenteEducativa index</title>
+
+{% block body %}
+    <h1>CondicionDocenteEducativa index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Ccts</th>
+                <th>Curp</th>
+                <th>Nombre</th>
+                <th>Grado</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for condicion_docente_educativa in condicion_docente_educativas %}
+            <tr>
+                <td>{{ condicion_docente_educativa.id }}</td>
+                <td>{{ condicion_docente_educativa.ccts }}</td>
+                <td>{{ condicion_docente_educativa.curp }}</td>
+                <td>{{ condicion_docente_educativa.nombre }}</td>
+                <td>{{ condicion_docente_educativa.grado }}</td>
+                <td>
+                    <a href="{{ path('condicion_docente_educativa_show', {'id': condicion_docente_educativa.id}) }}">show</a>
+                    <a href="{{ path('condicion_docente_educativa_edit', {'id': condicion_docente_educativa.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('condicion_docente_educativa_new') }}">Create new</a>
+{% endblock %}

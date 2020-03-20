@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<title>TipoCondicion index</title>
+
+{% block body %}
+    <h1>TipoCondicion index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Condicion</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tipo_condicion in tipo_condicions %}
+            <tr>
+                <td>{{ tipo_condicion.id }}</td>
+                <td>{{ tipo_condicion.condicion }}</td>
+                <td>
+                    <a href="{{ path('tipo_condicion_show', {'id': tipo_condicion.id}) }}">show</a>
+                    <a href="{{ path('tipo_condicion_edit', {'id': tipo_condicion.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('tipo_condicion_new') }}">Create new</a>
+{% endblock %}

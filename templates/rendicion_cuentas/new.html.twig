@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>New RendicionCuentas</title>
+
+{% block body %}
+    <h1>Create new RendicionCuentas</h1>
+
+    {{ include('rendicion_cuentas/_form.html.twig') }}
+
+    <a href="{{ path('rendicion_cuentas_index') }}">back to list</a>
+{% endblock %}

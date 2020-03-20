@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>New CondicionDocenteEducativa</title>
+
+{% block body %}
+    <h1>Create new CondicionDocenteEducativa</h1>
+
+    {{ include('condicion_docente_educativa/_form.html.twig') }}
+
+    <a href="{{ path('condicion_docente_educativa_index') }}">back to list</a>
+{% endblock %}

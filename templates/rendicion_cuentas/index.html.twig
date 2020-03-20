@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<title>RendicionCuentas index</title>
+
+{% block body %}
+    <h1>RendicionCuentas index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fechacaptura</th>
+                <th>Monto</th>
+                <th>Rendicionesarchivos</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rendicion_cuenta in rendicion_cuentas %}
+            <tr>
+                <td>{{ rendicion_cuenta.id }}</td>
+                <td>{{ rendicion_cuenta.fechacaptura ? rendicion_cuenta.fechacaptura|date('Y-m-d') : '' }}</td>
+                <td>{{ rendicion_cuenta.monto }}</td>
+                <td>{{ rendicion_cuenta.rendicionesarchivos }}</td>
+                <td>
+                    <a href="{{ path('rendicion_cuentas_show', {'id': rendicion_cuenta.id}) }}">show</a>
+                    <a href="{{ path('rendicion_cuentas_edit', {'id': rendicion_cuenta.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('rendicion_cuentas_new') }}">Create new</a>
+{% endblock %}
