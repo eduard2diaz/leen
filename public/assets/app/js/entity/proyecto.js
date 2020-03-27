@@ -1,9 +1,9 @@
-var escuela = function () {
+var proyecto = function () {
     var table = null;
     var obj = null;
 
     var configurarDataTable = function () {
-        table = $('table#escuela_entity_table').DataTable({
+        table = $('table#proyecto_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
                 url: datatable_url
@@ -11,11 +11,20 @@ var escuela = function () {
             columns: [
                 {data: 'numero'},
                 {data: 'escuela'},
-                {data: 'ccts'},
-                {data: 'cp'},
+                {data: 'finicio'},
+                {data: 'ffin'},
                 {data: 'acciones'}
             ]
         });
+    }
+
+    var configurarFormulario = function () {
+
+        $('select#proyecto_escuela').select2({
+            dropdownParent: $("#basicmodal"),
+        });
+        $('input#proyecto_fechainicio').datepicker();
+        $('input#proyecto_fechafin').datepicker();
     }
 
     var edicion = function () {
@@ -33,6 +42,7 @@ var escuela = function () {
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
                         $('div#basicmodal').modal('show');
+                        configurarFormulario();
                     }
                 },
                 error: function () {
@@ -47,7 +57,7 @@ var escuela = function () {
 
 
     var newAction = function () {
-        $('div#basicmodal').on('submit', 'form#escuela_new', function (evento) {
+        $('div#basicmodal').on('submit', 'form#proyecto_new', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -64,21 +74,22 @@ var escuela = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
+                        configurarFormulario();
                     } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        escuelaCounter++;
+                        proyectoCounter++;
                         objeto = table.row.add({
-                            "numero": escuelaCounter,
+                            "numero": proyectoCounter,
                             "escuela": data['escuela'],
-                            "ccts": data['ccts'],
-                            "cp": data['cp'],
+                            "finicio": data['finicio'],
+                            "ffin": data['ffin'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('escuela_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
+                                "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('proyecto_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",
                         });
                         objeto.draw();
@@ -93,7 +104,7 @@ var escuela = function () {
     }
 
     var edicionAction = function () {
-        $('div#basicmodal').on('submit', 'form#escuela_edit', function (evento) {
+        $('div#basicmodal').on('submit', 'form#proyecto_edit', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -108,8 +119,10 @@ var escuela = function () {
                     l.stop();
                 },
                 success: function (data) {
-                    if (data['error'])
+                    if (data['error']){
                         padre.html(data['form']);
+                        configurarFormulario();
+                    }
                     else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
@@ -117,8 +130,8 @@ var escuela = function () {
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
                         obj.parents('tr').children('td:nth-child(2)').html(data['escuela']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['ccts']);
-                        obj.parents('tr').children('td:nth-child(4)').html(data['cp']);
+                        obj.parents('tr').children('td:nth-child(3)').html(data['finicio']);
+                        obj.parents('tr').children('td:nth-child(4)').html(data['ffin']);
                     }
                 },
                 error: function () {
@@ -129,15 +142,15 @@ var escuela = function () {
     }
 
     var eliminar = function () {
-        $('div#basicmodal').on('click', 'a.eliminar_escuela', function (evento) {
+        $('div#basicmodal').on('click', 'a.eliminar_proyecto', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
             var token = $(this).attr('data-csrf');
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar escuela',
-                message: '¿Está seguro que desea eliminar esta escuela?',
+                title: 'Eliminar proyecto',
+                message: '¿Está seguro que desea eliminar este proyecto?',
                 buttons: {
                     confirm: {
                         label: 'Si, estoy seguro',

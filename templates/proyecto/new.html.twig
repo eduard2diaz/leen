@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-
-<title>New Proyecto</title>
-
-{% block body %}
-    <h1>Create new Proyecto</h1>
-
-    {{ include('proyecto/_form.html.twig') }}
-
-    <a href="{{ path('proyecto_index') }}">back to list</a>
-{% endblock %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                {{ title| default('Nuevo proyecto') }}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div>
+            {{ include('proyecto/_form.html.twig') }}
+        </div>
+    </div>
+</div>

@@ -1,4 +1,96 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form,{'attr':{
+    'id': form_id|default('proyecto_new'),
+    'class': 'm-form m-form--state'
+}}) }}
+<div class="modal-body" id="modal-body">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.escuela) }}
+                </label>
+                <div>
+                    {{ form_widget(form.escuela) }}
+                    {{ form_errors(form.escuela) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.fechainicio) }}
+                </label>
+                <div>
+                    {{ form_widget(form.fechainicio) }}
+                    {{ form_errors(form.fechainicio) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.fechafin) }}
+                </label>
+                <div>
+                    {{ form_widget(form.fechafin) }}
+                    {{ form_errors(form.fechafin) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.montoasignado) }}
+                </label>
+                <div>
+                    {{ form_widget(form.montoasignado) }}
+                    {{ form_errors(form.montoasignado) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.montogastado) }}
+                </label>
+                <div>
+                    {{ form_widget(form.montogastado) }}
+                    {{ form_errors(form.montogastado) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.saldofinal) }}
+                </label>
+                <div>
+                    {{ form_widget(form.saldofinal) }}
+                    {{ form_errors(form.saldofinal) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_errors(form) }}
+{{ form_rest(form) }}
+<div class="modal-footer">
+    <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
+    {% if eliminable is defined%}
+        <a class="btn btn-danger btn-sm  eliminar_proyecto"
+           data-href="{{ path('proyecto_delete', { 'id': proyecto.id }) }}"
+           data-csrf="{{ csrf_token('delete' ~ proyecto.id) }}">
+            <i class="flaticon-delete-1"></i> Eliminar</a>
+    {% endif %}
+    <button class="btn btn-sm btn-primary mt-ladda-btn ladda-button" data-style="expand-right" type="submit">
+        <i class="flaticon-edit"></i>
+        <span class="ladda-label">{{ action |default('Guardar') }}</span>
+        <span class="ladda-spinner"></span>
+    </button>
+</div>
+
 {{ form_end(form) }}

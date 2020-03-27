@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProyectoRepository")
@@ -34,16 +36,25 @@ class Proyecto
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $montoasignado;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $montogastado;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $saldofinal;
 
@@ -122,5 +133,20 @@ class Proyecto
         $this->saldofinal = $saldofinal;
 
         return $this;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (null==$this->getEscuela())
+            $context->addViolation('Seleccione una escuela.');
+        if ($this->getFechainicio()>$this->getFechafin())
+            $context->addViolation('Compruebe las fechas de inicio y fin.');
+        if ($this->getMontoasignado()<$this->getMontogastado())
+            $context->addViolation('Compruebe los montos asignados y gastados.');
+        elseif ($this->getMontoasignado()-$this->getMontogastado()!=$this->getSaldofinal())
+            $context->addViolation('El saldo final no concuerda con los montos asignados y gastados.');
     }
 }

@@ -76,4 +76,9 @@ class Escuela
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->getEscuela().' '.$this->getCcts();
+    }
+
 }
