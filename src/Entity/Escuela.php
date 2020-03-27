@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EscuelaRepository")
@@ -29,6 +30,7 @@ class Escuela
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CodigoPostal")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid
      */
     private $d_codigo;
 
