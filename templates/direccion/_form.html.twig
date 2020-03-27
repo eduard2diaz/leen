@@ -1,4 +1,58 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form,{'attr':{
+    'id': form_id|default('direccion_new'),
+    'class': 'm-form m-form--state'
+}}) }}
+<div class="modal-body" id="modal-body">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.d_codigo) }}
+                </label>
+                <div>
+                    {{ form_widget(form.d_codigo) }}
+                    {{ form_errors(form.d_codigo) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.calle) }}
+                </label>
+                <div>
+                    {{ form_widget(form.calle) }}
+                    {{ form_errors(form.calle) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.numero_exterior) }}
+                </label>
+                <div>
+                    {{ form_widget(form.numero_exterior) }}
+                    {{ form_errors(form.numero_exterior) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
+    {% if eliminable is defined%}
+        <a class="btn btn-danger btn-sm  eliminar_direccion"
+           data-href="{{ path('direccion_delete', { 'id': direccion.id }) }}"
+           data-csrf="{{ csrf_token('delete' ~ direccion.id) }}">
+            <i class="flaticon-delete-1"></i> Eliminar</a>
+    {% endif %}
+    <button class="btn btn-sm btn-primary mt-ladda-btn ladda-button" data-style="expand-right" type="submit">
+        <i class="flaticon-edit"></i>
+        <span class="ladda-label">{{ action |default('Guardar') }}</span>
+        <span class="ladda-spinner"></span>
+    </button>
+</div>
 {{ form_end(form) }}

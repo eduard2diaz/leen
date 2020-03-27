@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Direccion;
 use App\Form\DireccionType;
-use App\Repository\DireccionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,29 +17,46 @@ class DireccionController extends AbstractController
     /**
      * @Route("/", name="direccion_index", methods={"GET"})
      */
-    public function index(DireccionRepository $direccionRepository): Response
+    public function index(): Response
     {
+        $direccions = $this->getDoctrine()
+            ->getRepository(Direccion::class)
+            ->findAll();
+
         return $this->render('direccion/index.html.twig', [
-            'direccions' => $direccionRepository->findAll(),
+            'direccions' => $direccions,
         ]);
     }
 
     /**
-     * @Route("/new", name="direccion_new", methods={"GET","POST"})
+     * @Route("/new", name="direccion_new", methods={"GET","POST"},options={"expose"=true})
      */
     public function new(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
         $direccion = new Direccion();
-        $form = $this->createForm(DireccionType::class, $direccion);
+        $form = $this->createForm(DireccionType::class, $direccion, ['action' => $this->generateUrl('direccion_new')]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($direccion);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('direccion_index');
-        }
+        if ($form->isSubmitted())
+            if ($form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($direccion);
+                $entityManager->flush();
+                return $this->json(['mensaje' => 'La dirección fue registrada satisfactoriamente',
+                    'codigo' => $direccion->getDCodigo()->__toString(),
+                    'noexterior' => $direccion->getNumeroExterior(),
+                    'calle' => $direccion->getCalle(),
+                    'id' => $direccion->getId(),
+                ]);
+            } else {
+                $page = $this->renderView('direccion/_form.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+                return $this->json(['form' => $page, 'error' => true,]);
+            }
 
         return $this->render('direccion/new.html.twig', [
             'direccion' => $direccion,
@@ -49,46 +65,58 @@ class DireccionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="direccion_show", methods={"GET"})
-     */
-    public function show(Direccion $direccion): Response
-    {
-        return $this->render('direccion/show.html.twig', [
-            'direccion' => $direccion,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="direccion_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="direccion_edit", methods={"GET","POST"},options={"expose"=true})
      */
     public function edit(Request $request, Direccion $direccion): Response
     {
-        $form = $this->createForm(DireccionType::class, $direccion);
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        $form = $this->createForm(DireccionType::class, $direccion, ['action' => $this->generateUrl('direccion_edit', ['id' => $direccion->getId()])]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $eliminable=true;
+        if ($form->isSubmitted())
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($direccion);
+                $em->flush();
+                return $this->json(['mensaje' => 'La dirección fue actualizada satisfactoriamente',
+                ]);
+            } else {
+                $page = $this->renderView('direccion/_form.html.twig', [
+                    'codigo' => $direccion->getDCodigo()->__toString(),
+                    'noexterior' => $direccion->getNumeroExterior(),
+                    'calle' => $direccion->getCalle(),
+                    'eliminable'=>$eliminable,
+                    'form' => $form->createView(),
+                    'form_id' => 'direccion_edit',
+                    'action' => 'Actualizar',
+                ]);
+                return $this->json(['form' => $page, 'error' => true]);
+            }
 
-            return $this->redirectToRoute('direccion_index');
-        }
-
-        return $this->render('direccion/edit.html.twig', [
+        return $this->render('direccion/new.html.twig', [
             'direccion' => $direccion,
+            'eliminable'=>$eliminable,
+            'title' => 'Editar dirección',
+            'action' => 'Actualizar',
+            'form_id' => 'direccion_edit',
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="direccion_delete", methods={"DELETE"})
+     * @Route("/{id}", name="direccion_delete")
      */
     public function delete(Request $request, Direccion $direccion): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$direccion->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($direccion);
-            $entityManager->flush();
-        }
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $direccion->getId(), $request->query->get('_token')))
+            throw $this->createAccessDeniedException();
 
-        return $this->redirectToRoute('direccion_index');
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($direccion);
+        $em->flush();
+        return $this->json(['mensaje' => 'La dirección fue eliminada satisfactoriamente']);
     }
 }

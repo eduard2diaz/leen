@@ -85,7 +85,7 @@ class TipoCondicionController extends AbstractController
                 ]);
             } else {
                 $page = $this->renderView('tipo_condicion/_form.html.twig', [
-                    'estatus' => $tipocondicion,
+                    'tipocondicion' => $tipocondicion,
                     'eliminable'=>$eliminable,
                     'form' => $form->createView(),
                     'form_id' => 'tipo_condicion_edit',
@@ -109,7 +109,7 @@ class TipoCondicionController extends AbstractController
      */
     public function delete(Request $request, TipoCondicion $tipocondicion): Response
     {
-        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $tipocondicion->getId(), $request->query->get('_token')) || false==$this->esEliminable($tipocondicion))
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $tipocondicion->getId(), $request->query->get('_token')))
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();

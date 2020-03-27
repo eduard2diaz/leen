@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-
-<title>New Direccion</title>
-
-{% block body %}
-    <h1>Create new Direccion</h1>
-
-    {{ include('direccion/_form.html.twig') }}
-
-    <a href="{{ path('direccion_index') }}">back to list</a>
-{% endblock %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                {{ title| default('Nueva direccion') }}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div>
+            {{ include('direccion/_form.html.twig') }}
+        </div>
+    </div>
+</div>

@@ -248,4 +248,9 @@ class CodigoPostal
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getCCP();
+    }
 }

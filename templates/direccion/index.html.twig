@@ -1,37 +1,68 @@
-<!DOCTYPE html>
+{% extends 'layout/autenticado.html.twig' %}
 
-<title>Direccion index</title>
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
+{% endblock %}
 {% block body %}
-    <h1>Direccion index</h1>
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Direcciones</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <a data-href="{{ path('direccion_new') }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion">
+                Nuevo
+            </a>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Calle</th>
-                <th>Numero_exterior</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for direccion in direccions %}
-            <tr>
-                <td>{{ direccion.id }}</td>
-                <td>{{ direccion.calle }}</td>
-                <td>{{ direccion.numeroExterior }}</td>
-                <td>
-                    <a href="{{ path('direccion_show', {'id': direccion.id}) }}">show</a>
-                    <a href="{{ path('direccion_edit', {'id': direccion.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Daily Sales-->
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-widget14">
+                    <div class="kt-widget14__header kt-margin-b-30">
+                        <h3 class="kt-widget14__title">
+                            Listado
+                        </h3>
+                    </div>
+                    <table class="table" id="direccion_entity_table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Código</th>
+                            <th>Calle</th>
+                            <th>No. exterior</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set i=1 %}
+                        {% for direccion in direccions %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ direccion.d_codigo }}</td>
+                                <td>{{ direccion.calle }}</td>
+                                <td>{{ direccion.numero_exterior }}</td>
+                                <td>
+                                    <ul class="hidden_element list-inline pull-right">
+                                        <li class="list-inline-item"><a class="btn btn-primary btn-sm edicion" data-href="{{ path('tipo_direccion_edit', {'id': direccion.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% set i=1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
 
-    <a href="{{ path('direccion_new') }}">Create new</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/direccion.js','app') }}" type="text/javascript"></script>
+    <script>
+        var direccionCounter='{{ direccions |length }}';
+        direccion.init();
+    </script>
 {% endblock %}
