@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Proyecto;
 use App\Entity\TipoCondicion;
 use App\Form\TipoCondicionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -116,5 +117,4 @@ class TipoCondicionController extends AbstractController
         $em->flush();
         return $this->json(['mensaje' => 'El tipo de condición fue eliminado satisfactoriamente']);
     }
-
 }

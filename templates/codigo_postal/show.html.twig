@@ -1,74 +1,81 @@
-<!DOCTYPE html>
-
-<title>CodigoPostal</title>
-
-{% block body %}
-    <h1>CodigoPostal</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ codigo_postal.id }}</td>
-            </tr>
-            <tr>
-                <th>D_Asenta</th>
-                <td>{{ codigo_postal.dAsenta }}</td>
-            </tr>
-            <tr>
-                <th>D_tipoasenta</th>
-                <td>{{ codigo_postal.dTipoasenta }}</td>
-            </tr>
-            <tr>
-                <th>D_mpio</th>
-                <td>{{ codigo_postal.dMpio }}</td>
-            </tr>
-            <tr>
-                <th>D_estado</th>
-                <td>{{ codigo_postal.dEstado }}</td>
-            </tr>
-            <tr>
-                <th>D_ciudad</th>
-                <td>{{ codigo_postal.dCiudad }}</td>
-            </tr>
-            <tr>
-                <th>D_cp</th>
-                <td>{{ codigo_postal.dCp }}</td>
-            </tr>
-            <tr>
-                <th>C_estado</th>
-                <td>{{ codigo_postal.cEstado }}</td>
-            </tr>
-            <tr>
-                <th>C_CP</th>
-                <td>{{ codigo_postal.cCP }}</td>
-            </tr>
-            <tr>
-                <th>C_tipoasenta</th>
-                <td>{{ codigo_postal.cTipoasenta }}</td>
-            </tr>
-            <tr>
-                <th>C_municipio</th>
-                <td>{{ codigo_postal.cMunicipio }}</td>
-            </tr>
-            <tr>
-                <th>Id_asenta_cpcons</th>
-                <td>{{ codigo_postal.idAsentaCpcons }}</td>
-            </tr>
-            <tr>
-                <th>D_zona</th>
-                <td>{{ codigo_postal.dZona }}</td>
-            </tr>
-            <tr>
-                <th>C_cve_ciudad</th>
-                <td>{{ codigo_postal.cCveCiudad }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('codigo_postal_index') }}">back to list</a>
-
-    <a href="{{ path('codigo_postal_edit', {'id': codigo_postal.id}) }}">edit</a>
-
-    {{ include('codigo_postal/_delete_form.html.twig') }}
-{% endblock %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Detalles del código postal
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th>D_Asenta</th>
+                            <td>{{ codigo_postal.dAsenta }}</td>
+                        </tr>
+                        <tr>
+                            <th>D_tipoasenta</th>
+                            <td>{{ codigo_postal.dTipoasenta }}</td>
+                        </tr>
+                        <tr>
+                            <th>D_mpio</th>
+                            <td>{{ codigo_postal.dMpio }}</td>
+                        </tr>
+                        <tr>
+                            <th>D_estado</th>
+                            <td>{{ codigo_postal.dEstado }}</td>
+                        </tr>
+                        <tr>
+                            <th>D_ciudad</th>
+                            <td>{{ codigo_postal.dCiudad }}</td>
+                        </tr>
+                        <tr>
+                            <th>D_cp</th>
+                            <td>{{ codigo_postal.dCp }}</td>
+                        </tr>
+                        <tr>
+                            <th>C_estado</th>
+                            <td>{{ codigo_postal.cEstado }}</td>
+                        </tr>
+                        <tr>
+                            <th>C_CP</th>
+                            <td>{{ codigo_postal.cCP }}</td>
+                        </tr>
+                        <tr>
+                            <th>C_tipoasenta</th>
+                            <td>{{ codigo_postal.cTipoasenta }}</td>
+                        </tr>
+                        <tr>
+                            <th>C_municipio</th>
+                            <td>{{ codigo_postal.cMunicipio }}</td>
+                        </tr>
+                        <tr>
+                            <th>Id_asenta_cpcons</th>
+                            <td>{{ codigo_postal.idAsentaCpcons }}</td>
+                        </tr>
+                        <tr>
+                            <th>D_zona</th>
+                            <td>{{ codigo_postal.dZona }}</td>
+                        </tr>
+                        <tr>
+                            <th>C_cve_ciudad</th>
+                            <td>{{ codigo_postal.cCveCiudad }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
+            {% if eliminable==true %}
+                <a class="btn btn-danger btn-sm  eliminar_codigo_postal"
+                   data-href="{{ path('codigo_postal_delete', { 'id': codigo_postal.id }) }}"
+                   data-csrf="{{ csrf_token('delete' ~ codigo_postal.id) }}">
+                    <i class="flaticon-delete-1"></i> Eliminar</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

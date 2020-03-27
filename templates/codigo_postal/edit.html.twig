@@ -25,3 +25,10 @@
         </div>
     </div>
 {% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/codigo_postal.js','app') }}" type="text/javascript"></script>
+    <script>
+        codigo_postal.addEdit();
+    </script>
+{% endblock %}

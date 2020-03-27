@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\CodigoPostal;
+use App\Entity\Direccion;
+use App\Entity\Escuela;
 use App\Form\CodigoPostalType;
 use App\Repository\CodigoPostalRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,13 +36,23 @@ class CodigoPostalController extends AbstractController
         $form = $this->createForm(CodigoPostalType::class, $codigoPostal);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($codigoPostal);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('codigo_postal_index');
-        }
+        if ($form->isSubmitted())
+            if(!$request->isXmlHttpRequest())
+                throw $this->createAccessDeniedException();
+            else
+            if ($form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($codigoPostal);
+                $entityManager->flush();
+                $this->addFlash('success','El código postal fue registrado satisfactoriamente');
+                return $this->json(['url' => $this->generateUrl('codigo_postal_index',[],1)]);
+            }
+            else{
+                $page = $this->renderView('codigo_postal/_form.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+                return $this->json(['form' => $page, 'error' => true,]);
+            }
 
         return $this->render('codigo_postal/new.html.twig', [
             'codigo_postal' => $codigoPostal,
@@ -49,12 +61,16 @@ class CodigoPostalController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="codigo_postal_show", methods={"GET"})
+     * @Route("/{id}/show", name="codigo_postal_show", methods={"GET"})
      */
-    public function show(CodigoPostal $codigoPostal): Response
+    public function show(Request $request, CodigoPostal $codigoPostal): Response
     {
+        if(!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
         return $this->render('codigo_postal/show.html.twig', [
             'codigo_postal' => $codigoPostal,
+            'eliminable'=>$this->esEliminable($codigoPostal)
         ]);
     }
 
@@ -66,11 +82,22 @@ class CodigoPostalController extends AbstractController
         $form = $this->createForm(CodigoPostalType::class, $codigoPostal);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('codigo_postal_index');
-        }
+        if ($form->isSubmitted())
+            if(!$request->isXmlHttpRequest())
+                throw $this->createAccessDeniedException();
+            else
+                if ($form->isValid()) {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->flush();
+                    $this->addFlash('success','El código postal fue actualizado satisfactoriamente');
+                    return $this->json(['url' => $this->generateUrl('codigo_postal_index',[],1)]);
+                }
+                else{
+                    $page = $this->renderView('codigo_postal/_form.html.twig', [
+                        'form' => $form->createView(),
+                    ]);
+                    return $this->json(['form' => $page, 'error' => true,]);
+                }
 
         return $this->render('codigo_postal/edit.html.twig', [
             'codigo_postal' => $codigoPostal,
@@ -79,16 +106,24 @@ class CodigoPostalController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="codigo_postal_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="codigo_postal_delete")
      */
     public function delete(Request $request, CodigoPostal $codigoPostal): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$codigoPostal->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($codigoPostal);
-            $entityManager->flush();
-        }
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $codigoPostal->getId(), $request->query->get('_token')) || false==$this->esEliminable($codigoPostal))
+            throw $this->createAccessDeniedException();
 
-        return $this->redirectToRoute('codigo_postal_index');
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($codigoPostal);
+        $em->flush();
+        $this->addFlash('success','El código postal fue eliminado satisfactoriamente');
+        return $this->json([]);
+    }
+
+    private function esEliminable(CodigoPostal $codigoPostal){
+        $em = $this->getDoctrine()->getManager();
+        $direccion=$em->getRepository(Direccion::class)->findOneBy(['d_codigo'=>$codigoPostal]);
+        $escuela=$em->getRepository(Escuela::class)->findOneBy(['d_codigo'=>$codigoPostal]);
+        return $direccion==null && $escuela==null;
     }
 }
