@@ -104,7 +104,7 @@ class TipoAccionController extends AbstractController
                     'tipoaccion' => $tipoaccion,
                     'eliminable'=>$eliminable,
                     'form' => $form->createView(),
-                    'form_id' => 'tipo_accion_edit',
+                    'form_id' => 'tipoaccion_edit',
                     'action' => 'Actualizar',
                 ]);
                 return $this->json(['form' => $page, 'error' => true]);

@@ -130,8 +130,8 @@ var tipo_condicion = function () {
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar tipo_condicion',
-                message: '¿Está seguro que desea eliminar este tipo_condicion?',
+                title: 'Eliminar  tipo de condición',
+                message: '¿Está seguro que desea eliminar este tipo de condición?',
                 buttons: {
                     confirm: {
                         label: 'Si, estoy seguro',

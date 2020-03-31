@@ -8,16 +8,11 @@
                 <ul class="kt-menu__nav ">
                     <li class="kt-menu__item " aria-haspopup="true"><a class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Inicio</span></a></li>
                     <li class="kt-menu__item " aria-haspopup="true"><a href="javascript:;" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Recientes</span></a></li>
-                    {% if is_granted('ROLE_USER') %}
                     {% include 'layout/recortes/user_menu.html.twig' %}
-                    {% else %}
                         {% if is_granted('ROLE_ESTADISTICA') %}
                             {% include 'layout/recortes/estadistica_menu.html.twig' %}
                         {% endif %}
-                        {% if is_granted('ROLE_SUPERADMIN') %}
                             {% include 'layout/recortes/superadmin_menu.html.twig' %}
-                        {% endif %}
-                    {% endif %}
                 </ul>
             </div>
             <div class="kt-header-toolbar">

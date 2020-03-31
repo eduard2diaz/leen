@@ -85,7 +85,7 @@ var tipocomprobante = function () {
                             "estatus": data['estatus'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='btn btn-info btn-sm edicion' data-href=" + Routing.generate('tipo_comprobante_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
+                                "<a class='btn default btn-sm edicion' data-href=" + Routing.generate('tipo_comprobante_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('tipo_comprobante_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",

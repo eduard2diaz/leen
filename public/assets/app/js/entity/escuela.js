@@ -18,6 +18,10 @@ var escuela = function () {
         });
     }
 
+    var configurarFormulario = function () {
+        $('select#escuela_d_codigo').select2();
+    }
+
     var edicion = function () {
         $('body').on('click', 'a.edicion', function (evento) {
             evento.preventDefault();
@@ -33,6 +37,7 @@ var escuela = function () {
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
                         $('div#basicmodal').modal('show');
+                        configurarFormulario();
                     }
                 },
                 error: function () {
@@ -64,6 +69,7 @@ var escuela = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
+                        configurarFormulario();
                     } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
@@ -108,8 +114,10 @@ var escuela = function () {
                     l.stop();
                 },
                 success: function (data) {
-                    if (data['error'])
+                    if (data['error']){
                         padre.html(data['form']);
+                        configurarFormulario();
+                    }
                     else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);

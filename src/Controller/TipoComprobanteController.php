@@ -103,7 +103,7 @@ class TipoComprobanteController extends AbstractController
                     'tipocomprobante' => $tipocomprobante,
                     'eliminable'=>$eliminable,
                     'form' => $form->createView(),
-                    'form_id' => 'tipo_comprobante_edit',
+                    'form_id' => 'tipocomprobante_edit',
                     'action' => 'Actualizar',
                 ]);
                 return $this->json(['form' => $page, 'error' => true]);

@@ -3,9 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TipoComprobanteRepository")
+ * @UniqueEntity(fields={"comprobante","estatus"},message="Este valor ya ha sido usado con este Estatus")
  */
 class TipoComprobante
 {
@@ -93,5 +97,14 @@ class TipoComprobante
         $this->estatus = $estatus;
 
         return $this;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (null==$this->getEstatus())
+            $context->addViolation('Seleccione un estatus.');
     }
 }

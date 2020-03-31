@@ -21,13 +21,14 @@
                             <td>{{ tipoaccion.estatus }}</td>
                         </tr>
                         <tr>
-                            <th>Descripción</th>
-                            <td>{{ tipoaccion.descripcion }}</td>
-                        </tr>
-                        <tr>
                             <th>Fecha de captura</th>
                             <td>{{ tipoaccion.fechacaptura ? tipoaccion.fechacaptura|date('Y-m-d') : '' }}</td>
                         </tr>
+                        <tr>
+                            <th>Descripción</th>
+                            <td>{{ tipoaccion.descripcion }}</td>
+                        </tr>
+
                         </tbody>
                     </table>
 

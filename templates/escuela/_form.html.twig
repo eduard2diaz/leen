@@ -26,8 +26,21 @@
                 </div>
             </div>
         </div>
+    </div
+    ><div class="row">
+        <div class="col-md-6">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.d_codigo) }}
+                </label>
+                <div>
+                    {{ form_widget(form.d_codigo) }}
+                    {{ form_errors(form.d_codigo) }}
+                </div>
+            </div>
+        </div>
     </div>
-    {%  include 'codigo_postal/_fields.html.twig' with {'form': form.d_codigo} %}
+
 
 </div>
 <div class="modal-footer">

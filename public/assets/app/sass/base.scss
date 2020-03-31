@@ -49,7 +49,7 @@ div.dataTables_filter input:focus {
 
 //Fin de las personalizaciones de los dateTables
 
-table a:not([href]){
+table a.btn-primary:not([href]){
   color:white !important;
 }
 

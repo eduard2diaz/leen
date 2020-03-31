@@ -14,8 +14,8 @@ class EscuelaType extends AbstractType
     {
         $builder
             ->add('escuela',TextType::class,['attr'=>['class'=>'form-control']])
-            ->add('ccts',TextType::class,['attr'=>['class'=>'form-control']])
-            ->add('d_codigo',CodigoPostalType::class)
+            ->add('ccts',TextType::class,['label'=>'Clave del Centro de Trabajo del Plantel o la Escuela','attr'=>['class'=>'form-control']])
+            ->add('d_codigo',null,['label'=>'Código Postal'])
         ;
     }
 
