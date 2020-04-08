@@ -10,16 +10,19 @@ var codigo_postal = function () {
             },
             columns: [
                 {data: 'numero'},
-                {data: 'campo1'},
-                {data: 'campo2'},
-                {data: 'campo3'},
+                {data: 'asentamiento'},
+                {data: 'tipoasentamiento'},
+                {data: 'municipio'},
                 {data: 'acciones'}
             ]
         });
     }
 
     var configurarFormulario = function () {
-        $('select#codigo_postal_d_tipoasenta').select2();
+        $('select#codigo_postal_tipoasentamiento').select2();
+        $('select#codigo_postal_estado').select2();
+        $('select#codigo_postal_municipio').select2();
+        $('select#codigo_postal_ciudad').select2();
         $('select#codigo_postal_d_zona').select2();
     }
 

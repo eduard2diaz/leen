@@ -1,89 +1,64 @@
-<!DOCTYPE html>
+{% extends 'escuela/show.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
+    <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
+{% endblock %}
+{% block escuela_show_body %}
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Escuela {{ escuela.escuela }}</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <h3 class="kt-subheader__title">Diagnósticos del plantel</h3>
+        </div>
+    </div>
 
-<title>DiagnosticoPlantel index</title>
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Daily Sales-->
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-widget14">
+                    <div class="kt-widget14__header kt-margin-b-30">
+                        <h3 class="kt-widget14__title">
+                            Listado
+                        </h3>
+                    </div>
+                    <table class="table" id="diagnostico_entity_table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Proyecto</th>
+                            <th>Fecha</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set i=1 %}
+                        {% for diagnostico in diagnosticos %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ diagnostico.proyecto }}</td>
+                                <td>{{ diagnostico.fecha | date('Y-m-d') }}</td>
 
-{% block body %}
-    <h1>DiagnosticoPlantel index</h1>
+                                <td>
+                                    <ul class="hidden_element list-inline pull-right">
+                                        <li class="list-inline-item"><a class="btn default btn-sm show" data-href="{{ path('diagnostico_show', {'id': diagnostico.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% set i=1+i %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Numeroaulas</th>
-                <th>IdcondicionesAula</th>
-                <th>Numerosanitarios</th>
-                <th>Idcondicionessanitarios</th>
-                <th>Numerooficinas</th>
-                <th>Idcondicionoficina</th>
-                <th>Numerobibliotecas</th>
-                <th>Idcondicionesbliblioteca</th>
-                <th>Numeroaulasmedios</th>
-                <th>Idcondicionaulamedios</th>
-                <th>Numeropatio</th>
-                <th>Idcondicionpatio</th>
-                <th>Numerocanchasdeportivas</th>
-                <th>Idcondicioncanchasdeportivas</th>
-                <th>Numerobarda</th>
-                <th>Idcondicionbarda</th>
-                <th>Aguapotable</th>
-                <th>Idcondicionagua</th>
-                <th>Drenaje</th>
-                <th>Idcondiciondrenaje</th>
-                <th>Energiaelectrica</th>
-                <th>Idcondicionenergia</th>
-                <th>Telefono</th>
-                <th>Idcondiciontelefono</th>
-                <th>Internet</th>
-                <th>Idcondicioninternet</th>
-                <th>Iddiagnosticoplantel</th>
-                <th>Diagnosticoarchivo</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for diagnostico_plantel in diagnostico_plantels %}
-            <tr>
-                <td>{{ diagnostico_plantel.id }}</td>
-                <td>{{ diagnostico_plantel.numeroaulas }}</td>
-                <td>{{ diagnostico_plantel.idcondicionesAula }}</td>
-                <td>{{ diagnostico_plantel.numerosanitarios }}</td>
-                <td>{{ diagnostico_plantel.idcondicionessanitarios }}</td>
-                <td>{{ diagnostico_plantel.numerooficinas }}</td>
-                <td>{{ diagnostico_plantel.idcondicionoficina }}</td>
-                <td>{{ diagnostico_plantel.numerobibliotecas }}</td>
-                <td>{{ diagnostico_plantel.idcondicionesbliblioteca }}</td>
-                <td>{{ diagnostico_plantel.numeroaulasmedios }}</td>
-                <td>{{ diagnostico_plantel.idcondicionaulamedios }}</td>
-                <td>{{ diagnostico_plantel.numeropatio }}</td>
-                <td>{{ diagnostico_plantel.idcondicionpatio }}</td>
-                <td>{{ diagnostico_plantel.numerocanchasdeportivas }}</td>
-                <td>{{ diagnostico_plantel.idcondicioncanchasdeportivas }}</td>
-                <td>{{ diagnostico_plantel.numerobarda }}</td>
-                <td>{{ diagnostico_plantel.idcondicionbarda }}</td>
-                <td>{{ diagnostico_plantel.aguapotable ? 'Yes' : 'No' }}</td>
-                <td>{{ diagnostico_plantel.idcondicionagua }}</td>
-                <td>{{ diagnostico_plantel.drenaje ? 'Yes' : 'No' }}</td>
-                <td>{{ diagnostico_plantel.idcondiciondrenaje }}</td>
-                <td>{{ diagnostico_plantel.energiaelectrica ? 'Yes' : 'No' }}</td>
-                <td>{{ diagnostico_plantel.idcondicionenergia }}</td>
-                <td>{{ diagnostico_plantel.telefono ? 'Yes' : 'No' }}</td>
-                <td>{{ diagnostico_plantel.idcondiciontelefono }}</td>
-                <td>{{ diagnostico_plantel.internet ? 'Yes' : 'No' }}</td>
-                <td>{{ diagnostico_plantel.idcondicioninternet }}</td>
-                <td>{{ diagnostico_plantel.iddiagnosticoplantel }}</td>
-                <td>{{ diagnostico_plantel.diagnosticoarchivo }}</td>
-                <td>
-                    <a href="{{ path('diagnostico_plantel_show', {'id': diagnostico_plantel.id}) }}">show</a>
-                    <a href="{{ path('diagnostico_plantel_edit', {'id': diagnostico_plantel.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="30">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('diagnostico_plantel_new') }}">Create new</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/escuela_diagnostico.js','app') }}" type="text/javascript"></script>
+    <script>
+        escuela_diagnostico.init();
+    </script>
 {% endblock %}

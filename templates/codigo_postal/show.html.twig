@@ -12,56 +12,41 @@
                     <table class="table table-striped">
                         <tbody>
                         <tr>
-                            <th>D_Asenta</th>
-                            <td>{{ codigo_postal.dAsenta }}</td>
+                            <th>Nombre del Asentamiento</th>
+                            <td colspan="3">{{ codigo_postal.dAsenta }}</td>
                         </tr>
                         <tr>
-                            <th>D_tipoasenta</th>
-                            <td>{{ codigo_postal.dTipoasenta }}</td>
+                            <th>Tipo de Asentamiento</th>
+                            <td>{{ codigo_postal.tipoasentamiento }}</td>
                         </tr>
                         <tr>
-                            <th>D_mpio</th>
-                            <td>{{ codigo_postal.dMpio }}</td>
+                            <th>Municipio</th>
+                            <td>{{ codigo_postal.municipio }}</td>
                         </tr>
                         <tr>
-                            <th>D_estado</th>
-                            <td>{{ codigo_postal.dEstado }}</td>
-                        </tr>
-                        <tr>
-                            <th>D_ciudad</th>
-                            <td>{{ codigo_postal.dCiudad }}</td>
+                            <th>Ciudad</th>
+                            <td>{{ codigo_postal.ciudad }}</td>
                         </tr>
                         <tr>
                             <th>D_cp</th>
                             <td>{{ codigo_postal.dCp }}</td>
                         </tr>
                         <tr>
-                            <th>C_estado</th>
-                            <td>{{ codigo_postal.cEstado }}</td>
+                            <th>Estado</th>
+                            <td>{{ codigo_postal.estado }}</td>
                         </tr>
                         <tr>
-                            <th>C_CP</th>
+                            <th>Código Postal de la Administración Postal que reparte el Asentamiento</th>
                             <td>{{ codigo_postal.cCP }}</td>
                         </tr>
+
                         <tr>
-                            <th>C_tipoasenta</th>
-                            <td>{{ codigo_postal.cTipoasenta }}</td>
-                        </tr>
-                        <tr>
-                            <th>C_municipio</th>
-                            <td>{{ codigo_postal.cMunicipio }}</td>
-                        </tr>
-                        <tr>
-                            <th>Id_asenta_cpcons</th>
+                            <th>Identificador Único del Asentamiento(Nivel Municipal)</th>
                             <td>{{ codigo_postal.idAsentaCpcons }}</td>
                         </tr>
                         <tr>
-                            <th>D_zona</th>
+                            <th>Zona en la que se ubica el Asentamiento</th>
                             <td>{{ codigo_postal.dZona }}</td>
-                        </tr>
-                        <tr>
-                            <th>C_cve_ciudad</th>
-                            <td>{{ codigo_postal.cCveCiudad }}</td>
                         </tr>
                         </tbody>
                     </table>

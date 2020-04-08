@@ -1,42 +1,51 @@
-<!DOCTYPE html>
-
-<title>Proyecto</title>
-
-{% block body %}
-    <h1>Proyecto</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ proyecto.id }}</td>
-            </tr>
-            <tr>
-                <th>Fechainicio</th>
-                <td>{{ proyecto.fechainicio ? proyecto.fechainicio|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Fechafin</th>
-                <td>{{ proyecto.fechafin ? proyecto.fechafin|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Montoasignado</th>
-                <td>{{ proyecto.montoasignado }}</td>
-            </tr>
-            <tr>
-                <th>Montogastado</th>
-                <td>{{ proyecto.montogastado }}</td>
-            </tr>
-            <tr>
-                <th>Saldofinal</th>
-                <td>{{ proyecto.saldofinal }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('proyecto_index') }}">back to list</a>
-
-    <a href="{{ path('proyecto_edit', {'id': proyecto.id}) }}">edit</a>
-
-    {{ include('proyecto/_delete_form.html.twig') }}
-{% endblock %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Detalles del proyecto
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th>Número</th>
+                            <td colspan="3">{{ proyecto.numero }}</td>
+                        </tr>
+                        <tr>
+                            <th>Escuela</th>
+                            <td>{{ proyecto.escuela }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha de inicio</th>
+                            <td>{{ proyecto.fechainicio | date('Y-m-d') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha de fin</th>
+                            <td>{{ proyecto.fechafin | date('Y-m-d') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Monto asignado</th>
+                            <td>{{ proyecto.montoasignado }}</td>
+                        </tr>
+                        <tr>
+                            <th>Monto gastado</th>
+                            <td>{{ proyecto.montogastado }}</td>
+                        </tr>
+                        <tr>
+                            <th>Saldo final</th>
+                            <td>{{ proyecto.saldofinal }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
+        </div>
+    </div>
+</div>

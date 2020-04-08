@@ -28,9 +28,9 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>D_Asenta</th>
-                            <th>D_tipoasenta</th>
-                            <th>D_mpio</th>
+                            <th>Asentamiento</th>
+                            <th>Tipo de Asentamiento</th>
+                            <th>Municipio</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -40,8 +40,8 @@
                             <tr>
                                 <td>{{ i }}</td>
                                 <td>{{ codigo_postal.dAsenta }}</td>
-                                <td>{{ codigo_postal.dTipoasenta }}</td>
-                                <td>{{ codigo_postal.dMpio }}</td>
+                                <td>{{ codigo_postal.tipoasentamiento }}</td>
+                                <td>{{ codigo_postal.ciudad }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item"><a class="btn default btn-sm showCp" data-href="{{ path('codigo_postal_show', {'id': codigo_postal.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>

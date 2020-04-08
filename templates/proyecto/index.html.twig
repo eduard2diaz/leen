@@ -29,9 +29,9 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>Número</th>
                             <th>Escuela</th>
                             <th>Fecha de Inicio</th>
-                            <th>Fecha de Fin</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -40,11 +40,12 @@
                         {% for proyecto in proyectos %}
                             <tr>
                                 <td>{{ i }}</td>
+                                <td>{{ proyecto.numero }}</td>
                                 <td>{{ proyecto.escuela }}</td>
                                 <td>{{ proyecto.fechainicio | date('Y-m-d') }}</td>
-                                <td>{{ proyecto.fechafin | date('Y-m-d') }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
+                                        <li class="list-inline-item"><a class="btn default btn-sm edicion" data-href="{{ path('proyecto_show', {'id': proyecto.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
                                         <li class="list-inline-item"><a class="btn btn-primary btn-sm edicion" data-href="{{ path('proyecto_edit', {'id': proyecto.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
                                     </ul>
                                 </td>

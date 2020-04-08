@@ -15,6 +15,7 @@ class ProyectoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('numero',TextType::class,['label'=>'Número','attr'=>['class'=>'form-control','autocomplete' => 'off']])
             ->add('fechainicio',TextType::class,['label'=>'Fecha de Inicio','attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}',
                 'autocomplete' => 'off']])
             ->add('fechafin',TextType::class,['label'=>'Fecha de Fin','attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}',

@@ -19,7 +19,18 @@ var escuela = function () {
     }
 
     var configurarFormulario = function () {
-        $('select#escuela_d_codigo').select2();
+        $('select#escuela_d_codigo').select2({
+            dropdownParent: $("#basicmodal"),
+        });
+        $('select#escuela_tipoasentamiento').select2({
+            dropdownParent: $("#basicmodal"),
+        });
+        $('select#escuela_estado').select2({
+            dropdownParent: $("#basicmodal"),
+        });
+        $('select#escuela_municipio').select2({
+            dropdownParent: $("#basicmodal"),
+        });
     }
 
     var edicion = function () {
@@ -83,6 +94,8 @@ var escuela = function () {
                             "ccts": data['ccts'],
                             "cp": data['cp'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
+                                "<li class='list-inline-item'>" +
+                                "<a class='btn default btn-sm' href=" + Routing.generate('escuela_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('escuela_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",

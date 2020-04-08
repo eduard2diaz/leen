@@ -41,6 +41,7 @@ class DiagnosticoPlantelType extends AbstractType
             ->add('iddiagnosticoplantel')
             ->add('diagnosticoarchivo')
             ->add('proyecto')
+            ->add('fecha')
         ;
     }
 

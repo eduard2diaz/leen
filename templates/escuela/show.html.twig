@@ -1,0 +1,22 @@
+{% extends 'layout/autenticado.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-3 kt-margin-t-55">
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <ul class="">
+                    <li><a href="{{ path('proyecto_findby_escuela',{'id':escuela.id}) }}">Proyectos</a></li>
+                    <li><a href="{{ path('diagnostico_plantel_index',{'id':escuela.id}) }}">Diagnóstico del plantel</a></li>
+                    <li><a href="">Plan de trabajo</a></li>
+                    <li><a href="">Control de gastos</a></li>
+                    <li><a href="">Rendición de cuentas</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            {% block escuela_show_header %}
+            {% endblock escuela_show_header %}
+            {% block escuela_show_body %}
+            {% endblock escuela_show_body %}
+        </div>
+    </div>
+{% endblock %}

@@ -58,6 +58,11 @@ class Proyecto
      */
     private $saldofinal;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $numero;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -148,5 +153,17 @@ class Proyecto
             $context->addViolation('Compruebe los montos asignados y gastados.');
         elseif ($this->getMontoasignado()-$this->getMontogastado()!=$this->getSaldofinal())
             $context->addViolation('El saldo final no concuerda con los montos asignados y gastados.');
+    }
+
+    public function getNumero(): ?string
+    {
+        return $this->numero;
+    }
+
+    public function setNumero(string $numero): self
+    {
+        $this->numero = $numero;
+
+        return $this;
     }
 }

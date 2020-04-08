@@ -45,13 +45,12 @@ class EscuelaController extends AbstractController
         if ($form->isSubmitted())
             if ($form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($escuela->getDCodigo());
                 $entityManager->persist($escuela);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'La escuela fue registrada satisfactoriamente',
                     'escuela' => $escuela->getEscuela(),
                     'ccts' => $escuela->getCcts(),
-                    'cp' => $escuela->getDCodigo()->__toString(),
+                    'cp' => $escuela->getDCodigo()!=null ? $escuela->getDCodigo()->__toString() : '',
                     'id' => $escuela->getId(),
                 ]);
             } else {
@@ -64,6 +63,16 @@ class EscuelaController extends AbstractController
         return $this->render('escuela/new.html.twig', [
             'escuela' => $escuela,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/show", name="escuela_show", methods={"GET"},options={"expose"=true})
+     */
+    public function show(Request $request, Escuela $escuela): Response
+    {
+        return $this->render('escuela/details.html.twig',[
+            'escuela'=>$escuela
         ]);
     }
 
@@ -87,11 +96,11 @@ class EscuelaController extends AbstractController
                 return $this->json(['mensaje' => 'La escuela fue actualizada satisfactoriamente',
                     'escuela' => $escuela->getEscuela(),
                     'ccts' => $escuela->getCcts(),
-                    'cp' => $escuela->getDCodigo()->__toString(),
+                    'cp' => $escuela->getDCodigo()!=null ? $escuela->getDCodigo()->__toString() : '',
                     ]);
             } else {
                 $page = $this->renderView('escuela/_form.html.twig', [
-
+                    'escuela' => $escuela,
                     'eliminable'=>$eliminable,
                     'form' => $form->createView(),
                     'form_id' => 'escuela_edit',

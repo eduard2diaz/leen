@@ -41,10 +41,15 @@
                                 <td>{{ i }}</td>
                                 <td>{{ escuela.escuela }}</td>
                                 <td>{{ escuela.ccts }}</td>
-                                <td>{{ escuela.getDCodigo().__toString() }}</td>
+                                <td>{% if escuela.getDCodigo() is not empty %}  {{ escuela.getDCodigo().__toString() }} {% endif %}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
-                                        <li class="list-inline-item"><a class="btn btn-primary btn-sm edicion" data-href="{{ path('escuela_edit', {'id': escuela.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
+                                        <li class="list-inline-item">
+                                            <a class="btn default btn-sm" href="{{ path('escuela_show', {'id': escuela.id}) }}"><i class="fa fa-eye"></i>Visualizar</a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a class="btn btn-primary btn-sm edicion" data-href="{{ path('escuela_edit', {'id': escuela.id}) }}"><i class="fa fa-edit"></i>Editar</a>
+                                        </li>
                                     </ul>
                                 </td>
                             </tr>

@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EscuelaRepository")
+ *@UniqueEntity("ccts")
  */
 class Escuela
 {
@@ -29,10 +32,38 @@ class Escuela
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CodigoPostal")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\Valid
      */
     private $d_codigo;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $calle;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $asentamiento;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $noexterior;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoAsentamiento")
+     */
+    private $tipoasentamiento;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Municipio")
+     */
+    private $municipio;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estado")
+     */
+    private $estado;
 
 
     public function getId(): ?int
@@ -76,9 +107,121 @@ class Escuela
         return $this;
     }
 
+    public function getCalle(): ?string
+    {
+        return $this->calle;
+    }
+
+    public function setCalle(?string $calle): self
+    {
+        $this->calle = $calle;
+
+        return $this;
+    }
+
+    public function getAsentamiento(): ?string
+    {
+        return $this->asentamiento;
+    }
+
+    public function setAsentamiento(?string $asentamiento): self
+    {
+        $this->asentamiento = $asentamiento;
+
+        return $this;
+    }
+
+    public function getNoexterior(): ?string
+    {
+        return $this->noexterior;
+    }
+
+    public function setNoexterior(?string $noexterior): self
+    {
+        $this->noexterior = $noexterior;
+
+        return $this;
+    }
+
+    public function getTipoasentamiento(): ?TipoAsentamiento
+    {
+        return $this->tipoasentamiento;
+    }
+
+    public function setTipoasentamiento(?TipoAsentamiento $tipoasentamiento): self
+    {
+        $this->tipoasentamiento = $tipoasentamiento;
+
+        return $this;
+    }
+
+    public function getMunicipio(): ?Municipio
+    {
+        return $this->municipio;
+    }
+
+    public function setMunicipio(?Municipio $municipio): self
+    {
+        $this->municipio = $municipio;
+
+        return $this;
+    }
+
+    public function getEstado(): ?Estado
+    {
+        return $this->estado;
+    }
+
+    public function setEstado(?Estado $estado): self
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
     public function __toString()
     {
         return $this->getEscuela().' '.$this->getCcts();
     }
 
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if(null==$this->getDCodigo()){
+            if (null==$this->getTipoasentamiento())
+                $context->addViolation('Seleccione un tipo de asentamiento.');
+
+            if (empty($this->getAsentamiento()))
+                $context->addViolation('Escriba el nombre del asentamiento.');
+
+            if (empty($this->getNoexterior()))
+                $context->addViolation('Escriba el Número Exterior.');
+
+            if (empty($this->getCalle()))
+                $context->addViolation('Escriba la calle.');
+
+            if (null==$this->getEstado())
+                $context->addViolation('Seleccione un estado.');
+            else
+                if (null==$this->getMunicipio())
+                    $context->addViolation('Seleccione un municipio.');
+                else
+                    if ($this->getEstado()->getId()!=$this->getMunicipio()->getEstado()->getId())
+                        $context->addViolation('Seleccione un municipio que pertenezca a dicho estado.');
+        }
+        else{
+            $isError=null!=$this->getTipoasentamiento() ||
+                     null!=$this->getEstado() ||
+                     null!=$this->getMunicipio() ||
+                     !empty($this->getAsentamiento()) ||
+                     !empty($this->getNoexterior()) ||
+                     !empty($this->getCalle());
+            if($isError)
+                $context->addViolation('Capte el código postal o la restante información pero no ambos.');
+        }
+
+
+    }
 }

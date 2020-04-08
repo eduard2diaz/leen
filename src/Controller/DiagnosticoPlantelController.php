@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\DiagnosticoPlantel;
+use App\Entity\Escuela;
 use App\Form\DiagnosticoPlantelType;
 use App\Repository\DiagnosticoPlantelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,12 +17,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class DiagnosticoPlantelController extends AbstractController
 {
     /**
-     * @Route("/", name="diagnostico_plantel_index", methods={"GET"})
+     * @Route("/{id}/index", name="diagnostico_plantel_index", methods={"GET"})
      */
-    public function index(DiagnosticoPlantelRepository $diagnosticoPlantelRepository): Response
+    public function index(Escuela $escuela): Response
     {
+        $em=$this->getDoctrine()->getManager();
+        $consulta=$em->createQuery('Select dp FROM App:DiagnosticoPlantel dp JOIN dp.proyecto p JOIN p.escuela e 
+        WHERE e.id=:id')->setParameter('id',$escuela->getId());
+
+        $diagnosticos=$consulta->getResult();
         return $this->render('diagnostico_plantel/index.html.twig', [
-            'diagnostico_plantels' => $diagnosticoPlantelRepository->findAll(),
+            'diagnosticos' => $diagnosticos,
+            'escuela' => $escuela,
         ]);
     }
 

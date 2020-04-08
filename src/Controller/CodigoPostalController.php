@@ -94,6 +94,7 @@ class CodigoPostalController extends AbstractController
                 }
                 else{
                     $page = $this->renderView('codigo_postal/_form.html.twig', [
+                        'action'=>'Actualizar',
                         'form' => $form->createView(),
                     ]);
                     return $this->json(['form' => $page, 'error' => true,]);
@@ -101,6 +102,7 @@ class CodigoPostalController extends AbstractController
 
         return $this->render('codigo_postal/edit.html.twig', [
             'codigo_postal' => $codigoPostal,
+            'action'=>'Actualizar',
             'form' => $form->createView(),
         ]);
     }

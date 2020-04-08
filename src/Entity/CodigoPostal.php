@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CodigoPostalRepository")
@@ -25,26 +26,6 @@ class CodigoPostal
     private $d_Asenta;
 
     /**
-     * @ORM\Column(type="string", length=150)
-     */
-    private $d_tipoasenta;
-
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    private $d_mpio;
-
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    private $d_estado;
-
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    private $d_ciudad;
-
-    /**
      * @ORM\Column(type="integer")
      * @Assert\Range(
      *      min = 0,
@@ -53,27 +34,9 @@ class CodigoPostal
     private $d_cp;
 
     /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $c_estado;
-
-    /**
      * @ORM\Column(type="string", length=150)
      */
     private $c_CP;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\Range(
-     *      min = 0,
-     * )
-     */
-    private $c_tipoasenta;
-
-    /**
-     * @ORM\Column(type="string", length=3)
-     */
-    private $c_municipio;
 
     /**
      * @ORM\Column(type="string", length=5)
@@ -86,9 +49,28 @@ class CodigoPostal
     private $d_zona;
 
     /**
-     * @ORM\Column(type="string", length=3)
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoAsentamiento")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $c_cve_ciudad;
+    private $tipoasentamiento;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Municipio")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $municipio;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estado")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $estado;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $ciudad;
 
     public function getId(): ?int
     {
@@ -107,17 +89,6 @@ class CodigoPostal
         return $this;
     }
 
-    public function getDTipoasenta(): ?string
-    {
-        return $this->d_tipoasenta;
-    }
-
-    public function setDTipoasenta(string $d_tipoasenta): self
-    {
-        $this->d_tipoasenta = $d_tipoasenta;
-
-        return $this;
-    }
 
     public function getDMpio(): ?string
     {
@@ -127,30 +98,6 @@ class CodigoPostal
     public function setDMpio(string $d_mpio): self
     {
         $this->d_mpio = $d_mpio;
-
-        return $this;
-    }
-
-    public function getDEstado(): ?string
-    {
-        return $this->d_estado;
-    }
-
-    public function setDEstado(string $d_estado): self
-    {
-        $this->d_estado = $d_estado;
-
-        return $this;
-    }
-
-    public function getDCiudad(): ?string
-    {
-        return $this->d_ciudad;
-    }
-
-    public function setDCiudad(string $d_ciudad): self
-    {
-        $this->d_ciudad = $d_ciudad;
 
         return $this;
     }
@@ -191,30 +138,6 @@ class CodigoPostal
         return $this;
     }
 
-    public function getCTipoasenta(): ?int
-    {
-        return $this->c_tipoasenta;
-    }
-
-    public function setCTipoasenta(int $c_tipoasenta): self
-    {
-        $this->c_tipoasenta = $c_tipoasenta;
-
-        return $this;
-    }
-
-    public function getCMunicipio(): ?string
-    {
-        return $this->c_municipio;
-    }
-
-    public function setCMunicipio(string $c_municipio): self
-    {
-        $this->c_municipio = $c_municipio;
-
-        return $this;
-    }
-
     public function getIdAsentaCpcons(): ?string
     {
         return $this->id_asenta_cpcons;
@@ -239,14 +162,50 @@ class CodigoPostal
         return $this;
     }
 
-    public function getCCveCiudad(): ?string
+    public function getTipoasentamiento(): ?TipoAsentamiento
     {
-        return $this->c_cve_ciudad;
+        return $this->tipoasentamiento;
     }
 
-    public function setCCveCiudad(string $c_cve_ciudad): self
+    public function setTipoasentamiento(?TipoAsentamiento $tipoasentamiento): self
     {
-        $this->c_cve_ciudad = $c_cve_ciudad;
+        $this->tipoasentamiento = $tipoasentamiento;
+
+        return $this;
+    }
+
+    public function getMunicipio(): ?Municipio
+    {
+        return $this->municipio;
+    }
+
+    public function setMunicipio(?Municipio $municipio): self
+    {
+        $this->municipio = $municipio;
+
+        return $this;
+    }
+
+    public function getEstado(): ?Estado
+    {
+        return $this->estado;
+    }
+
+    public function setEstado(?Estado $estado): self
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    public function getCiudad(): ?Ciudad
+    {
+        return $this->ciudad;
+    }
+
+    public function setCiudad(?Ciudad $ciudad): self
+    {
+        $this->ciudad = $ciudad;
 
         return $this;
     }
@@ -254,5 +213,27 @@ class CodigoPostal
     public function __toString()
     {
         return (string)$this->getDCp();
+    }
+
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (null == $this->getEstado())
+            $context->addViolation('Seleccione un estado.');
+        else
+            if (null == $this->getMunicipio())
+                $context->addViolation('Seleccione un municipio.');
+            else
+                if (null == $this->getCiudad())
+                    $context->addViolation('Seleccione una ciudad.');
+                else
+                    if ($this->getEstado()->getId() != $this->getMunicipio()->getEstado()->getId())
+                        $context->addViolation('Seleccione un municipio que pertenezca a dicho estado.');
+                    else
+                        if ($this->getCiudad()->getMunicipio()->getId() != $this->getMunicipio()->getId())
+                            $context->addViolation('Seleccione una ciudad que pertenezca a dicho municipio.');
     }
 }

@@ -1,0 +1,53 @@
+{% extends 'escuela/show.html.twig' %}
+{% block escuela_show_header %}
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Escuela "{{ escuela.escuela }}"</h3>
+        </div>
+    </div>
+{% endblock escuela_show_header %}
+
+{% block escuela_show_body %}
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Daily Sales-->
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-widget14">
+                    <div class="kt-widget14__header kt-margin-b-30">
+                        <h4 class="kt-widget14__title">Información General</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Nombre</th>
+                                <td>{{escuela.escuela}}</td>
+                                <th>Clave del Centro</th>
+                                <td>{{escuela.ccts}}</td>
+                            </tr>
+                            <tr>
+                                <th>Código Postal</th>
+                                <td colspan="3">{% if escuela.getDCodigo() is not empty %}  {{ escuela.getDCodigo().__toString() }} {% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Asentamiento</th>
+                                <td>{{ escuela.asentamiento }}</td>
+                                <th>Tipo de asentamiento</th>
+                                <td>{{ escuela.tipoasentamiento }}</td>
+                            </tr>
+                            <tr>
+                                <th>Estado</th>
+                                <td>{{ escuela.estado }}</td>
+                                <th>Municipio</th>
+                                <td>{{ escuela.municipio }}</td>
+                            </tr>
+                            <tr>
+                                <th>Calle</th>
+                                <td>{{ escuela.calle }}</td>
+                                <th>Número Exterior</th>
+                                <td>{{ escuela.noexterior }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock escuela_show_body %}

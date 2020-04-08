@@ -162,6 +162,11 @@ class DiagnosticoPlantel
      */
     private $diagnosticoarchivo;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $fecha;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -511,6 +516,18 @@ class DiagnosticoPlantel
     public function setDiagnosticoarchivo(string $diagnosticoarchivo): self
     {
         $this->diagnosticoarchivo = $diagnosticoarchivo;
+
+        return $this;
+    }
+
+    public function getFecha(): ?\DateTimeInterface
+    {
+        return $this->fecha;
+    }
+
+    public function setFecha(\DateTimeInterface $fecha): self
+    {
+        $this->fecha = $fecha;
 
         return $this;
     }

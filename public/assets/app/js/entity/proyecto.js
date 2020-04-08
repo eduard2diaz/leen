@@ -9,10 +9,10 @@ var proyecto = function () {
                 url: datatable_url
             },
             columns: [
+                {data: 'id'},
                 {data: 'numero'},
                 {data: 'escuela'},
                 {data: 'finicio'},
-                {data: 'ffin'},
                 {data: 'acciones'}
             ]
         });
@@ -83,11 +83,13 @@ var proyecto = function () {
                         var pagina = table.page();
                         proyectoCounter++;
                         objeto = table.row.add({
-                            "numero": proyectoCounter,
+                            "id": proyectoCounter,
+                            "numero": data['numero'],
                             "escuela": data['escuela'],
                             "finicio": data['finicio'],
-                            "ffin": data['ffin'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
+                                "<li class='list-inline-item'>" +
+                                "<a class='btn default btn-sm edicion' data-href=" + Routing.generate('proyecto_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('proyecto_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",
@@ -129,9 +131,9 @@ var proyecto = function () {
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(2)').html(data['escuela']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['finicio']);
-                        obj.parents('tr').children('td:nth-child(4)').html(data['ffin']);
+                        obj.parents('tr').children('td:nth-child(2)').html(data['numero']);
+                        obj.parents('tr').children('td:nth-child(3)').html(data['escuela']);
+                        obj.parents('tr').children('td:nth-child(4)').html(data['finicio']);
                     }
                 },
                 error: function () {

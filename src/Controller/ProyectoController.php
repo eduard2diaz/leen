@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\DiagnosticoPlantel;
+use App\Entity\Escuela;
 use App\Entity\PlanTrabajo;
 use App\Entity\Proyecto;
 use App\Entity\RendicionCuentas;
@@ -32,6 +33,20 @@ class ProyectoController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/{id}/findbyescuela", name="proyecto_findby_escuela", methods={"GET"})
+     */
+    public function findByEscuela(Escuela $escuela): Response
+    {
+        $proyectos = $this->getDoctrine()->getRepository(Proyecto::class)->findByEscuela($escuela);
+
+        return $this->render('proyecto/findbyescuela.html.twig', [
+            'proyectos' => $proyectos,
+            'escuela' => $escuela,
+        ]);
+    }
+
     /**
      * @Route("/new", name="proyecto_new", methods={"GET","POST"},options={"expose"=true})
      */
@@ -52,7 +67,7 @@ class ProyectoController extends AbstractController
                 return $this->json(['mensaje' => 'El proyecto fue registrado satisfactoriamente',
                     'escuela' => $proyecto->getEscuela()->__toString(),
                     'finicio' => $proyecto->getFechainicio()->format('Y-m-d'),
-                    'ffin' => $proyecto->getFechafin()->format('Y-m-d'),
+                    'numero' => $proyecto->getNumero(),
                     'id' => $proyecto->getId(),
                 ]);
             } else {
@@ -65,6 +80,19 @@ class ProyectoController extends AbstractController
         return $this->render('proyecto/new.html.twig', [
             'proyecto' => $proyecto,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/show", name="proyecto_show", methods={"GET"},options={"expose"=true})
+     */
+    public function show(Request $request, Proyecto $proyecto): Response
+    {
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        return $this->render('proyecto/show.html.twig', [
+            'proyecto' => $proyecto,
         ]);
     }
 
@@ -88,7 +116,7 @@ class ProyectoController extends AbstractController
                 return $this->json(['mensaje' => 'El proyecto fue actualizado satisfactoriamente',
                     'escuela' => $proyecto->getEscuela()->__toString(),
                     'finicio' => $proyecto->getFechainicio()->format('Y-m-d'),
-                    'ffin' => $proyecto->getFechafin()->format('Y-m-d'),
+                    'numero' => $proyecto->getNumero(),
                 ]);
             } else {
                 $page = $this->renderView('proyecto/_form.html.twig', [
