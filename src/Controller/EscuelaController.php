@@ -69,7 +69,7 @@ class EscuelaController extends AbstractController
     /**
      * @Route("/{id}/show", name="escuela_show", methods={"GET"},options={"expose"=true})
      */
-    public function show(Request $request, Escuela $escuela): Response
+    public function show(Escuela $escuela): Response
     {
         return $this->render('escuela/details.html.twig',[
             'escuela'=>$escuela

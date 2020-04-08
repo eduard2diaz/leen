@@ -1,4 +1,177 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form,{'attr':{
+    'id': form_id|default('diagnostico_plantel'),
+    'class': 'm-form m-form--state'
+}}) }}
+<div class="row">
+    <div class="col-md-4">
+        {{ form_row(form.iddiagnosticoplantel) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.proyecto) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.fecha) }}
+    </div>
+</div>
+
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.numeroaulas) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicionesAula) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_num_aulas) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.numerosanitarios) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicionessanitarios) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_num_sanitarios) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.numerooficinas) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicionoficina) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_num_oficinas) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.numerobibliotecas) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicionesbliblioteca) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_num_bibliotecas) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.numeroaulasmedios) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicionaulamedios) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_num_aulamedios) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.numeropatio) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicionpatio) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_num_patios) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.numerocanchasdeportivas) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicioncanchasdeportivas) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_num_canchas_deportivas) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.numerobarda) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicionbarda) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_num_bardas) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.aguapotable) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicionagua) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_agua_potables) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.drenaje) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondiciondrenaje) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_drenaje) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.energiaelectrica) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicionenergia) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_energiaelectrica) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.telefono) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondiciontelefono) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_telefonia) }}
+    </div>
+</div>
+<div class="row kt-margin-t-30">
+    <div class="col-md-3">
+        {{ form_row(form.internet) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.idcondicioninternet) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.descrip_internet) }}
+    </div>
+</div>
+
+<ul class="list-inline pull-right kt-margin-t-20">
+    <li class="list-inline-item">
+        {{ form_row(form.file) }}
+    </li>
+
+    <li class="list-inline-item">
+        <button class="btn btn-sm btn-primary mt-ladda-btn ladda-button" data-style="expand-right" type="submit">
+            <i class="flaticon-edit"></i>
+            <span class="ladda-label">{{ action |default('Guardar') }}</span>
+            <span class="ladda-spinner"></span>
+        </button>
+    </li>
+</ul>
+{{ form_errors(form) }}
+{{ form_rest(form) }}
+
 {{ form_end(form) }}

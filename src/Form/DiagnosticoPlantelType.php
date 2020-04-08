@@ -3,7 +3,15 @@
 namespace App\Form;
 
 use App\Entity\DiagnosticoPlantel;
+use App\Form\ClasificacionDiagnosticoPlantelType;
+use App\Form\ObservacionesType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use App\Form\Transformer\DatetoStringTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,37 +20,55 @@ class DiagnosticoPlantelType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('numeroaulas')
-            ->add('idcondicionesAula')
-            ->add('numerosanitarios')
-            ->add('idcondicionessanitarios')
-            ->add('numerooficinas')
-            ->add('idcondicionoficina')
-            ->add('numerobibliotecas')
-            ->add('idcondicionesbliblioteca')
-            ->add('numeroaulasmedios')
-            ->add('idcondicionaulamedios')
-            ->add('numeropatio')
-            ->add('idcondicionpatio')
-            ->add('numerocanchasdeportivas')
-            ->add('idcondicioncanchasdeportivas')
-            ->add('numerobarda')
-            ->add('idcondicionbarda')
-            ->add('aguapotable')
-            ->add('idcondicionagua')
-            ->add('drenaje')
-            ->add('idcondiciondrenaje')
-            ->add('energiaelectrica')
-            ->add('idcondicionenergia')
-            ->add('telefono')
-            ->add('idcondiciontelefono')
-            ->add('internet')
-            ->add('idcondicioninternet')
-            ->add('iddiagnosticoplantel')
-            ->add('diagnosticoarchivo')
+            ->add('numeroaulas',IntegerType::class,['label'=>'Número de aulas','attr'=>['class'=>'form-control']])
+            ->add('idcondicionesAula',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones de las aulas','attr'=>['class'=>'form-control']])
+            ->add('numerosanitarios',IntegerType::class,['label'=>'Número de sanitarios','attr'=>['class'=>'form-control']])
+            ->add('idcondicionessanitarios',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones de los sanitarios','attr'=>['class'=>'form-control']])
+            ->add('numerooficinas',IntegerType::class,['label'=>'Número de oficinas','attr'=>['class'=>'form-control']])
+            ->add('idcondicionoficina',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones de las oficinas','attr'=>['class'=>'form-control']])
+            ->add('numerobibliotecas',IntegerType::class,['label'=>'Número de bibliotecas','attr'=>['class'=>'form-control']])
+            ->add('idcondicionesbliblioteca',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones de las bibliotecas','attr'=>['class'=>'form-control']])
+            ->add('numeroaulasmedios',IntegerType::class,['label'=>'Número de aulasmedios','attr'=>['class'=>'form-control']])
+            ->add('idcondicionaulamedios',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones de las aulasmedios','attr'=>['class'=>'form-control']])
+            ->add('numeropatio',IntegerType::class,['label'=>'Número de patios','attr'=>['class'=>'form-control']])
+            ->add('idcondicionpatio',ClasificacionDiagnosticoPlantelType::class,['label'=>'Cóndiciones de los patios','attr'=>['class'=>'form-control']])
+            ->add('numerocanchasdeportivas',IntegerType::class,['label'=>'Número de canchas deportivas','attr'=>['class'=>'form-control']])
+            ->add('idcondicioncanchasdeportivas',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones de las canchas deportivas','attr'=>['class'=>'form-control']])
+            ->add('numerobarda',IntegerType::class,['label'=>'Número de bardas','attr'=>['class'=>'form-control']])
+            ->add('idcondicionbarda',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones de las bardas','attr'=>['class'=>'form-control']])
+            ->add('aguapotable',CheckboxType::class,['required'=>false,'label'=>'Agua potable'])
+            ->add('idcondicionagua',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones del agua','attr'=>['class'=>'form-control']])
+            ->add('drenaje',CheckboxType::class,['required'=>false])
+            ->add('idcondiciondrenaje',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones del drenaje','attr'=>['class'=>'form-control']])
+            ->add('energiaelectrica',CheckboxType::class,['required'=>false,'label'=>'Energía eléctrica'])
+            ->add('idcondicionenergia',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones de la energia eléctrica','attr'=>['class'=>'form-control']])
+            ->add('telefono',CheckboxType::class,['required'=>false,'label'=>'Teléfono'])
+            ->add('idcondiciontelefono',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones de la tefonía','attr'=>['class'=>'form-control']])
+            ->add('internet',CheckboxType::class,['required'=>false])
+            ->add('idcondicioninternet',ClasificacionDiagnosticoPlantelType::class,['label'=>'Condiciones del internet','attr'=>['class'=>'form-control']])
+            ->add('iddiagnosticoplantel',IntegerType::class,['label'=>'Identificador del diagnóstico','attr'=>['class'=>'form-control']])
             ->add('proyecto')
-            ->add('fecha')
+            ->add('fecha',TextType::class,['attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}','autocomplete' => 'off']])
+
+            ->add('descrip_num_aulas',ObservacionesType::class)
+            ->add('descrip_num_sanitarios',ObservacionesType::class)
+            ->add('descrip_num_oficinas',ObservacionesType::class)
+            ->add('descrip_num_bibliotecas',ObservacionesType::class)
+            ->add('descrip_num_aulamedios',ObservacionesType::class)
+            ->add('descrip_num_patios',ObservacionesType::class)
+            ->add('descrip_num_canchas_deportivas',ObservacionesType::class)
+            ->add('descrip_num_bardas',ObservacionesType::class)
+            ->add('descrip_agua_potables',ObservacionesType::class)
+            ->add('descrip_drenaje',ObservacionesType::class)
+            ->add('descrip_energiaelectrica',ObservacionesType::class)
+            ->add('descrip_telefonia',ObservacionesType::class)
+            ->add('descrip_internet',ObservacionesType::class)
+            ->add('file', FileType::class, array('label'=>' ','required' => true))
         ;
+
+        $builder->get('fecha')->addModelTransformer(new DatetoStringTransformer());
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

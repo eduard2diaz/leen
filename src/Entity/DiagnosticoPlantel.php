@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DiagnosticoPlantelRepository")
@@ -24,6 +26,9 @@ class DiagnosticoPlantel
 
     /**
      * @ORM\Column(type="integer")
+     *  @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $numeroaulas;
 
@@ -34,6 +39,9 @@ class DiagnosticoPlantel
 
     /**
      * @ORM\Column(type="integer")
+     *  @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $numerosanitarios;
 
@@ -44,6 +52,9 @@ class DiagnosticoPlantel
 
     /**
      * @ORM\Column(type="integer")
+     *  @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $numerooficinas;
 
@@ -54,6 +65,9 @@ class DiagnosticoPlantel
 
     /**
      * @ORM\Column(type="integer")
+     *  @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $numerobibliotecas;
 
@@ -64,8 +78,12 @@ class DiagnosticoPlantel
 
     /**
      * @ORM\Column(type="integer")
+     *  @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $numeroaulasmedios;
+
 
     /**
      * @ORM\Column(type="integer")
@@ -74,6 +92,9 @@ class DiagnosticoPlantel
 
     /**
      * @ORM\Column(type="integer")
+     *  @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $numeropatio;
 
@@ -84,6 +105,9 @@ class DiagnosticoPlantel
 
     /**
      * @ORM\Column(type="integer")
+     *  @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $numerocanchasdeportivas;
 
@@ -94,6 +118,9 @@ class DiagnosticoPlantel
 
     /**
      * @ORM\Column(type="integer")
+     *  @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $numerobarda;
 
@@ -166,6 +193,83 @@ class DiagnosticoPlantel
      * @ORM\Column(type="date")
      */
     private $fecha;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_num_aulas;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_num_sanitarios;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_num_oficinas;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_num_bibliotecas;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_num_aulamedios;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_num_patios;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_num_canchas_deportivas;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_num_bardas;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_agua_potables;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_drenaje;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_energiaelectrica;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_telefonia;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $descrip_internet;
+
+
+    /**
+     * @Assert\File(
+     * maxSize="20mi",
+     * notReadableMessage = "No se puede leer el archivo",
+     * maxSizeMessage = "El archivo es demasiado grande. El tamaño máximo permitido es 20Mb",
+     * uploadIniSizeErrorMessage = "El archivo es demasiado grande. El tamaño máximo permitido es 20Mb",
+     * uploadFormSizeErrorMessage = "El archivo es demasiado grande. El tamaño máximo permitido es 20Mb",
+     * uploadErrorMessage = "No se puede subir el archivo")
+     */
+    private $file;
 
     public function getId(): ?int
     {
@@ -531,4 +635,180 @@ class DiagnosticoPlantel
 
         return $this;
     }
+
+    public function getDescripNumAulas(): ?string
+    {
+        return $this->descrip_num_aulas;
+    }
+
+    public function setDescripNumAulas(?string $descrip_num_aulas): self
+    {
+        $this->descrip_num_aulas = $descrip_num_aulas;
+
+        return $this;
+    }
+
+    public function getDescripNumSanitarios(): ?string
+    {
+        return $this->descrip_num_sanitarios;
+    }
+
+    public function setDescripNumSanitarios(?string $descrip_num_sanitarios): self
+    {
+        $this->descrip_num_sanitarios = $descrip_num_sanitarios;
+
+        return $this;
+    }
+
+    public function getDescripNumOficinas(): ?string
+    {
+        return $this->descrip_num_oficinas;
+    }
+
+    public function setDescripNumOficinas(?string $descrip_num_oficinas): self
+    {
+        $this->descrip_num_oficinas = $descrip_num_oficinas;
+
+        return $this;
+    }
+
+    public function getDescripNumBibliotecas(): ?string
+    {
+        return $this->descrip_num_bibliotecas;
+    }
+
+    public function setDescripNumBibliotecas(?string $descrip_num_bibliotecas): self
+    {
+        $this->descrip_num_bibliotecas = $descrip_num_bibliotecas;
+
+        return $this;
+    }
+
+    public function getDescripNumAulamedios(): ?string
+    {
+        return $this->descrip_num_aulamedios;
+    }
+
+    public function setDescripNumAulamedios(?string $descrip_num_aulamedios): self
+    {
+        $this->descrip_num_aulamedios = $descrip_num_aulamedios;
+
+        return $this;
+    }
+
+    public function getDescripNumPatios(): ?string
+    {
+        return $this->descrip_num_patios;
+    }
+
+    public function setDescripNumPatios(?string $descrip_num_patios): self
+    {
+        $this->descrip_num_patios = $descrip_num_patios;
+
+        return $this;
+    }
+
+    public function getDescripNumCanchasDeportivas(): ?string
+    {
+        return $this->descrip_num_canchas_deportivas;
+    }
+
+    public function setDescripNumCanchasDeportivas(?string $descrip_num_canchas_deportivas): self
+    {
+        $this->descrip_num_canchas_deportivas = $descrip_num_canchas_deportivas;
+
+        return $this;
+    }
+
+    public function getDescripNumBardas(): ?string
+    {
+        return $this->descrip_num_bardas;
+    }
+
+    public function setDescripNumBardas(?string $descrip_num_bardas): self
+    {
+        $this->descrip_num_bardas = $descrip_num_bardas;
+
+        return $this;
+    }
+
+    public function getDescripAguaPotables(): ?string
+    {
+        return $this->descrip_agua_potables;
+    }
+
+    public function setDescripAguaPotables(?string $descrip_aula_potables): self
+    {
+        $this->descrip_agua_potables = $descrip_aula_potables;
+
+        return $this;
+    }
+
+
+    public function getDescripDrenaje(): ?string
+    {
+        return $this->descrip_drenaje;
+    }
+
+    public function setDescripDrenaje(?string $descrip_drenaje): self
+    {
+        $this->descrip_drenaje = $descrip_drenaje;
+
+        return $this;
+    }
+
+    public function getDescripEnergiaelectrica(): ?string
+    {
+        return $this->descrip_energiaelectrica;
+    }
+
+    public function setDescripEnergiaelectrica(?string $descrip_energiaelectrica): self
+    {
+        $this->descrip_energiaelectrica = $descrip_energiaelectrica;
+
+        return $this;
+    }
+
+    public function getDescripTelefonia(): ?string
+    {
+        return $this->descrip_telefonia;
+    }
+
+    public function setDescripTelefonia(?string $descrip_telefonia): self
+    {
+        $this->descrip_telefonia = $descrip_telefonia;
+
+        return $this;
+    }
+
+    public function getDescripInternet(): ?string
+    {
+        return $this->descrip_internet;
+    }
+
+    public function setDescripInternet(?string $descrip_internet): self
+    {
+        $this->descrip_internet = $descrip_internet;
+
+        return $this;
+    }
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(?UploadedFile $file) {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile() {
+        return $this->file;
+    }
+
 }

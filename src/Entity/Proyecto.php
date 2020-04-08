@@ -140,6 +140,11 @@ class Proyecto
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->getNumero();
+    }
+
     /**
      * @Assert\Callback
      */

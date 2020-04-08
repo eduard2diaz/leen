@@ -22,7 +22,7 @@ class ProyectoType extends AbstractType
                 'autocomplete' => 'off',]])
             ->add('montoasignado',NumberType::class,['label'=>'Monto Asignado','attr'=>['class'=>'form-control']])
             ->add('montogastado',NumberType::class,['label'=>'Monto Gastado','attr'=>['class'=>'form-control']])
-            ->add('saldofinal',NumberType::class,['label'=>'Saldo Asignado','attr'=>['class'=>'form-control']])
+            ->add('saldofinal',NumberType::class,['label'=>'Saldo final','attr'=>['class'=>'form-control']])
             ->add('escuela')
         ;
 

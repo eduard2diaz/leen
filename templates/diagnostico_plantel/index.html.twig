@@ -1,7 +1,6 @@
 {% extends 'escuela/show.html.twig' %}
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
-    <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
 {% endblock %}
 {% block escuela_show_body %}
     <div class="kt-subheader   kt-grid__item" id="kt_subheader">
@@ -9,6 +8,10 @@
             <h3 class="kt-subheader__title">Escuela {{ escuela.escuela }}</h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
             <h3 class="kt-subheader__title">Diagnósticos del plantel</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <a href="{{ path('diagnostico_plantel_new',{'id':escuela.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion">
+                Nuevo
+            </a>
         </div>
     </div>
 
@@ -26,6 +29,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>Identificador</th>
                             <th>Proyecto</th>
                             <th>Fecha</th>
                             <th></th>
@@ -36,12 +40,13 @@
                         {% for diagnostico in diagnosticos %}
                             <tr>
                                 <td>{{ i }}</td>
+                                <td>{{ diagnostico.iddiagnosticoplantel }}</td>
                                 <td>{{ diagnostico.proyecto }}</td>
                                 <td>{{ diagnostico.fecha | date('Y-m-d') }}</td>
-
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
-                                        <li class="list-inline-item"><a class="btn default btn-sm show" data-href="{{ path('diagnostico_show', {'id': diagnostico.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
+                                        <li class="list-inline-item"><a class="btn default btn-sm showDiagnostico" data-href="{{ path('diagnostico_plantel_show', {'id': diagnostico.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
+                                        <li class="list-inline-item"><a class="btn default btn-sm btn-primary"  href="{{ path('diagnostico_plantel_edit', {'id': diagnostico.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
                                     </ul>
                                 </td>
                             </tr>
@@ -57,8 +62,8 @@
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/entity/escuela_diagnostico.js','app') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/diagnostico_plantel.js','app') }}" type="text/javascript"></script>
     <script>
-        escuela_diagnostico.init();
+        diagnostico_plantel.index();
     </script>
 {% endblock %}

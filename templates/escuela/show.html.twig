@@ -4,6 +4,7 @@
         <div class="col-md-3 kt-margin-t-55">
             <div class="kt-portlet kt-portlet--height-fluid">
                 <ul class="">
+                    <li><a href="{{ path('escuela_show',{'id':escuela.id}) }}">Detalles de la escuela</a></li>
                     <li><a href="{{ path('proyecto_findby_escuela',{'id':escuela.id}) }}">Proyectos</a></li>
                     <li><a href="{{ path('diagnostico_plantel_index',{'id':escuela.id}) }}">Diagnóstico del plantel</a></li>
                     <li><a href="">Plan de trabajo</a></li>

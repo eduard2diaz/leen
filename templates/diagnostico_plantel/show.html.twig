@@ -1,134 +1,113 @@
-<!DOCTYPE html>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Detalles del diagnóstico
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Identificador de plantel</th>
+                            <td>{{ diagnostico_plantel.iddiagnosticoplantel }}</td>
+                            <th>Proyecto</th>
+                            <td>{{ diagnostico_plantel.proyecto }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de aulas</th>
+                            <td>{{ diagnostico_plantel.numeroaulas }}</td>
+                            <th>Condiciones de Aulas</th>
+                            <td>{{ diagnostico_plantel.idcondicionesAula }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de sanitarios</th>
+                            <td>{{ diagnostico_plantel.numerosanitarios }}</td>
+                            <th>Condiciones de los sanitarios</th>
+                            <td>{{ diagnostico_plantel.idcondicionessanitarios }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de oficinas</th>
+                            <td>{{ diagnostico_plantel.numerooficinas }}</td>
+                            <th>Condiciones oficinas</th>
+                            <td>{{ diagnostico_plantel.idcondicionoficina }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de bibliotecas</th>
+                            <td>{{ diagnostico_plantel.numerobibliotecas }}</td>
+                            <th>Condiciones de bliblioteca</th>
+                            <td>{{ diagnostico_plantel.idcondicionesbliblioteca }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de aulas de medios</th>
+                            <td>{{ diagnostico_plantel.numeroaulasmedios }}</td>
+                            <th>Condiciones de aulas medios</th>
+                            <td>{{ diagnostico_plantel.idcondicionaulamedios }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de patios</th>
+                            <td>{{ diagnostico_plantel.numeropatio }}</td>
+                            <th>Condiciones de patios</th>
+                            <td>{{ diagnostico_plantel.idcondicionpatio }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de canchas deportivas</th>
+                            <td>{{ diagnostico_plantel.numerocanchasdeportivas }}</td>
+                            <th>Condiciones de canchas deportivas</th>
+                            <td>{{ diagnostico_plantel.idcondicioncanchasdeportivas }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de bardas</th>
+                            <td>{{ diagnostico_plantel.numerobarda }}</td>
+                            <th>Condiciones de bardas</th>
+                            <td>{{ diagnostico_plantel.idcondicionbarda }}</td>
+                        </tr>
+                        <tr>
+                            <th>Agua potable</th>
+                            <td>{{ diagnostico_plantel.aguapotable ? 'Sí' : 'No' }}</td>
+                            <th>Condicion de agua</th>
+                            <td>{{ diagnostico_plantel.idcondicionagua }}</td>
+                        </tr>
+                        <tr>
+                            <th>Drenaje</th>
+                            <td>{{ diagnostico_plantel.drenaje ? 'Sí' : 'No' }}</td>
+                            <th>Condiciones de drenaje</th>
+                            <td>{{ diagnostico_plantel.idcondiciondrenaje }}</td>
+                        </tr>
+                        <tr>
+                            <th>Energía electrica</th>
+                            <td>{{ diagnostico_plantel.energiaelectrica ? 'Sí' : 'No' }}</td>
+                            <th>Condiciones de energía</th>
+                            <td>{{ diagnostico_plantel.idcondicionenergia }}</td>
+                        </tr>
+                        <tr>
+                            <th>Teléfono</th>
+                            <td>{{ diagnostico_plantel.telefono ? 'Sí' : 'No' }}</td>
+                            <th>Condiciones de teléfono</th>
+                            <td>{{ diagnostico_plantel.idcondiciontelefono }}</td>
+                        </tr>
+                        <tr>
+                            <th>Internet</th>
+                            <td>{{ diagnostico_plantel.internet ? 'Sí' : 'No' }}</td>
+                            <th>Condiciones de internet</th>
+                            <td>{{ diagnostico_plantel.idcondicioninternet }}</td>
+                        </tr>
 
-<title>DiagnosticoPlantel</title>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-primary" href="{{ path('diagnostico_plantel_descargar',{'id':diagnostico_plantel.id}) }}"> <i class="fa fa-download"></i>Descargar</a>
+            <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
+        </div>
+    </div>
+</div>
 
-{% block body %}
-    <h1>DiagnosticoPlantel</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ diagnostico_plantel.id }}</td>
-            </tr>
-            <tr>
-                <th>Numeroaulas</th>
-                <td>{{ diagnostico_plantel.numeroaulas }}</td>
-            </tr>
-            <tr>
-                <th>IdcondicionesAula</th>
-                <td>{{ diagnostico_plantel.idcondicionesAula }}</td>
-            </tr>
-            <tr>
-                <th>Numerosanitarios</th>
-                <td>{{ diagnostico_plantel.numerosanitarios }}</td>
-            </tr>
-            <tr>
-                <th>Idcondicionessanitarios</th>
-                <td>{{ diagnostico_plantel.idcondicionessanitarios }}</td>
-            </tr>
-            <tr>
-                <th>Numerooficinas</th>
-                <td>{{ diagnostico_plantel.numerooficinas }}</td>
-            </tr>
-            <tr>
-                <th>Idcondicionoficina</th>
-                <td>{{ diagnostico_plantel.idcondicionoficina }}</td>
-            </tr>
-            <tr>
-                <th>Numerobibliotecas</th>
-                <td>{{ diagnostico_plantel.numerobibliotecas }}</td>
-            </tr>
-            <tr>
-                <th>Idcondicionesbliblioteca</th>
-                <td>{{ diagnostico_plantel.idcondicionesbliblioteca }}</td>
-            </tr>
-            <tr>
-                <th>Numeroaulasmedios</th>
-                <td>{{ diagnostico_plantel.numeroaulasmedios }}</td>
-            </tr>
-            <tr>
-                <th>Idcondicionaulamedios</th>
-                <td>{{ diagnostico_plantel.idcondicionaulamedios }}</td>
-            </tr>
-            <tr>
-                <th>Numeropatio</th>
-                <td>{{ diagnostico_plantel.numeropatio }}</td>
-            </tr>
-            <tr>
-                <th>Idcondicionpatio</th>
-                <td>{{ diagnostico_plantel.idcondicionpatio }}</td>
-            </tr>
-            <tr>
-                <th>Numerocanchasdeportivas</th>
-                <td>{{ diagnostico_plantel.numerocanchasdeportivas }}</td>
-            </tr>
-            <tr>
-                <th>Idcondicioncanchasdeportivas</th>
-                <td>{{ diagnostico_plantel.idcondicioncanchasdeportivas }}</td>
-            </tr>
-            <tr>
-                <th>Numerobarda</th>
-                <td>{{ diagnostico_plantel.numerobarda }}</td>
-            </tr>
-            <tr>
-                <th>Idcondicionbarda</th>
-                <td>{{ diagnostico_plantel.idcondicionbarda }}</td>
-            </tr>
-            <tr>
-                <th>Aguapotable</th>
-                <td>{{ diagnostico_plantel.aguapotable ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Idcondicionagua</th>
-                <td>{{ diagnostico_plantel.idcondicionagua }}</td>
-            </tr>
-            <tr>
-                <th>Drenaje</th>
-                <td>{{ diagnostico_plantel.drenaje ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Idcondiciondrenaje</th>
-                <td>{{ diagnostico_plantel.idcondiciondrenaje }}</td>
-            </tr>
-            <tr>
-                <th>Energiaelectrica</th>
-                <td>{{ diagnostico_plantel.energiaelectrica ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Idcondicionenergia</th>
-                <td>{{ diagnostico_plantel.idcondicionenergia }}</td>
-            </tr>
-            <tr>
-                <th>Telefono</th>
-                <td>{{ diagnostico_plantel.telefono ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Idcondiciontelefono</th>
-                <td>{{ diagnostico_plantel.idcondiciontelefono }}</td>
-            </tr>
-            <tr>
-                <th>Internet</th>
-                <td>{{ diagnostico_plantel.internet ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Idcondicioninternet</th>
-                <td>{{ diagnostico_plantel.idcondicioninternet }}</td>
-            </tr>
-            <tr>
-                <th>Iddiagnosticoplantel</th>
-                <td>{{ diagnostico_plantel.iddiagnosticoplantel }}</td>
-            </tr>
-            <tr>
-                <th>Diagnosticoarchivo</th>
-                <td>{{ diagnostico_plantel.diagnosticoarchivo }}</td>
-            </tr>
-        </tbody>
-    </table>
 
-    <a href="{{ path('diagnostico_plantel_index') }}">back to list</a>
 
-    <a href="{{ path('diagnostico_plantel_edit', {'id': diagnostico_plantel.id}) }}">edit</a>
-
-    {{ include('diagnostico_plantel/_delete_form.html.twig') }}
-{% endblock %}
