@@ -25,7 +25,6 @@ class DiagnosticoPlantelController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $consulta = $em->createQuery('Select dp FROM App:DiagnosticoPlantel dp JOIN dp.proyecto p JOIN p.escuela e 
         WHERE e.id=:id')->setParameter('id', $escuela->getId());
-
         $diagnosticos = $consulta->getResult();
         return $this->render('diagnostico_plantel/index.html.twig', [
             'diagnosticos' => $diagnosticos,

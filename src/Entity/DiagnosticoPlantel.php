@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DiagnosticoPlantelRepository")
@@ -33,7 +34,8 @@ class DiagnosticoPlantel
     private $numeroaulas;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicionesAula;
 
@@ -46,7 +48,8 @@ class DiagnosticoPlantel
     private $numerosanitarios;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicionessanitarios;
 
@@ -59,7 +62,8 @@ class DiagnosticoPlantel
     private $numerooficinas;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicionoficina;
 
@@ -72,7 +76,8 @@ class DiagnosticoPlantel
     private $numerobibliotecas;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicionesbliblioteca;
 
@@ -86,7 +91,8 @@ class DiagnosticoPlantel
 
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicionaulamedios;
 
@@ -99,7 +105,8 @@ class DiagnosticoPlantel
     private $numeropatio;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicionpatio;
 
@@ -112,7 +119,8 @@ class DiagnosticoPlantel
     private $numerocanchasdeportivas;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicioncanchasdeportivas;
 
@@ -125,7 +133,8 @@ class DiagnosticoPlantel
     private $numerobarda;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicionbarda;
 
@@ -135,7 +144,8 @@ class DiagnosticoPlantel
     private $aguapotable;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicionagua;
 
@@ -145,7 +155,8 @@ class DiagnosticoPlantel
     private $drenaje;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondiciondrenaje;
 
@@ -155,7 +166,8 @@ class DiagnosticoPlantel
     private $energiaelectrica;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicionenergia;
 
@@ -165,7 +177,8 @@ class DiagnosticoPlantel
     private $telefono;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondiciontelefono;
 
@@ -175,7 +188,8 @@ class DiagnosticoPlantel
     private $internet;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoCondicion")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicioninternet;
 
@@ -300,12 +314,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicionesAula(): ?int
+    public function getIdcondicionesAula(): ?TipoCondicion
     {
         return $this->idcondicionesAula;
     }
 
-    public function setIdcondicionesAula(int $idcondicionesAula): self
+    public function setIdcondicionesAula(TipoCondicion $idcondicionesAula): self
     {
         $this->idcondicionesAula = $idcondicionesAula;
 
@@ -324,12 +338,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicionessanitarios(): ?int
+    public function getIdcondicionessanitarios(): ?TipoCondicion
     {
         return $this->idcondicionessanitarios;
     }
 
-    public function setIdcondicionessanitarios(int $idcondicionessanitarios): self
+    public function setIdcondicionessanitarios(TipoCondicion $idcondicionessanitarios): self
     {
         $this->idcondicionessanitarios = $idcondicionessanitarios;
 
@@ -348,12 +362,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicionoficina(): ?int
+    public function getIdcondicionoficina(): ?TipoCondicion
     {
         return $this->idcondicionoficina;
     }
 
-    public function setIdcondicionoficina(int $idcondicionoficina): self
+    public function setIdcondicionoficina(TipoCondicion $idcondicionoficina): self
     {
         $this->idcondicionoficina = $idcondicionoficina;
 
@@ -372,12 +386,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicionesbliblioteca(): ?int
+    public function getIdcondicionesbliblioteca(): ?TipoCondicion
     {
         return $this->idcondicionesbliblioteca;
     }
 
-    public function setIdcondicionesbliblioteca(int $idcondicionesbliblioteca): self
+    public function setIdcondicionesbliblioteca(TipoCondicion $idcondicionesbliblioteca): self
     {
         $this->idcondicionesbliblioteca = $idcondicionesbliblioteca;
 
@@ -396,12 +410,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicionaulamedios(): ?int
+    public function getIdcondicionaulamedios(): ?TipoCondicion
     {
         return $this->idcondicionaulamedios;
     }
 
-    public function setIdcondicionaulamedios(int $idcondicionaulamedios): self
+    public function setIdcondicionaulamedios(TipoCondicion $idcondicionaulamedios): self
     {
         $this->idcondicionaulamedios = $idcondicionaulamedios;
 
@@ -420,12 +434,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicionpatio(): ?int
+    public function getIdcondicionpatio(): ?TipoCondicion
     {
         return $this->idcondicionpatio;
     }
 
-    public function setIdcondicionpatio(int $idcondicionpatio): self
+    public function setIdcondicionpatio(TipoCondicion $idcondicionpatio): self
     {
         $this->idcondicionpatio = $idcondicionpatio;
 
@@ -444,12 +458,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicioncanchasdeportivas(): ?int
+    public function getIdcondicioncanchasdeportivas(): ?TipoCondicion
     {
         return $this->idcondicioncanchasdeportivas;
     }
 
-    public function setIdcondicioncanchasdeportivas(int $idcondicioncanchasdeportivas): self
+    public function setIdcondicioncanchasdeportivas(TipoCondicion $idcondicioncanchasdeportivas): self
     {
         $this->idcondicioncanchasdeportivas = $idcondicioncanchasdeportivas;
 
@@ -468,12 +482,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicionbarda(): ?int
+    public function getIdcondicionbarda(): ?TipoCondicion
     {
         return $this->idcondicionbarda;
     }
 
-    public function setIdcondicionbarda(int $idcondicionbarda): self
+    public function setIdcondicionbarda(TipoCondicion $idcondicionbarda): self
     {
         $this->idcondicionbarda = $idcondicionbarda;
 
@@ -492,12 +506,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicionagua(): ?int
+    public function getIdcondicionagua(): ?TipoCondicion
     {
         return $this->idcondicionagua;
     }
 
-    public function setIdcondicionagua(int $idcondicionagua): self
+    public function setIdcondicionagua(TipoCondicion $idcondicionagua): self
     {
         $this->idcondicionagua = $idcondicionagua;
 
@@ -516,12 +530,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondiciondrenaje(): ?int
+    public function getIdcondiciondrenaje(): ?TipoCondicion
     {
         return $this->idcondiciondrenaje;
     }
 
-    public function setIdcondiciondrenaje(int $idcondiciondrenaje): self
+    public function setIdcondiciondrenaje(TipoCondicion $idcondiciondrenaje): self
     {
         $this->idcondiciondrenaje = $idcondiciondrenaje;
 
@@ -540,12 +554,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicionenergia(): ?int
+    public function getIdcondicionenergia(): ?TipoCondicion
     {
         return $this->idcondicionenergia;
     }
 
-    public function setIdcondicionenergia(int $idcondicionenergia): self
+    public function setIdcondicionenergia(TipoCondicion $idcondicionenergia): self
     {
         $this->idcondicionenergia = $idcondicionenergia;
 
@@ -564,12 +578,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondiciontelefono(): ?int
+    public function getIdcondiciontelefono(): ?TipoCondicion
     {
         return $this->idcondiciontelefono;
     }
 
-    public function setIdcondiciontelefono(int $idcondiciontelefono): self
+    public function setIdcondiciontelefono(TipoCondicion $idcondiciontelefono): self
     {
         $this->idcondiciontelefono = $idcondiciontelefono;
 
@@ -588,12 +602,12 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    public function getIdcondicioninternet(): ?int
+    public function getIdcondicioninternet(): ?TipoCondicion
     {
         return $this->idcondicioninternet;
     }
 
-    public function setIdcondicioninternet(int $idcondicioninternet): self
+    public function setIdcondicioninternet(TipoCondicion $idcondicioninternet): self
     {
         $this->idcondicioninternet = $idcondicioninternet;
 
@@ -809,6 +823,15 @@ class DiagnosticoPlantel
      */
     public function getFile() {
         return $this->file;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (null==$this->getProyecto())
+            $context->addViolation('Seleccione un proyecto.');
     }
 
 }

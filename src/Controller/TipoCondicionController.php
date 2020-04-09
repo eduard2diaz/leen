@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\DiagnosticoPlantel;
 use App\Entity\Proyecto;
 use App\Entity\TipoCondicion;
 use App\Form\TipoCondicionType;
@@ -74,7 +75,7 @@ class TipoCondicionController extends AbstractController
         $form = $this->createForm(TipoCondicionType::class, $tipocondicion, ['action' => $this->generateUrl('tipo_condicion_edit', ['id' => $tipocondicion->getId()])]);
         $form->handleRequest($request);
 
-        $eliminable=true;
+        $eliminable=$this->esEliminable($tipocondicion);
         if ($form->isSubmitted())
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
@@ -109,12 +110,36 @@ class TipoCondicionController extends AbstractController
      */
     public function delete(Request $request, TipoCondicion $tipocondicion): Response
     {
-        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $tipocondicion->getId(), $request->query->get('_token')))
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $tipocondicion->getId(), $request->query->get('_token'))  || !$this->esEliminable($tipocondicion))
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($tipocondicion);
         $em->flush();
         return $this->json(['mensaje' => 'El tipo de condición fue eliminado satisfactoriamente']);
+    }
+
+    private function esEliminable(TipoCondicion $tipocondicion)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $consulta = $em->createQuery('Select dp FROM App:DiagnosticoPlantel dp 
+        WHERE 
+        dp.idcondicionesAula=:id OR
+        dp.idcondicionessanitarios=:id OR
+        dp.idcondicionoficina=:id OR
+        dp.idcondicionesbliblioteca=:id OR
+        dp.idcondicionaulamedios=:id OR
+        dp.idcondicionpatio=:id OR
+        dp.idcondicioncanchasdeportivas=:id OR
+        dp.idcondicionbarda=:id OR
+        dp.idcondicionagua=:id OR
+        dp.idcondiciondrenaje=:id OR
+        dp.idcondicionenergia=:id OR
+        dp.idcondiciontelefono=:id OR
+        dp.idcondicioninternet=:id         
+        ')->setParameter('id', $tipocondicion->getId());
+        $consulta->setMaxResults(1);
+        $diagnostico=$consulta->getResult();
+        return $diagnostico==null;
     }
 }

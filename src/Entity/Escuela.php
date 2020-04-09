@@ -65,6 +65,12 @@ class Escuela
      */
     private $estado;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $estatus;
+
 
     public function getId(): ?int
     {
@@ -223,5 +229,17 @@ class Escuela
         }
 
 
+    }
+
+    public function getEstatus(): ?Estatus
+    {
+        return $this->estatus;
+    }
+
+    public function setEstatus(?Estatus $estatus): self
+    {
+        $this->estatus = $estatus;
+
+        return $this;
     }
 }

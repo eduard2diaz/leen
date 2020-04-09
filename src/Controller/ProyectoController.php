@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DiagnosticoPlantel;
 use App\Entity\Escuela;
+use App\Entity\Estatus;
 use App\Entity\PlanTrabajo;
 use App\Entity\Proyecto;
 use App\Entity\RendicionCuentas;
@@ -107,7 +108,6 @@ class ProyectoController extends AbstractController
         $form = $this->createForm(ProyectoType::class, $proyecto, ['action' => $this->generateUrl('proyecto_edit', ['id' => $proyecto->getId()])]);
         $form->handleRequest($request);
 
-        $eliminable=$this->esEliminable($proyecto);
         if ($form->isSubmitted())
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
@@ -121,7 +121,6 @@ class ProyectoController extends AbstractController
             } else {
                 $page = $this->renderView('proyecto/_form.html.twig', [
                     'proyecto' => $proyecto,
-                    'eliminable'=>$eliminable,
                     'form' => $form->createView(),
                     'form_id' => 'proyecto_edit',
                     'action' => 'Actualizar',
@@ -131,7 +130,6 @@ class ProyectoController extends AbstractController
 
         return $this->render('proyecto/new.html.twig', [
             'proyecto' => $proyecto,
-            'eliminable'=>$eliminable,
             'title' => 'Editar proyecto',
             'action' => 'Actualizar',
             'form_id' => 'proyecto_edit',
@@ -140,7 +138,7 @@ class ProyectoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="proyecto_delete")
+     * @Route("/{id}/delete", name="proyecto_delete")
      */
     public function delete(Request $request, Proyecto $proyecto): Response
     {
@@ -148,18 +146,13 @@ class ProyectoController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $em->remove($proyecto);
+        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+        if(!$estatus)
+            throw new \Exception('No existe el estatus');
+        $proyecto->setEstatus($estatus);
         $em->flush();
         return $this->json(['mensaje' => 'El proyecto fue eliminado satisfactoriamente']);
     }
 
-    private function esEliminable(Proyecto $proyecto)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $rendicionCuenta=$em->getRepository(RendicionCuentas::class)->findOneByProyecto($proyecto);
-        $diagnosticoPlantel=$em->getRepository(DiagnosticoPlantel::class)->findOneByProyecto($proyecto);
-        $controlGasto=$em->getRepository(ControlGastos::class)->findOneByProyecto($proyecto);
-        $planTrabajo=$em->getRepository(PlanTrabajo::class)->findOneByProyecto($proyecto);
-        return $rendicionCuenta==null && $diagnosticoPlantel==null && $controlGasto==null  && $planTrabajo==null;
-    }
+
 }

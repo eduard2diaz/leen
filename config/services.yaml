@@ -27,9 +27,15 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    diagnostico_plante;_subscriber:
+    diagnostico_plantel_subscriber:
         class: App\EventSubscriber\DiagnosticoPlantelSubscriber
         public: true
         tags:
             - { name: doctrine.event_subscriber,  connection: default }
         arguments: ['@service_container']
+
+    entidad_subscriber:
+        class: App\EventSubscriber\EntidadesSubscriber
+        public: true
+        tags:
+            - { name: doctrine.event_subscriber,  connection: default }

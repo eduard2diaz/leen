@@ -133,7 +133,6 @@ var diagnostico_plantel = function () {
     return {
         index: function () {
             $().ready(function () {
-                alert(1);
                     configurarDataTable();
                     show();
                     eliminar();

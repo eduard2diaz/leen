@@ -13,7 +13,8 @@ class ObservacionesType extends AbstractType
     {
         parent::configureOptions($resolver);
         $resolver->setDefaults(array('label'=>'Observaciones',
-            'attr'=>array('class'=>'form-control')
+            'required'=>false,
+            'attr'=>array('class'=>'form-control','placeholder'=>'Detalle cualquier observación referente al campo')
         ));
     }
 

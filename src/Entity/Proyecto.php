@@ -63,6 +63,12 @@ class Proyecto
      */
     private $numero;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $estatus;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -168,6 +174,18 @@ class Proyecto
     public function setNumero(string $numero): self
     {
         $this->numero = $numero;
+
+        return $this;
+    }
+
+    public function getEstatus(): ?Estatus
+    {
+        return $this->estatus;
+    }
+
+    public function setEstatus(?Estatus $estatus): self
+    {
+        $this->estatus = $estatus;
 
         return $this;
     }

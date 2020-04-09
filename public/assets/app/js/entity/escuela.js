@@ -184,9 +184,6 @@ var escuela = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                table.row(obj.parents('tr'))
-                                    .remove()
-                                    .draw('page');
                                 toastr.success(data['mensaje']);
                             },
                             error: function () {

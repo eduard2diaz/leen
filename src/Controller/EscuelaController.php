@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Escuela;
+use App\Entity\Estatus;
 use App\Entity\Proyecto;
 use App\Form\EscuelaType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -87,7 +88,6 @@ class EscuelaController extends AbstractController
         $form = $this->createForm(EscuelaType::class, $escuela, ['action' => $this->generateUrl('escuela_edit', ['id' => $escuela->getId()])]);
         $form->handleRequest($request);
 
-        $eliminable=$this->esEliminable($escuela);
         if ($form->isSubmitted())
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
@@ -101,7 +101,6 @@ class EscuelaController extends AbstractController
             } else {
                 $page = $this->renderView('escuela/_form.html.twig', [
                     'escuela' => $escuela,
-                    'eliminable'=>$eliminable,
                     'form' => $form->createView(),
                     'form_id' => 'escuela_edit',
                     'action' => 'Actualizar',
@@ -111,7 +110,6 @@ class EscuelaController extends AbstractController
 
         return $this->render('escuela/new.html.twig', [
             'escuela' => $escuela,
-            'eliminable'=>$eliminable,
             'title' => 'Editar escuela',
             'action' => 'Actualizar',
             'form_id' => 'escuela_edit',
@@ -124,21 +122,16 @@ class EscuelaController extends AbstractController
      */
     public function delete(Request $request, Escuela $escuela): Response
     {
-        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $escuela->getId(), $request->query->get('_token')) ||  $this->esEliminable($escuela)==false)
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $escuela->getId(), $request->query->get('_token')))
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $em->remove($escuela);
+        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+        if(!$estatus)
+            throw new \Exception('No existe el estatus');
+        $escuela->setEstatus($estatus);
         $em->flush();
         return $this->json(['mensaje' => 'La escuela fue eliminada satisfactoriamente']);
     }
-
-    private function esEliminable(Escuela $escuela)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $proyecto=$em->getRepository(Proyecto::class)->findOneByEscuela($escuela);
-        return $proyecto==null;
-    }
-
 
 }
