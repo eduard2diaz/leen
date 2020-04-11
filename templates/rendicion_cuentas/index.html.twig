@@ -1,39 +1,73 @@
-<!DOCTYPE html>
+{% extends 'escuela/show.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
+    <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
+{% endblock %}
+{% block escuela_show_body %}
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Escuela {{ escuela.escuela }}</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <h3 class="kt-subheader__title">Rendiciones de cuentas</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <a data-href="{{ path('rendicion_cuentas_new',{'id':escuela.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion">
+                Nuevo
+            </a>
+        </div>
+    </div>
 
-<title>RendicionCuentas index</title>
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Daily Sales-->
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-widget14">
+                    <div class="kt-widget14__header kt-margin-b-30">
+                        <h3 class="kt-widget14__title">
+                            Listado
+                        </h3>
+                    </div>
+                    <table class="table" id="rendicion_entity_table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Proyecto</th>
+                            <th>Tipo de acción</th>
+                            <th>Fecha</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set i=1 %}
+                        {% for rendicion in rendicion_cuentas %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ rendicion.proyecto }}</td>
+                                <td>{{ rendicion.tipoAccion }}</td>
+                                <td>{{ rendicion.fechacaptura | date('Y-m-d') }}</td>
+                                <td>
+                                    <ul class="hidden_element list-inline pull-right">
+                                        <li class="list-inline-item"><a class="btn default btn-sm showPlan" data-href="{{ path('rendicion_cuentas_show', {'id': rendicion.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
+                                        <li class="list-inline-item"><a class="btn default btn-sm btn-primary edicion"  data-href="{{ path('rendicion_cuentas_edit', {'id': rendicion.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% set i=1+i %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
 
-{% block body %}
-    <h1>RendicionCuentas index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Fechacaptura</th>
-                <th>Monto</th>
-                <th>Rendicionesarchivos</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for rendicion_cuenta in rendicion_cuentas %}
-            <tr>
-                <td>{{ rendicion_cuenta.id }}</td>
-                <td>{{ rendicion_cuenta.fechacaptura ? rendicion_cuenta.fechacaptura|date('Y-m-d') : '' }}</td>
-                <td>{{ rendicion_cuenta.monto }}</td>
-                <td>{{ rendicion_cuenta.rendicionesarchivos }}</td>
-                <td>
-                    <a href="{{ path('rendicion_cuentas_show', {'id': rendicion_cuenta.id}) }}">show</a>
-                    <a href="{{ path('rendicion_cuentas_edit', {'id': rendicion_cuenta.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('rendicion_cuentas_new') }}">Create new</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/rendicion_cuentas.js','app') }}" type="text/javascript"></script>
+    <script>
+        var rendicionCuentasCounter='{{ rendicion_cuentas |length }}';
+        $.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+        rendicion_cuentas.index();
+    </script>
 {% endblock %}

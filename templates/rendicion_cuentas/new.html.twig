@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-
-<title>New RendicionCuentas</title>
-
-{% block body %}
-    <h1>Create new RendicionCuentas</h1>
-
-    {{ include('rendicion_cuentas/_form.html.twig') }}
-
-    <a href="{{ path('rendicion_cuentas_index') }}">back to list</a>
-{% endblock %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                {{ title| default('Nueva rendición de cuentas') }}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div>
+            {{ include('rendicion_cuentas/_form.html.twig') }}
+        </div>
+    </div>
+</div>

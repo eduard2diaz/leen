@@ -1,34 +1,41 @@
-<!DOCTYPE html>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Detalles de la rendición de cuentas
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th>Proyecto</th>
+                            <td colspan="3">{{ rendicion_cuentas.proyecto }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tipo de acción</th>
+                            <td>{{ rendicion_cuentas.tipoAccion }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha de captura</th>
+                            <td>{{ rendicion_cuentas.fechacaptura | date('Y-m-d')}}</td>
+                        </tr>
+                        <tr>
+                            <th>Monto</th>
+                            <td>{{ rendicion_cuentas.monto }}</td>
+                        </tr>
 
-<title>RendicionCuentas</title>
-
-{% block body %}
-    <h1>RendicionCuentas</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ rendicion_cuenta.id }}</td>
-            </tr>
-            <tr>
-                <th>Fechacaptura</th>
-                <td>{{ rendicion_cuenta.fechacaptura ? rendicion_cuenta.fechacaptura|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Monto</th>
-                <td>{{ rendicion_cuenta.monto }}</td>
-            </tr>
-            <tr>
-                <th>Rendicionesarchivos</th>
-                <td>{{ rendicion_cuenta.rendicionesarchivos }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('rendicion_cuentas_index') }}">back to list</a>
-
-    <a href="{{ path('rendicion_cuentas_edit', {'id': rendicion_cuenta.id}) }}">edit</a>
-
-    {{ include('rendicion_cuentas/_delete_form.html.twig') }}
-{% endblock %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-primary" href="{{ path('rendicion_cuentas_descargar',{'id':rendicion_cuentas.id}) }}"> <i class="fa fa-download"></i>Descargar</a>
+            <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
+        </div>
+    </div>
+</div>

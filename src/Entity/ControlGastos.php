@@ -185,6 +185,4 @@ class ControlGastos
         if (null==$this->getTipoComprobante())
             $context->addViolation('Seleccione un tipo de comprobante.');
     }
-
-
 }

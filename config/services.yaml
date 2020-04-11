@@ -48,6 +48,13 @@ services:
             - { name: doctrine.event_subscriber,  connection: default }
         arguments: ['@service_container']
 
+    rendicion_cuentas_subscriber:
+        class: App\EventSubscriber\RendicionCuentasSubscriber
+        public: true
+        tags:
+            - { name: doctrine.event_subscriber,  connection: default }
+        arguments: ['@service_container']
+
     entidad_subscriber:
         class: App\EventSubscriber\EntidadesSubscriber
         public: true

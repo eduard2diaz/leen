@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 
-<title>Edit RendicionCuentas</title>
+<title>Edit ControlGastos</title>
 
 {% block body %}
-    <h1>Edit RendicionCuentas</h1>
+    <h1>Edit ControlGastos</h1>
 
-    {{ include('rendicion_cuentas/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('control_gastos/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('rendicion_cuentas_index') }}">back to list</a>
+    <a href="{{ path('control_gastos_index') }}">back to list</a>
 
-    {{ include('rendicion_cuentas/_delete_form.html.twig') }}
+    {{ include('control_gastos/_delete_form.html.twig') }}
 {% endblock %}
