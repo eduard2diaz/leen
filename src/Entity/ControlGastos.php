@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ControlGastosRepository")
@@ -52,6 +55,17 @@ class ControlGastos
      * @ORM\Column(type="string", length=255)
      */
     private $controlarchivos;
+
+    /**
+     * @Assert\File(
+     * maxSize="20mi",
+     * notReadableMessage = "No se puede leer el archivo",
+     * maxSizeMessage = "El archivo es demasiado grande. El tamaño máximo permitido es 20Mb",
+     * uploadIniSizeErrorMessage = "El archivo es demasiado grande. El tamaño máximo permitido es 20Mb",
+     * uploadFormSizeErrorMessage = "El archivo es demasiado grande. El tamaño máximo permitido es 20Mb",
+     * uploadErrorMessage = "No se puede subir el archivo")
+     */
+    private $file;
 
     public function getId(): ?int
     {
@@ -141,4 +155,36 @@ class ControlGastos
 
         return $this;
     }
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(?UploadedFile $file) {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile() {
+        return $this->file;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (null==$this->getProyecto())
+            $context->addViolation('Seleccione un proyecto.');
+
+        if (null==$this->getTipoComprobante())
+            $context->addViolation('Seleccione un tipo de comprobante.');
+    }
+
+
 }

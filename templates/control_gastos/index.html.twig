@@ -1,43 +1,73 @@
-<!DOCTYPE html>
+{% extends 'escuela/show.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
+    <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
+{% endblock %}
+{% block escuela_show_body %}
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Escuela {{ escuela.escuela }}</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <h3 class="kt-subheader__title">Controles de gastos</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <a data-href="{{ path('control_gastos_new',{'id':escuela.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion">
+                Nuevo
+            </a>
+        </div>
+    </div>
 
-<title>ControlGastos index</title>
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Daily Sales-->
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-widget14">
+                    <div class="kt-widget14__header kt-margin-b-30">
+                        <h3 class="kt-widget14__title">
+                            Listado
+                        </h3>
+                    </div>
+                    <table class="table" id="gasto_entity_table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Proyecto</th>
+                            <th>Tipo de comprobante</th>
+                            <th>Fecha</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set i=1 %}
+                        {% for gasto in control_gastos %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ gasto.proyecto }}</td>
+                                <td>{{ gasto.tipocomprobante }}</td>
+                                <td>{{ gasto.fechacaptura | date('Y-m-d') }}</td>
+                                <td>
+                                    <ul class="hidden_element list-inline pull-right">
+                                        <li class="list-inline-item"><a class="btn default btn-sm showPlan" data-href="{{ path('control_gastos_show', {'id': gasto.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
+                                        <li class="list-inline-item"><a class="btn default btn-sm btn-primary edicion"  data-href="{{ path('control_gastos_edit', {'id': gasto.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% set i=1+i %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
 
-{% block body %}
-    <h1>ControlGastos index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Fechacaptura</th>
-                <th>Concepto</th>
-                <th>Numerocomprobante</th>
-                <th>Monto</th>
-                <th>Controlarchivos</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for control_gasto in control_gastos %}
-            <tr>
-                <td>{{ control_gasto.id }}</td>
-                <td>{{ control_gasto.fechacaptura ? control_gasto.fechacaptura|date('Y-m-d') : '' }}</td>
-                <td>{{ control_gasto.concepto }}</td>
-                <td>{{ control_gasto.numerocomprobante }}</td>
-                <td>{{ control_gasto.monto }}</td>
-                <td>{{ control_gasto.controlarchivos }}</td>
-                <td>
-                    <a href="{{ path('control_gastos_show', {'id': control_gasto.id}) }}">show</a>
-                    <a href="{{ path('control_gastos_edit', {'id': control_gasto.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('control_gastos_new') }}">Create new</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/control_gastos.js','app') }}" type="text/javascript"></script>
+    <script>
+        var controlGastosCounter='{{ control_gastos |length }}';
+        $.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+        control_gastos.index();
+    </script>
 {% endblock %}
