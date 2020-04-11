@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-
-<title>New PlanTrabajo</title>
-
-{% block body %}
-    <h1>Create new PlanTrabajo</h1>
-
-    {{ include('plan_trabajo/_form.html.twig') }}
-
-    <a href="{{ path('plan_trabajo_index') }}">back to list</a>
-{% endblock %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                {{ title| default('Nuevo plan de trabajo') }}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div>
+            {{ include('plan_trabajo/_form.html.twig') }}
+        </div>
+    </div>
+</div>

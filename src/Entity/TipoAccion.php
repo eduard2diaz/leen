@@ -99,12 +99,8 @@ class TipoAccion
         return $this;
     }
 
-    /**
-     * @Assert\Callback
-     */
-    public function validate(ExecutionContextInterface $context)
+    public function __toString()
     {
-        if (null==$this->getEstatus())
-            $context->addViolation('Seleccione un estatus.');
+        return $this->getAccion();
     }
 }

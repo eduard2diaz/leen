@@ -1,45 +1,73 @@
-<!DOCTYPE html>
+{% extends 'escuela/show.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
+    <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
+{% endblock %}
+{% block escuela_show_body %}
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Escuela {{ escuela.escuela }}</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <h3 class="kt-subheader__title">Planes de trabajo</h3>
+            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+            <a data-href="{{ path('plan_trabajo_new',{'id':escuela.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion">
+                Nuevo
+            </a>
+        </div>
+    </div>
 
-<title>PlanTrabajo index</title>
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin:: Widgets/Daily Sales-->
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-widget14">
+                    <div class="kt-widget14__header kt-margin-b-30">
+                        <h3 class="kt-widget14__title">
+                            Listado
+                        </h3>
+                    </div>
+                    <table class="table" id="plantrabajo_entity_table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Proyecto</th>
+                            <th>Tipo de acción</th>
+                            <th>Fecha</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set i=1 %}
+                        {% for plantrabajo in plan_trabajos %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ plantrabajo.proyecto }}</td>
+                                <td>{{ plantrabajo.tipoaccion }}</td>
+                                <td>{{ plantrabajo.fechacaptura | date('Y-m-d') }}</td>
+                                <td>
+                                    <ul class="hidden_element list-inline pull-right">
+                                        <li class="list-inline-item"><a class="btn default btn-sm showPlan" data-href="{{ path('plan_trabajo_show', {'id': plantrabajo.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
+                                        <li class="list-inline-item"><a class="btn default btn-sm btn-primary edicion"  data-href="{{ path('plan_trabajo_edit', {'id': plantrabajo.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% set i=1+i %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
 
-{% block body %}
-    <h1>PlanTrabajo index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Fechacaptura</th>
-                <th>Descripcionaccion</th>
-                <th>Tiempoestimado</th>
-                <th>Costoestimado</th>
-                <th>Totalrecursosasignados</th>
-                <th>Planarchivo</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for plan_trabajo in plan_trabajos %}
-            <tr>
-                <td>{{ plan_trabajo.id }}</td>
-                <td>{{ plan_trabajo.fechacaptura ? plan_trabajo.fechacaptura|date('Y-m-d') : '' }}</td>
-                <td>{{ plan_trabajo.descripcionaccion }}</td>
-                <td>{{ plan_trabajo.tiempoestimado }}</td>
-                <td>{{ plan_trabajo.costoestimado }}</td>
-                <td>{{ plan_trabajo.totalrecursosasignados }}</td>
-                <td>{{ plan_trabajo.planarchivo }}</td>
-                <td>
-                    <a href="{{ path('plan_trabajo_show', {'id': plan_trabajo.id}) }}">show</a>
-                    <a href="{{ path('plan_trabajo_edit', {'id': plan_trabajo.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('plan_trabajo_new') }}">Create new</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/plan_trabajo.js','app') }}" type="text/javascript"></script>
+    <script>
+        var plantrabajoCounter='{{ plan_trabajos |length }}';
+        $.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+        plan_trabajo.index();
+    </script>
 {% endblock %}

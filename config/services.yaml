@@ -34,6 +34,13 @@ services:
             - { name: doctrine.event_subscriber,  connection: default }
         arguments: ['@service_container']
 
+    plan_trabajo_subscriber:
+        class: App\EventSubscriber\PlanTrabajoSubscriber
+        public: true
+        tags:
+            - { name: doctrine.event_subscriber,  connection: default }
+        arguments: ['@service_container']
+
     entidad_subscriber:
         class: App\EventSubscriber\EntidadesSubscriber
         public: true

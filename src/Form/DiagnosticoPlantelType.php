@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\DiagnosticoPlantel;
 use App\Form\ClasificacionDiagnosticoPlantelType;
 use App\Form\ObservacionesType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use App\Form\Transformer\DatetoStringTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -14,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Form\CondicionDocenteEducativaType;
 
 class DiagnosticoPlantelType extends AbstractType
 {

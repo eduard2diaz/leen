@@ -1,46 +1,52 @@
-<!DOCTYPE html>
-
-<title>PlanTrabajo</title>
-
-{% block body %}
-    <h1>PlanTrabajo</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ plan_trabajo.id }}</td>
-            </tr>
-            <tr>
-                <th>Fechacaptura</th>
-                <td>{{ plan_trabajo.fechacaptura ? plan_trabajo.fechacaptura|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Descripcionaccion</th>
-                <td>{{ plan_trabajo.descripcionaccion }}</td>
-            </tr>
-            <tr>
-                <th>Tiempoestimado</th>
-                <td>{{ plan_trabajo.tiempoestimado }}</td>
-            </tr>
-            <tr>
-                <th>Costoestimado</th>
-                <td>{{ plan_trabajo.costoestimado }}</td>
-            </tr>
-            <tr>
-                <th>Totalrecursosasignados</th>
-                <td>{{ plan_trabajo.totalrecursosasignados }}</td>
-            </tr>
-            <tr>
-                <th>Planarchivo</th>
-                <td>{{ plan_trabajo.planarchivo }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('plan_trabajo_index') }}">back to list</a>
-
-    <a href="{{ path('plan_trabajo_edit', {'id': plan_trabajo.id}) }}">edit</a>
-
-    {{ include('plan_trabajo/_delete_form.html.twig') }}
-{% endblock %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Detalles del plan de trabajo
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th>Proyecto</th>
+                            <td colspan="3">{{ plan_trabajo.proyecto }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tipo de Acción</th>
+                            <td>{{ plan_trabajo.tipoAccion }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha de captura</th>
+                            <td>{{ plan_trabajo.fechacaptura | date('Y-m-d')}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tiempo estimado</th>
+                            <td>{{ plan_trabajo.tiempoestimado }}</td>
+                        </tr>
+                        <tr>
+                            <th>Costo estimado</th>
+                            <td>{{ plan_trabajo.costoestimado }}</td>
+                        </tr>
+                        <tr>
+                            <th>Total de recursos asignados</th>
+                            <td>{{ plan_trabajo.totalrecursosasignados }}</td>
+                        </tr>
+                        <tr>
+                            <th>Descripción</th>
+                            <td>{{ plan_trabajo.descripcionaccion }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-primary" href="{{ path('plan_trabajo_descargar',{'id':plan_trabajo.id}) }}"> <i class="fa fa-download"></i>Descargar</a>
+            <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
+        </div>
+    </div>
+</div>

@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TipoComprobanteRepository")
- * @UniqueEntity(fields={"comprobante","estatus"},message="Este valor ya ha sido usado con este Estatus")
+ * @UniqueEntity("comprobante")
  */
 class TipoComprobante
 {
@@ -99,12 +99,4 @@ class TipoComprobante
         return $this;
     }
 
-    /**
-     * @Assert\Callback
-     */
-    public function validate(ExecutionContextInterface $context)
-    {
-        if (null==$this->getEstatus())
-            $context->addViolation('Seleccione un estatus.');
-    }
 }
