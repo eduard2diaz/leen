@@ -4,14 +4,15 @@
     <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
     <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
 {% endblock %}
+
+{% block escuela_show_header %}
+    <h3 class="kt-subheader__title">Escuela {{ escuela.escuela }}</h3>
+    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+    <h3 class="kt-subheader__title">Proyectos</h3>
+{% endblock escuela_show_header %}
+
+
 {% block escuela_show_body %}
-    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
-        <div class="kt-subheader__main">
-            <h3 class="kt-subheader__title">Escuela {{ escuela.escuela }}</h3>
-            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-            <h3 class="kt-subheader__title">Proyectos</h3>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-xl-12">
