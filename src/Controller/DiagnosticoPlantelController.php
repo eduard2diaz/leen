@@ -72,6 +72,7 @@ class DiagnosticoPlantelController extends AbstractController
     {
         return $this->render('diagnostico_plantel/show.html.twig', [
             'diagnostico_plantel' => $diagnosticoPlantel,
+            'escuela' => $diagnosticoPlantel->getProyecto()->getEscuela(),
         ]);
     }
 
@@ -84,12 +85,27 @@ class DiagnosticoPlantelController extends AbstractController
         $form->handleRequest($request);
 
         $escuela = $diagnosticoPlantel->getProyecto()->getEscuela();
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $consulta = $entityManager->createQuery('Select cde FROM App:CondicionDocenteEducativa cde JOIN cde.diagnostico d 
+        WHERE d.id=:id')->setParameter('id', $diagnosticoPlantel->getId());
+        $condicion_docente_educativas = $consulta->getResult();
+
+        $consulta = $entityManager->createQuery('Select cea FROM App:CondicionEducativaAlumnos cea JOIN cea.diagnostico d 
+        WHERE d.id=:id')->setParameter('id', $diagnosticoPlantel->getId());
+        $condicion_educativa_alumnos = $consulta->getResult();
+
+
+
+
+
+
         if ($form->isSubmitted())
             if (!$request->isXmlHttpRequest())
                 throw $this->createAccessDeniedException();
             else
                 if ($form->isValid()) {
-                    $entityManager = $this->getDoctrine()->getManager();
 
                     if ($diagnosticoPlantel->getFile() != null) {
                         $ruta = $this->getParameter('storage_directory');
@@ -114,6 +130,8 @@ class DiagnosticoPlantelController extends AbstractController
         return $this->render('diagnostico_plantel/edit.html.twig', [
             'diagnostico_plantel' => $diagnosticoPlantel,
             'escuela' => $escuela,
+            'condicion_docente_educativas' => $condicion_docente_educativas,
+            'condicion_educativa_alumnos' => $condicion_educativa_alumnos,
             'action' => 'Actualizar',
             'form' => $form->createView(),
         ]);

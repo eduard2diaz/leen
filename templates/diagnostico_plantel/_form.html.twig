@@ -1,7 +1,3 @@
-
-
-
-
 {{ form_start(form,{'attr':{
     'id': form_id|default('diagnostico_plantel'),
     'class': 'm-form m-form--state'
@@ -37,12 +33,14 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#kt_tabs_3_2"><i class="fa fa-bolt"></i>Servicios</a>
             </li>
+            {% if condicion_docente_educativas is defined and condicion_educativa_alumnos is defined %}
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#kt_tabs_3_3"><i class="fa fa-book"></i> Docentes</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#kt_tabs_3_4"><i class="fa fa-users"></i>Alumn@s</a>
             </li>
+            {% endif %}
         </ul>
 
         <div class="tab-content">
@@ -216,12 +214,14 @@
                     </div>
                 </div>
             </div>
+            {% if condicion_docente_educativas is defined and condicion_educativa_alumnos is defined %}
             <div class="tab-pane" id="kt_tabs_3_3" role="tabpanel">
-                pesta;a3
+                {{ include('condicion_docente_educativa/index.html.twig') }}
             </div>
             <div class="tab-pane" id="kt_tabs_3_4" role="tabpanel">
-                pesta;a4
+                {{ include('condicion_educativa_alumnos/index.html.twig') }}
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -45,7 +45,7 @@
                                 <td>{{ diagnostico.fecha | date('Y-m-d') }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
-                                        <li class="list-inline-item"><a class="btn default btn-sm showDiagnostico" data-href="{{ path('diagnostico_plantel_show', {'id': diagnostico.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
+                                        <li class="list-inline-item"><a class="btn default btn-sm" href="{{ path('diagnostico_plantel_show', {'id': diagnostico.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
                                         <li class="list-inline-item"><a class="btn default btn-sm btn-primary"  href="{{ path('diagnostico_plantel_edit', {'id': diagnostico.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
                                     </ul>
                                 </td>

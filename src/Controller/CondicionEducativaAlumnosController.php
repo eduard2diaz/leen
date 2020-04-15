@@ -2,93 +2,117 @@
 
 namespace App\Controller;
 
+use App\Entity\DiagnosticoPlantel;
+use App\Entity\Estatus;
 use App\Entity\CondicionEducativaAlumnos;
 use App\Form\CondicionEducativaAlumnosType;
-use App\Repository\CondicionEducativaAlumnosRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/condicion/educativa/alumnos")
+ * @Route("/condicion_educativa_alumno")
  */
 class CondicionEducativaAlumnosController extends AbstractController
 {
-    /**
-     * @Route("/", name="condicion_educativa_alumnos_index", methods={"GET"})
-     */
-    public function index(CondicionEducativaAlumnosRepository $condicionEducativaAlumnosRepository): Response
-    {
-        return $this->render('condicion_educativa_alumnos/index.html.twig', [
-            'condicion_educativa_alumnos' => $condicionEducativaAlumnosRepository->findAll(),
-        ]);
-    }
 
     /**
-     * @Route("/new", name="condicion_educativa_alumnos_new", methods={"GET","POST"})
+     * @Route("/{id}/new", name="condicion_educativa_alumno_new", methods={"GET","POST"},options={"expose"=true})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, DiagnosticoPlantel $diagnostico): Response
     {
-        $condicionEducativaAlumno = new CondicionEducativaAlumnos();
-        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicionEducativaAlumno);
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        $condicion_educativa_alumno = new CondicionEducativaAlumnos();
+        $condicion_educativa_alumno->setDiagnostico($diagnostico);
+        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicion_educativa_alumno, ['action' => $this->generateUrl('condicion_educativa_alumno_new',['id'=>$diagnostico->getId()])]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($condicionEducativaAlumno);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('condicion_educativa_alumnos_index');
-        }
+        if ($form->isSubmitted())
+            if ($form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($condicion_educativa_alumno);
+                $entityManager->flush();
+                return $this->json(['mensaje' => 'la condición docente educativa fue registrada satisfactoriamente',
+                    'ccts' => $condicion_educativa_alumno->getCcts(),
+                    'numalumnas' => $condicion_educativa_alumno->getNumalumnas(),
+                    'numalumnos' => $condicion_educativa_alumno->getNumalumnos(),
+                    'grado' => $condicion_educativa_alumno->getGrado(),
+                    'id' => $condicion_educativa_alumno->getId(),
+                ]);
+            } else {
+                $page = $this->renderView('condicion_educativa_alumnos/_form.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+                return $this->json(['form' => $page, 'error' => true,]);
+            }
 
         return $this->render('condicion_educativa_alumnos/new.html.twig', [
-            'condicion_educativa_alumno' => $condicionEducativaAlumno,
+            'condicion_educativa_alumno' => $condicion_educativa_alumno,
             'form' => $form->createView(),
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="condicion_educativa_alumnos_show", methods={"GET"})
-     */
-    public function show(CondicionEducativaAlumnos $condicionEducativaAlumno): Response
-    {
-        return $this->render('condicion_educativa_alumnos/show.html.twig', [
-            'condicion_educativa_alumno' => $condicionEducativaAlumno,
-        ]);
-    }
 
     /**
-     * @Route("/{id}/edit", name="condicion_educativa_alumnos_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="condicion_educativa_alumno_edit", methods={"GET","POST"},options={"expose"=true})
      */
-    public function edit(Request $request, CondicionEducativaAlumnos $condicionEducativaAlumno): Response
+    public function edit(Request $request, CondicionEducativaAlumnos $condicion_educativa_alumno): Response
     {
-        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicionEducativaAlumno);
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicion_educativa_alumno, ['action' => $this->generateUrl('condicion_educativa_alumno_edit', ['id' => $condicion_educativa_alumno->getId()])]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if ($form->isSubmitted())
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($condicion_educativa_alumno);
+                $em->flush();
+                return $this->json(['mensaje' => 'El condicion_educativa_alumno fue actualizado satisfactoriamente',
+                    'ccts' => $condicion_educativa_alumno->getCcts(),
+                    'numalumnas' => $condicion_educativa_alumno->getNumalumnas(),
+                    'numalumnos' => $condicion_educativa_alumno->getNumalumnos(),
+                    'grado' => $condicion_educativa_alumno->getGrado(),
+                ]);
+            } else {
+                $page = $this->renderView('condicion_educativa_alumnos/_form.html.twig', [
+                    'condicion_educativa_alumno' => $condicion_educativa_alumno,
+                    'form' => $form->createView(),
+                    'form_id' => 'condicion_educativa_alumno_edit',
+                    'action' => 'Actualizar',
+                ]);
+                return $this->json(['form' => $page, 'error' => true]);
+            }
 
-            return $this->redirectToRoute('condicion_educativa_alumnos_index');
-        }
-
-        return $this->render('condicion_educativa_alumnos/edit.html.twig', [
-            'condicion_educativa_alumno' => $condicionEducativaAlumno,
+        return $this->render('condicion_educativa_alumnos/new.html.twig', [
+            'condicion_educativa_alumno' => $condicion_educativa_alumno,
+            'title' => 'Editar condicion_educativa_alumno',
+            'action' => 'Actualizar',
+            'form_id' => 'condicion_educativa_alumno_edit',
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="condicion_educativa_alumnos_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="condicion_educativa_alumno_delete")
      */
-    public function delete(Request $request, CondicionEducativaAlumnos $condicionEducativaAlumno): Response
+    public function delete(Request $request, CondicionEducativaAlumnos $condicion_educativa_alumno): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$condicionEducativaAlumno->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($condicionEducativaAlumno);
-            $entityManager->flush();
-        }
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $condicion_educativa_alumno->getId(), $request->query->get('_token')))
+            throw $this->createAccessDeniedException();
 
-        return $this->redirectToRoute('condicion_educativa_alumnos_index');
+        $em = $this->getDoctrine()->getManager();
+        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+        if(!$estatus)
+            throw new \Exception('No existe el estatus');
+        $condicion_educativa_alumno->setEstatus($estatus);
+        $em->flush();
+        return $this->json(['mensaje' => 'El condicion_educativa_alumno fue eliminado satisfactoriamente']);
     }
+
+
 }

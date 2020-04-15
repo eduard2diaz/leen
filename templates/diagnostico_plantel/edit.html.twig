@@ -1,6 +1,7 @@
 {% extends 'escuela/show.html.twig' %}
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
+    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
 {% endblock %}
 
 {% block escuela_show_header %}
@@ -20,10 +21,17 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('js/entity/diagnostico_plantel.js','app') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
     <script src="{{ asset('vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/diagnostico_plantel.js','app') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/condicion_docente_educativa.js','app') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/condicion_educativa_alumno.js','app') }}" type="text/javascript"></script>
     <script>
         $.fn.datepicker.defaults.format = 'yyyy-mm-dd';
         diagnostico_plantel.addEdit();
+        var condicion_docente_educativaCounter='{{ condicion_docente_educativas |length }}';
+        var condicion_educativa_alumnoCounter='{{ condicion_educativa_alumnos |length }}';
+        condicion_docente_educativa.init();
+        condicion_educativa_alumno.init();
     </script>
 {% endblock %}

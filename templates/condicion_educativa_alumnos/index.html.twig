@@ -1,41 +1,34 @@
-<!DOCTYPE html>
+<a data-href="{{ path('condicion_educativa_alumno_new',{'id':diagnostico_plantel.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion_condicion_docente_educativa">
+    Nuevo
+</a>
 
-<title>CondicionEducativaAlumnos index</title>
-
-{% block body %}
-    <h1>CondicionEducativaAlumnos index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Ccts</th>
-                <th>Numalumnas</th>
-                <th>Numalumnos</th>
-                <th>Grado</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for condicion_educativa_alumno in condicion_educativa_alumnos %}
-            <tr>
-                <td>{{ condicion_educativa_alumno.id }}</td>
-                <td>{{ condicion_educativa_alumno.ccts }}</td>
-                <td>{{ condicion_educativa_alumno.numalumnas }}</td>
-                <td>{{ condicion_educativa_alumno.numalumnos }}</td>
-                <td>{{ condicion_educativa_alumno.grado }}</td>
-                <td>
-                    <a href="{{ path('condicion_educativa_alumnos_show', {'id': condicion_educativa_alumno.id}) }}">show</a>
-                    <a href="{{ path('condicion_educativa_alumnos_edit', {'id': condicion_educativa_alumno.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('condicion_educativa_alumnos_new') }}">Create new</a>
-{% endblock %}
+<table class="table" id="condicion_educativa_alumno_entity_table">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>CCts</th>
+        <th>Número de alumnas</th>
+        <th>Número de alumnos</th>
+        <th>Grado</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set i=1 %}
+    {% for condicion_educativa_alumno in condicion_educativa_alumnos %}
+        <tr>
+            <td>{{ i }}</td>
+            <td>{{ condicion_educativa_alumno.ccts }}</td>
+            <td>{{ condicion_educativa_alumno.numalumnas }}</td>
+            <td>{{ condicion_educativa_alumno.numalumnos }}</td>
+            <td>{{ condicion_educativa_alumno.grado }}</td>
+            <td>
+                <ul class="hidden_element list-inline pull-right">
+                    <li class="list-inline-item"><a class="btn default btn-sm btn-primary edicion_condicion_educativa_alumno"  data-href="{{ path('condicion_educativa_alumnos_edit', {'id': diagnostico_plantel.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
+                </ul>
+            </td>
+        </tr>
+        {% set i=1+i %}
+    {% endfor %}
+    </tbody>
+</table>
