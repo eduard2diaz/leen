@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\CodigoPostal;
 use App\Entity\Municipio;
+use App\Entity\Ciudad;
 use App\Form\MunicipioType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,11 +20,16 @@ class MunicipioController extends AbstractController
     /**
      * @Route("/", name="municipio_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $municipios = $this->getDoctrine()
-            ->getRepository(Municipio::class)
-            ->findAll();
+        $dql   = "SELECT m FROM App:Municipio m";
+        $query = $this->getDoctrine()->getManager()->createQuery($dql);
+
+        $municipios = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         return $this->render('municipio/index.html.twig', [
             'municipios' => $municipios,
@@ -46,11 +53,8 @@ class MunicipioController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($municipio);
                 $entityManager->flush();
-                return $this->json(['mensaje' => 'El municipio fue registrado satisfactoriamente',
-                    'nombre' => $municipio->getNombre(),
-                    'clave' => $municipio->getClave(),
-                    'estado' => $municipio->getEstado()->getNombre(),
-                    'id' => $municipio->getId(),
+                $this->addFlash('success','El municipio fue registrado satisfactoriamente');
+                return $this->json(['url' => $this->generateUrl('municipio_index')
                 ]);
             } else {
                 $page = $this->renderView('municipio/_form.html.twig', [
@@ -82,11 +86,8 @@ class MunicipioController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($municipio);
                 $em->flush();
-                return $this->json(['mensaje' => 'El municipio fue actualizado satisfactoriamente',
-                    'nombre' => $municipio->getNombre(),
-                    'clave' => $municipio->getClave(),
-                    'estado' => $municipio->getEstado()->getNombre(),
-                ]);
+                $this->addFlash('success','El municipio fue actualizado satisfactoriamente');
+                return $this->json(['url' => $this->generateUrl('municipio_index')]);
             } else {
                 $page = $this->renderView('municipio/_form.html.twig', [
                     'municipio' => $municipio,
@@ -119,13 +120,17 @@ class MunicipioController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->remove($municipio);
         $em->flush();
-        return $this->json(['mensaje' => 'El municipio fue eliminado satisfactoriamente']);
+        $this->addFlash('success','El municipio fue eliminado satisfactoriamente');
+        return $this->json([
+            'url' => $this->generateUrl('municipio_index')
+        ]);
     }
 
     private function esEliminable(Municipio $municipio)
     {
         $em = $this->getDoctrine()->getManager();
-        $municipio=$em->getRepository(Ciudad::class)->findOneByMunicipio($municipio);
-        return $municipio==null;
+        $ciudad=$em->getRepository(Ciudad::class)->findOneByMunicipio($municipio);
+        $codigospostales=$em->getRepository(CodigoPostal::class)->findOneByMunicipio($municipio);
+        return $ciudad==null && $codigospostales==null;
     }
 }

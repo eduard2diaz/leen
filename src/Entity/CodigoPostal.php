@@ -34,11 +34,6 @@ class CodigoPostal
     private $d_cp;
 
     /**
-     * @ORM\Column(type="string", length=150)
-     */
-    private $c_CP;
-
-    /**
      * @ORM\Column(type="string", length=5)
      */
     private $id_asenta_cpcons;
@@ -47,6 +42,11 @@ class CodigoPostal
      * @ORM\Column(type="string", length=150)
      */
     private $d_zona;
+
+    /**
+     * @ORM\Column(type="string", length=150,nullable=true)
+     */
+    private $c_CP;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TipoAsentamiento")
@@ -68,7 +68,7 @@ class CodigoPostal
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ciudad")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $ciudad;
 
@@ -90,18 +90,6 @@ class CodigoPostal
     }
 
 
-    public function getDMpio(): ?string
-    {
-        return $this->d_mpio;
-    }
-
-    public function setDMpio(string $d_mpio): self
-    {
-        $this->d_mpio = $d_mpio;
-
-        return $this;
-    }
-
     public function getDCp(): ?int
     {
         return $this->d_cp;
@@ -110,18 +98,6 @@ class CodigoPostal
     public function setDCp(int $d_cp): self
     {
         $this->d_cp = $d_cp;
-
-        return $this;
-    }
-
-    public function getCEstado(): ?string
-    {
-        return $this->c_estado;
-    }
-
-    public function setCEstado(string $c_estado): self
-    {
-        $this->c_estado = $c_estado;
 
         return $this;
     }
@@ -227,13 +203,10 @@ class CodigoPostal
             if (null == $this->getMunicipio())
                 $context->addViolation('Seleccione un municipio.');
             else
-                if (null == $this->getCiudad())
-                    $context->addViolation('Seleccione una ciudad.');
+                if ($this->getEstado()->getId() != $this->getMunicipio()->getEstado()->getId())
+                    $context->addViolation('Seleccione un municipio que pertenezca a dicho estado.');
                 else
-                    if ($this->getEstado()->getId() != $this->getMunicipio()->getEstado()->getId())
-                        $context->addViolation('Seleccione un municipio que pertenezca a dicho estado.');
-                    else
-                        if ($this->getCiudad()->getMunicipio()->getId() != $this->getMunicipio()->getId())
-                            $context->addViolation('Seleccione una ciudad que pertenezca a dicho municipio.');
+                    if ($this->getCiudad()!=null && $this->getCiudad()->getMunicipio()->getId() != $this->getMunicipio()->getId())
+                        $context->addViolation('Seleccione una ciudad que pertenezca a dicho municipio.');
     }
 }

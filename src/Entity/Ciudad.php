@@ -98,7 +98,7 @@ class Ciudad
 
     public function __toString()
     {
-        return $this->getNombre().'('.$this->getClave().','.$this->getMunicipio()->getNombre().')';
+        return $this->getNombre();
     }
 
     /**

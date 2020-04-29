@@ -1,8 +1,4 @@
 {% extends 'layout/autenticado.html.twig' %}
-
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
-{% endblock %}
 {% block body %}
     <div class="kt-subheader   kt-grid__item" id="kt_subheader">
         <div class="kt-subheader__main">
@@ -36,7 +32,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% set i=1 %}
+                        {% set i=(ciudads.page |default(1) -1)*knp_num_items_per_page+1 %}
                         {% for ciudad in ciudads %}
                             <tr>
                                 <td>{{ i }}</td>
@@ -55,16 +51,18 @@
                         </tbody>
                     </table>
 
+                    <div class="navigation">
+                        {{ knp_pagination_render(ciudads) }}
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
     <script src="{{ asset('js/entity/ciudad.js','app') }}" type="text/javascript"></script>
     <script>
-        var ciudadCounter='{{ ciudads |length }}';
         ciudad.init();
     </script>
 {% endblock %}

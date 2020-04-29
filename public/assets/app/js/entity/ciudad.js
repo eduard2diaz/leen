@@ -1,23 +1,4 @@
 var ciudad = function () {
-    var table = null;
-    var obj = null;
-
-    var configurarDataTable = function () {
-        table = $('table#ciudad_entity_table').DataTable({
-            "pagingType": "simple_numbers",
-            "language": {
-                url: datatable_url
-            },
-            columns: [
-                {data: 'numero'},
-                {data: 'nombre'},
-                {data: 'clave'},
-                {data: 'municipio'},
-                {data: 'estado'},
-                {data: 'acciones'}
-            ]
-        });
-    }
 
     var configurarFormulario = function () {
         $('select#ciudad_estado').select2({
@@ -32,13 +13,12 @@ var ciudad = function () {
         $('body').on('click', 'a.edicion', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
-            obj = $(this);
             $.ajax({
                 type: 'get',
                 dataType: 'html',
                 url: link,
                 beforeSend: function (data) {
-                    $.blockUI({ message: '<small>Cargando...</small>' });
+                    $.blockUI({message: '<small>Cargando...</small>'});
                 },
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
@@ -76,28 +56,8 @@ var ciudad = function () {
                     if (data['error']) {
                         padre.html(data['form']);
                         configurarFormulario();
-                    } else {
-                        if (data['mensaje'])
-                            toastr.success(data['mensaje']);
-
-                        $('div#basicmodal').modal('hide');
-                        var pagina = table.page();
-                        ciudadCounter++;
-                        objeto = table.row.add({
-                            "numero": ciudadCounter,
-                            "nombre": data['nombre'],
-                            "clave": data['clave'],
-                            "municipio": data['municipio'],
-                            "estado": data['estado'],
-                            "cp": data['cp'],
-                            "acciones": "<ul class='hidden_element list-inline pull-right'>" +
-                                "<li class='list-inline-item'>" +
-                                "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('ciudad_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
-                                "</ul>",
-                        });
-                        objeto.draw();
-                        table.page(pagina).draw('page');
                     }
+                    document.location.href = data['url'];
                 },
                 error: function () {
                     //base.Error();
@@ -122,21 +82,11 @@ var ciudad = function () {
                     l.stop();
                 },
                 success: function (data) {
-                    if (data['error']){
+                    if (data['error']) {
                         padre.html(data['form']);
                         configurarFormulario();
-                    }
-                    else {
-                        if (data['mensaje'])
-                            toastr.success(data['mensaje']);
-
-                        $('div#basicmodal').modal('hide');
-                        var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(2)').html(data['nombre']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['clave']);
-                        obj.parents('tr').children('td:nth-child(4)').html(data['municipio']);
-                        obj.parents('tr').children('td:nth-child(5)').html(data['estado']);
-                    }
+                    } else
+                        document.location.href = data['url'];
                 },
                 error: function () {
                     //base.Error();
@@ -174,16 +124,13 @@ var ciudad = function () {
                                 _token: token
                             },
                             beforeSend: function () {
-                                $.blockUI({ message: '<h1><img src="busy.gif" /> Just a moment...</h1>' });
+                                $.blockUI({message: '<h1><img src="busy.gif" /> Just a moment...</h1>'});
                             },
                             complete: function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                table.row(obj.parents('tr'))
-                                    .remove()
-                                    .draw('page');
-                                toastr.success(data['mensaje']);
+                                document.location.href = data['url'];
                             },
                             error: function () {
                                 //base.Error();
@@ -198,7 +145,6 @@ var ciudad = function () {
     return {
         init: function () {
             $().ready(function () {
-                    configurarDataTable();
                     newAction();
                     edicion();
                     edicionAction();

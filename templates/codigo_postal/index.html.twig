@@ -1,8 +1,4 @@
 {% extends 'layout/autenticado.html.twig' %}
-
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
-{% endblock %}
 {% block body %}
     <div class="kt-subheader   kt-grid__item" id="kt_subheader">
         <div class="kt-subheader__main">
@@ -24,24 +20,26 @@
                             Listado
                         </h3>
                     </div>
-                    <table class="table" id="codigo_postal_entity_table">
+                    <table class="table table-hover" id="codigo_postal_entity_table">
                         <thead>
                         <tr>
                             <th>#</th>
                             <th>Asentamiento</th>
                             <th>Tipo de Asentamiento</th>
                             <th>Municipio</th>
+                            <th>Estado</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% set i=1 %}
-                        {% for codigo_postal in codigo_postals %}
-                            <tr>
+                        {% set i=(pagination.page |default(1) -1)*knp_num_items_per_page+1 %}
+                        {% for codigo_postal in pagination %}
+                            <tr >
                                 <td>{{ i }}</td>
-                                <td>{{ codigo_postal.dAsenta }}</td>
+                                <td>{{ codigo_postal.getDAsenta() | default('Indefinido') }}</td>
                                 <td>{{ codigo_postal.tipoasentamiento }}</td>
-                                <td>{{ codigo_postal.ciudad }}</td>
+                                <td>{{ codigo_postal.municipio }}</td>
+                                <td>{{ codigo_postal.estado }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item"><a class="btn default btn-sm showCp" data-href="{{ path('codigo_postal_show', {'id': codigo_postal.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
@@ -54,13 +52,16 @@
                         </tbody>
                     </table>
 
+                    <div class="navigation">
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
     <script src="{{ asset('js/entity/codigo_postal.js','app') }}" type="text/javascript"></script>
     <script>
         codigo_postal.index();

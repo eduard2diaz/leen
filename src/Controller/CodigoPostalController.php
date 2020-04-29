@@ -7,6 +7,8 @@ use App\Entity\Direccion;
 use App\Entity\Escuela;
 use App\Form\CodigoPostalType;
 use App\Repository\CodigoPostalRepository;
+use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,10 +22,19 @@ class CodigoPostalController extends AbstractController
     /**
      * @Route("/", name="codigo_postal_index", methods={"GET"})
      */
-    public function index(CodigoPostalRepository $codigoPostalRepository): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        $dql   = "SELECT cp FROM App:CodigoPostal cp";
+        $query = $this->getDoctrine()->getManager()->createQuery($dql);
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
         return $this->render('codigo_postal/index.html.twig', [
-            'codigo_postals' => $codigoPostalRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 
@@ -70,7 +81,6 @@ class CodigoPostalController extends AbstractController
 
         return $this->render('codigo_postal/show.html.twig', [
             'codigo_postal' => $codigoPostal,
-            'eliminable'=>$this->esEliminable($codigoPostal)
         ]);
     }
 
@@ -81,7 +91,7 @@ class CodigoPostalController extends AbstractController
     {
         $form = $this->createForm(CodigoPostalType::class, $codigoPostal);
         $form->handleRequest($request);
-
+        $esEliminable=$this->esEliminable($codigoPostal);
         if ($form->isSubmitted())
             if(!$request->isXmlHttpRequest())
                 throw $this->createAccessDeniedException();
@@ -104,6 +114,7 @@ class CodigoPostalController extends AbstractController
             'codigo_postal' => $codigoPostal,
             'action'=>'Actualizar',
             'form' => $form->createView(),
+            'eliminable'=>$esEliminable
         ]);
     }
 
@@ -119,7 +130,7 @@ class CodigoPostalController extends AbstractController
         $em->remove($codigoPostal);
         $em->flush();
         $this->addFlash('success','El código postal fue eliminado satisfactoriamente');
-        return $this->json([]);
+        return $this->json(['url'=>$this->generateUrl('codigo_postal_index')]);
     }
 
     private function esEliminable(CodigoPostal $codigoPostal){

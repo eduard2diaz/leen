@@ -1,22 +1,4 @@
 var codigo_postal = function () {
-    var table = null;
-    var obj = null;
-
-    var configurarDataTable = function () {
-        table = $('table#codigo_postal_entity_table').DataTable({
-            "pagingType": "simple_numbers",
-            "language": {
-                url: datatable_url
-            },
-            columns: [
-                {data: 'numero'},
-                {data: 'asentamiento'},
-                {data: 'tipoasentamiento'},
-                {data: 'municipio'},
-                {data: 'acciones'}
-            ]
-        });
-    }
 
     var configurarFormulario = function () {
         $('select#codigo_postal_tipoasentamiento').select2();
@@ -59,7 +41,6 @@ var codigo_postal = function () {
         $('body').on('click', 'a.showCp', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
-            obj = $(this);
             $.ajax({
                 type: 'get',
                 dataType: 'html',
@@ -68,9 +49,8 @@ var codigo_postal = function () {
                     $.blockUI({ message: '<small>Cargando...</small>' });
                 },
                 success: function (data) {
-                    if ($('div#basicmodal').html(data)) {
+                    if ($('div#basicmodal').html(data))
                         $('div#basicmodal').modal('show');
-                    }
                 },
                 error: function () {
                     //base.Error();
@@ -83,11 +63,10 @@ var codigo_postal = function () {
     }
 
     var eliminar = function () {
-        $('div#basicmodal').on('click', 'a.eliminar_codigo_postal', function (evento) {
+        $('body').on('click', 'a.eliminar_codigo_postal', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
             var token = $(this).attr('data-csrf');
-            $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
                 title: 'Eliminar código postal',
@@ -117,7 +96,7 @@ var codigo_postal = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                document.location.reload();
+                                document.location.href=data['url'];
                             },
                             error: function () {
                                 //base.Error();
@@ -132,15 +111,15 @@ var codigo_postal = function () {
     return {
         index: function () {
             $().ready(function () {
-                    configurarDataTable();
                     show();
-                    eliminar();
+
                 }
             );
         },
         addEdit: function () {
             $().ready(function () {
                 addEditAction();
+                eliminar();
                 configurarFormulario();
                 }
             );

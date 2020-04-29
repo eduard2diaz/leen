@@ -79,6 +79,6 @@ class Municipio
 
     public function __toString()
     {
-        return $this->getNombre().'('.$this->getClave().','.$this->getEstado()->getNombre().')';
+        return $this->getNombre();
     }
 }

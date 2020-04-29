@@ -13,5 +13,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/leen</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="leen2@localhost" uuid="65e09273-b2ec-4ebe-bb77-1ae26e577238">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/leen2</jdbc-url>
+    </data-source>
   </component>
 </project>

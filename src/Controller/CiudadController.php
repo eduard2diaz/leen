@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CodigoPostal;
 use App\Entity\Ciudad;
 use App\Form\CiudadType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,11 +19,16 @@ class CiudadController extends AbstractController
     /**
      * @Route("/", name="ciudad_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $ciudads = $this->getDoctrine()
-            ->getRepository(Ciudad::class)
-            ->findAll();
+        $dql   = "SELECT c FROM App:Ciudad c";
+        $query = $this->getDoctrine()->getManager()->createQuery($dql);
+
+        $ciudads = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            $this->getParameter('knp_num_items_per_page') /*limit per page*/
+        );
 
         return $this->render('ciudad/index.html.twig', [
             'ciudads' => $ciudads,
@@ -46,13 +52,8 @@ class CiudadController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($ciudad);
                 $entityManager->flush();
-                return $this->json(['mensaje' => 'La ciudad fue registrada satisfactoriamente',
-                    'nombre' => $ciudad->getNombre(),
-                    'clave' => $ciudad->getClave(),
-                    'estado' => $ciudad->getEstado()->getNombre(),
-                    'municipio' => $ciudad->getMunicipio()->getNombre(),
-                    'id' => $ciudad->getId(),
-                ]);
+                $this->addFlash('success','La ciudad fue registrada satisfactoriamente');
+                return $this->json(['url' => $this->generateUrl('ciudad_index')]);
             } else {
                 $page = $this->renderView('ciudad/_form.html.twig', [
                     'form' => $form->createView(),
@@ -83,12 +84,8 @@ class CiudadController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($ciudad);
                 $em->flush();
-                return $this->json(['mensaje' => 'La ciudad fue actualizada satisfactoriamente',
-                    'nombre' => $ciudad->getNombre(),
-                    'clave' => $ciudad->getClave(),
-                    'estado' => $ciudad->getEstado()->getNombre(),
-                    'municipio' => $ciudad->getMunicipio()->getNombre(),
-                ]);
+                $this->addFlash('success','La ciudad fue actualizada satisfactoriamente');
+                return $this->json(['url' => $this->generateUrl('ciudad_index')]);
             } else {
                 $page = $this->renderView('ciudad/_form.html.twig', [
                     'ciudad' => $ciudad,
@@ -121,7 +118,8 @@ class CiudadController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->remove($ciudad);
         $em->flush();
-        return $this->json(['mensaje' => 'La ciudad fue eliminada satisfactoriamente']);
+        $this->addFlash('success','La ciudad fue eliminada satisfactoriamente');
+        return $this->json(['url' => $this->generateUrl('ciudad_index')]);
     }
 
     private function esEliminable(Ciudad $ciudad)

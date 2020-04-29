@@ -64,6 +64,6 @@ class TipoAsentamiento
 
     public function __toString()
     {
-        return $this->getNombre().'('.$this->getClave().')';
+        return $this->getNombre();
     }
 }
