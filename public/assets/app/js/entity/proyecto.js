@@ -1,25 +1,6 @@
 var proyecto = function () {
-    var table = null;
-    var obj = null;
-
-    var configurarDataTable = function () {
-        table = $('table#proyecto_entity_table').DataTable({
-            "pagingType": "simple_numbers",
-            "language": {
-                url: datatable_url
-            },
-            columns: [
-                {data: 'id'},
-                {data: 'numero'},
-                {data: 'escuela'},
-                {data: 'finicio'},
-                {data: 'acciones'}
-            ]
-        });
-    }
 
     var configurarFormulario = function () {
-
         $('select#proyecto_escuela').select2({
             dropdownParent: $("#basicmodal"),
         });
@@ -31,7 +12,6 @@ var proyecto = function () {
         $('body').on('click', 'a.edicion', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
-            obj = $(this);
             $.ajax({
                 type: 'get',
                 dataType: 'html',
@@ -75,28 +55,8 @@ var proyecto = function () {
                     if (data['error']) {
                         padre.html(data['form']);
                         configurarFormulario();
-                    } else {
-                        if (data['mensaje'])
-                            toastr.success(data['mensaje']);
-
-                        $('div#basicmodal').modal('hide');
-                        var pagina = table.page();
-                        proyectoCounter++;
-                        objeto = table.row.add({
-                            "id": proyectoCounter,
-                            "numero": data['numero'],
-                            "escuela": data['escuela'],
-                            "finicio": data['finicio'],
-                            "acciones": "<ul class='hidden_element list-inline pull-right'>" +
-                                "<li class='list-inline-item'>" +
-                                "<a class='btn default btn-sm edicion' data-href=" + Routing.generate('proyecto_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
-                                "<li class='list-inline-item'>" +
-                                "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('proyecto_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
-                                "</ul>",
-                        });
-                        objeto.draw();
-                        table.page(pagina).draw('page');
-                    }
+                    } else
+                        document.location.href=data['url'];
                 },
                 error: function () {
                     //base.Error();
@@ -125,16 +85,8 @@ var proyecto = function () {
                         padre.html(data['form']);
                         configurarFormulario();
                     }
-                    else {
-                        if (data['mensaje'])
-                            toastr.success(data['mensaje']);
-
-                        $('div#basicmodal').modal('hide');
-                        var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(2)').html(data['numero']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['escuela']);
-                        obj.parents('tr').children('td:nth-child(4)').html(data['finicio']);
-                    }
+                    else
+                        document.location.href=data['url'];
                 },
                 error: function () {
                     //base.Error();
@@ -178,7 +130,7 @@ var proyecto = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                toastr.success(data['mensaje']);
+                                document.location.href=data['url'];
                             },
                             error: function () {
                                 //base.Error();
@@ -189,11 +141,9 @@ var proyecto = function () {
         });
     }
 
-
     return {
         init: function () {
             $().ready(function () {
-                    configurarDataTable();
                     newAction();
                     edicion();
                     edicionAction();

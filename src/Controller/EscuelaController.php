@@ -7,6 +7,7 @@ use App\Entity\Estatus;
 use App\Entity\Proyecto;
 use App\Form\EscuelaType;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,11 +21,16 @@ class EscuelaController extends AbstractController
     /**
      * @Route("/", name="escuela_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $escuelas = $this->getDoctrine()
-            ->getRepository(Escuela::class)
-            ->findAll();
+        $dql   = "SELECT e FROM App:Escuela e";
+        $query = $this->getDoctrine()->getManager()->createQuery($dql);
+
+        $escuelas = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            $this->getParameter('knp_num_items_per_page') /*limit per page*/
+        );
 
         return $this->render('escuela/index.html.twig', [
             'escuelas' => $escuelas,
@@ -48,14 +54,13 @@ class EscuelaController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($escuela);
                 $entityManager->flush();
-                return $this->json(['mensaje' => 'La escuela fue registrada satisfactoriamente',
-                    'escuela' => $escuela->getEscuela(),
-                    'ccts' => $escuela->getCcts(),
-                    'cp' => $escuela->getDCodigo()!=null ? $escuela->getDCodigo()->__toString() : '',
-                    'id' => $escuela->getId(),
+                $this->addFlash('success','La escuela fue registrada satisfactoriamente');
+                return $this->json([
+                    'url'=>$this->generateUrl('escuela_index')
                 ]);
             } else {
                 $page = $this->renderView('escuela/_form.html.twig', [
+                    'escuela'=>$escuela,
                     'form' => $form->createView(),
                 ]);
                 return $this->json(['form' => $page, 'error' => true,]);
@@ -93,11 +98,10 @@ class EscuelaController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($escuela);
                 $em->flush();
-                return $this->json(['mensaje' => 'La escuela fue actualizada satisfactoriamente',
-                    'escuela' => $escuela->getEscuela(),
-                    'ccts' => $escuela->getCcts(),
-                    'cp' => $escuela->getDCodigo()!=null ? $escuela->getDCodigo()->__toString() : '',
-                    ]);
+                $this->addFlash('success','La escuela fue actualizada satisfactoriamente');
+                return $this->json([
+                    'url'=>$this->generateUrl('escuela_index')
+                ]);
             } else {
                 $page = $this->renderView('escuela/_form.html.twig', [
                     'escuela' => $escuela,
@@ -131,7 +135,10 @@ class EscuelaController extends AbstractController
             throw new \Exception('No existe el estatus');
         $escuela->setEstatus($estatus);
         $em->flush();
-        return $this->json(['mensaje' => 'La escuela fue eliminada satisfactoriamente']);
+        $this->addFlash('success','La escuela fue eliminada satisfactoriamente');
+        return $this->json([
+            'url'=>$this->generateUrl('escuela_index')
+        ]);
     }
 
 }

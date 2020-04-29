@@ -1,22 +1,4 @@
 var escuela = function () {
-    var table = null;
-    var obj = null;
-
-    var configurarDataTable = function () {
-        table = $('table#escuela_entity_table').DataTable({
-            "pagingType": "simple_numbers",
-            "language": {
-                url: datatable_url
-            },
-            columns: [
-                {data: 'numero'},
-                {data: 'escuela'},
-                {data: 'ccts'},
-                {data: 'cp'},
-                {data: 'acciones'}
-            ]
-        });
-    }
 
     var configurarFormulario = function () {
         $('select#escuela_d_codigo').select2({
@@ -37,7 +19,6 @@ var escuela = function () {
         $('body').on('click', 'a.edicion', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
-            obj = $(this);
             $.ajax({
                 type: 'get',
                 dataType: 'html',
@@ -81,28 +62,8 @@ var escuela = function () {
                     if (data['error']) {
                         padre.html(data['form']);
                         configurarFormulario();
-                    } else {
-                        if (data['mensaje'])
-                            toastr.success(data['mensaje']);
-
-                        $('div#basicmodal').modal('hide');
-                        var pagina = table.page();
-                        escuelaCounter++;
-                        objeto = table.row.add({
-                            "numero": escuelaCounter,
-                            "escuela": data['escuela'],
-                            "ccts": data['ccts'],
-                            "cp": data['cp'],
-                            "acciones": "<ul class='hidden_element list-inline pull-right'>" +
-                                "<li class='list-inline-item'>" +
-                                "<a class='btn default btn-sm' href=" + Routing.generate('escuela_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
-                                "<li class='list-inline-item'>" +
-                                "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('escuela_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
-                                "</ul>",
-                        });
-                        objeto.draw();
-                        table.page(pagina).draw('page');
-                    }
+                    } else
+                        document.location.href=data['url'];
                 },
                 error: function () {
                     //base.Error();
@@ -131,16 +92,8 @@ var escuela = function () {
                         padre.html(data['form']);
                         configurarFormulario();
                     }
-                    else {
-                        if (data['mensaje'])
-                            toastr.success(data['mensaje']);
-
-                        $('div#basicmodal').modal('hide');
-                        var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(2)').html(data['escuela']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['ccts']);
-                        obj.parents('tr').children('td:nth-child(4)').html(data['cp']);
-                    }
+                    else
+                        document.location.href=data['url'];
                 },
                 error: function () {
                     //base.Error();
@@ -184,7 +137,7 @@ var escuela = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                toastr.success(data['mensaje']);
+                                document.location.href=data['url'];
                             },
                             error: function () {
                                 //base.Error();
@@ -199,7 +152,6 @@ var escuela = function () {
     return {
         init: function () {
             $().ready(function () {
-                    configurarDataTable();
                     newAction();
                     edicion();
                     edicionAction();

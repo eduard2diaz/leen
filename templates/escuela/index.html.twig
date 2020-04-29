@@ -1,9 +1,5 @@
 {% extends 'layout/autenticado.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
-{% endblock %}
-
 {% block body %}
     <div class="kt-subheader   kt-grid__item" id="kt_subheader">
         <div class="kt-subheader__main">
@@ -36,7 +32,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% set i=1 %}
+                        {% set i=(escuelas.page |default(1) -1)*knp_num_items_per_page+1 %}
                         {% for escuela in escuelas %}
                             <tr>
                                 <td>{{ i }}</td>
@@ -55,9 +51,16 @@
                                 </td>
                             </tr>
                             {% set i=1+i %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center"><i>No hay datos que mostrar</i></td>
+                            </tr>
                         {% endfor %}
                         </tbody>
                     </table>
+                    <div class="navigation">
+                        {{ knp_pagination_render(escuelas) }}
+                    </div>
 
                 </div>
             </div>
@@ -65,10 +68,8 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
     <script src="{{ asset('js/entity/escuela.js','app') }}" type="text/javascript"></script>
     <script>
-        var escuelaCounter='{{ escuelas |length }}';
         escuela.init();
     </script>
 {% endblock %}

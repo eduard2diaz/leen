@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.ccts) }}
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.d_codigo) }}
@@ -42,10 +42,10 @@
     </div>
 
     <fieldset>
-        <legend>Otros datos</legend>
+        <h4>Otros datos</h4>
         <hr/>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group m-form__group">
                     <label>
                         {{ form_label(form.asentamiento) }}
@@ -56,7 +56,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group m-form__group">
                     <label>
                         {{ form_label(form.tipoasentamiento) }}
@@ -67,11 +67,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group m-form__group">
                     <label>
                         {{ form_label(form.estado) }}
@@ -82,7 +78,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
                 <div class="form-group m-form__group">
                     <label>
                         {{ form_label(form.municipio) }}
@@ -93,10 +92,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group m-form__group">
                     <label>
                         {{ form_label(form.calle) }}
@@ -107,7 +103,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group m-form__group">
                     <label>
                         {{ form_label(form.noexterior) }}
@@ -125,7 +121,7 @@
 {{ form_rest(form) }}
 <div class="modal-footer">
     <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
-    {% if escuela.id is not empty%}
+    {% if escuela.id is not empty %}
         <a class="btn btn-danger btn-sm  eliminar_escuela"
            data-href="{{ path('escuela_delete', { 'id': escuela.id }) }}"
            data-csrf="{{ csrf_token('delete' ~ escuela.id) }}">

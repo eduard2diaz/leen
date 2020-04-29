@@ -1,7 +1,5 @@
 {% extends 'layout/autenticado.html.twig' %}
-
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
     <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
 {% endblock %}
 
@@ -37,7 +35,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% set i=1 %}
+                        {% set i=(proyectos.page |default(1) -1)*knp_num_items_per_page+1 %}
                         {% for proyecto in proyectos %}
                             <tr>
                                 <td>{{ i }}</td>
@@ -52,22 +50,26 @@
                                 </td>
                             </tr>
                             {% set i=1+i %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center"><i>No hay datos que mostrar</i></td>
+                            </tr>
                         {% endfor %}
                         </tbody>
                     </table>
-
+                    <div class="navigation">
+                        {{ knp_pagination_render(proyectos) }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
     <script src="{{ asset('vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.js','template') }}" type="text/javascript"></script>
     <script src="{{ asset('js/entity/proyecto.js','app') }}" type="text/javascript"></script>
     <script>
         $.fn.datepicker.defaults.format = 'yyyy-mm-dd';
-        var proyectoCounter='{{ proyectos |length }}';
         proyecto.init();
     </script>
 {% endblock %}

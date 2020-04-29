@@ -10,6 +10,7 @@ use App\Entity\Proyecto;
 use App\Entity\RendicionCuentas;
 use App\Entity\ControlGastos;
 use App\Form\ProyectoType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +24,16 @@ class ProyectoController extends AbstractController
     /**
      * @Route("/", name="proyecto_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $proyectos = $this->getDoctrine()
-            ->getRepository(Proyecto::class)
-            ->findAll();
+        $dql   = "SELECT p FROM App:Proyecto p";
+        $query = $this->getDoctrine()->getManager()->createQuery($dql);
+
+        $proyectos = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            $this->getParameter('knp_num_items_per_page') /*limit per page*/
+        );
 
         return $this->render('proyecto/index.html.twig', [
             'proyectos' => $proyectos,
@@ -65,11 +71,9 @@ class ProyectoController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($proyecto);
                 $entityManager->flush();
-                return $this->json(['mensaje' => 'El proyecto fue registrado satisfactoriamente',
-                    'escuela' => $proyecto->getEscuela()->__toString(),
-                    'finicio' => $proyecto->getFechainicio()->format('Y-m-d'),
-                    'numero' => $proyecto->getNumero(),
-                    'id' => $proyecto->getId(),
+                $this->addFlash('success','El proyecto fue registrado satisfactoriamente');
+                return $this->json([
+                    'url'=>$this->generateUrl('proyecto_index')
                 ]);
             } else {
                 $page = $this->renderView('proyecto/_form.html.twig', [
@@ -113,10 +117,9 @@ class ProyectoController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($proyecto);
                 $em->flush();
-                return $this->json(['mensaje' => 'El proyecto fue actualizado satisfactoriamente',
-                    'escuela' => $proyecto->getEscuela()->__toString(),
-                    'finicio' => $proyecto->getFechainicio()->format('Y-m-d'),
-                    'numero' => $proyecto->getNumero(),
+                $this->addFlash('success','El proyecto fue actualizado satisfactoriamente');
+                return $this->json([
+                    'url'=>$this->generateUrl('proyecto_index')
                 ]);
             } else {
                 $page = $this->renderView('proyecto/_form.html.twig', [
@@ -151,7 +154,10 @@ class ProyectoController extends AbstractController
             throw new \Exception('No existe el estatus');
         $proyecto->setEstatus($estatus);
         $em->flush();
-        return $this->json(['mensaje' => 'El proyecto fue eliminado satisfactoriamente']);
+        $this->addFlash('success','El proyecto fue eliminado satisfactoriamente');
+        return $this->json([
+            'url'=>$this->generateUrl('proyecto_index')
+        ]);
     }
 
 
