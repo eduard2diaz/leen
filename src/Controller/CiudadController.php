@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CodigoPostal;
 use App\Entity\Ciudad;
+use App\Entity\Municipio;
 use App\Form\CiudadType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -65,6 +66,24 @@ class CiudadController extends AbstractController
             'ciudad' => $ciudad,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/findbymunicipio", name="ciudad_find_by_municipio", methods={"GET"},options={"expose"=true})
+     */
+    public function findByMunicipio(Request $request, Municipio $municipio): Response
+    {
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        $em = $this->getDoctrine()->getManager();
+        $ciudad=$em->getRepository(Ciudad::class)->findByMunicipio($municipio);
+
+        $ciudad_array=[];
+        foreach ($ciudad as $obj)
+            $ciudad_array[]=['id'=>$obj->getId(),'nombre'=>$obj->getNombre()];
+
+        return $this->json($ciudad_array);
     }
 
     /**

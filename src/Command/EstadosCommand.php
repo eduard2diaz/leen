@@ -15,9 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ImportCVSDataCommand extends Command
+class EstadosCommand extends Command
 {
-    protected static $defaultName = 'ImportCVSDataCommand';
+    protected static $defaultName = 'import:estados';
 
     protected $manager;
 

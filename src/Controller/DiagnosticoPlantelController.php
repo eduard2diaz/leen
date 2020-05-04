@@ -70,8 +70,20 @@ class DiagnosticoPlantelController extends AbstractController
      */
     public function show(DiagnosticoPlantel $diagnosticoPlantel): Response
     {
+        $entityManager=$this->getDoctrine()->getManager();
+
+        $consulta = $entityManager->createQuery('Select cde FROM App:CondicionDocenteEducativa cde JOIN cde.diagnostico d 
+        WHERE d.id=:id')->setParameter('id', $diagnosticoPlantel->getId());
+        $condicion_docente_educativas = $consulta->getResult();
+
+        $consulta = $entityManager->createQuery('Select cea FROM App:CondicionEducativaAlumnos cea JOIN cea.diagnostico d 
+        WHERE d.id=:id')->setParameter('id', $diagnosticoPlantel->getId());
+        $condicion_educativa_alumnos = $consulta->getResult();
+
         return $this->render('diagnostico_plantel/show.html.twig', [
             'diagnostico_plantel' => $diagnosticoPlantel,
+            'condicion_docente_educativas' => $condicion_docente_educativas,
+            'condicion_educativa_alumnos' => $condicion_educativa_alumnos,
             'escuela' => $diagnosticoPlantel->getProyecto()->getEscuela(),
         ]);
     }
@@ -95,11 +107,6 @@ class DiagnosticoPlantelController extends AbstractController
         $consulta = $entityManager->createQuery('Select cea FROM App:CondicionEducativaAlumnos cea JOIN cea.diagnostico d 
         WHERE d.id=:id')->setParameter('id', $diagnosticoPlantel->getId());
         $condicion_educativa_alumnos = $consulta->getResult();
-
-
-
-
-
 
         if ($form->isSubmitted())
             if (!$request->isXmlHttpRequest())

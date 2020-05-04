@@ -1,6 +1,6 @@
 {% extends 'escuela/show.html.twig' %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
+    <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
 {% endblock %}
 
 {% block escuela_show_header %}
@@ -206,7 +206,7 @@
                                 <div class="row kt-margin-t-30">
                                     <div class="col-md-3">
                                         <label class="kt-checkbox kt-checkbox--success kt-checkbox--bold kt-checkbox--disabled">
-                                            <b>Internet:</b> {{ diagnostico_plantel.internet }}
+                                            <b>Internet:</b> {{ diagnostico_plantel.internet ? 'Si' : 'No'}}
                                             <span></span>
                                         </label>
                                     </div>
@@ -219,37 +219,27 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="kt_tabs_3_3" role="tabpanel">
-                                pesta;a3
+                                {{ include('condicion_docente_educativa/table.html.twig') }}
                             </div>
                             <div class="tab-pane" id="kt_tabs_3_4" role="tabpanel">
-                                pesta;a4
+                                {{ include('condicion_educativa_alumnos/table.html.twig') }}
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
                 <ul class="list-inline pull-right kt-margin-t-20">
-
-
                     <li class="list-inline-item">
                         <a class="btn btn-primary" href="{{ path('diagnostico_plantel_descargar',{'id':diagnostico_plantel.id}) }}"> <i class="fa fa-download"></i>Descargar</a>
                     </li>
                 </ul>
-
-
             </div>
         </div>
     </div>
 {% endblock %}
-
-
-
-
+{% block javascripts %}
+    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/diagnostico_plantel.js','app') }}" type="text/javascript"></script>
+    <script>
+        diagnostico_plantel.show();
+    </script>
+{% endblock %}

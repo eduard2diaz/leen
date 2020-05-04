@@ -18,6 +18,36 @@ var diagnostico_plantel = function () {
         });
     }
 
+    var personalizarDataTableShow = function () {
+        $('table#condicion_docente_educativa_entity_table').DataTable({
+            "pagingType": "simple_numbers",
+            "language": {
+                url: datatable_url
+            },
+            columns: [
+                {data: 'numero'},
+                {data: 'ccts'},
+                {data: 'curp'},
+                {data: 'nombre'},
+                {data: 'grado'}
+            ]
+        });
+
+        $('table#condicion_educativa_alumno_entity_table').DataTable({
+            "pagingType": "simple_numbers",
+            "language": {
+                url: datatable_url
+            },
+            columns: [
+                {data: 'numero'},
+                {data: 'ccts'},
+                {data: 'numalumnas'},
+                {data: 'numalumnos'},
+                {data: 'grado'}
+            ]
+        });
+    }
+
     var configurarFormulario = function () {
         $('select#diagnostico_plantel_proyecto').select2();
         $('input#diagnostico_plantel_fecha').datepicker();
@@ -143,6 +173,12 @@ var diagnostico_plantel = function () {
             $().ready(function () {
                 addEditAction();
                 configurarFormulario();
+                }
+            );
+        },
+        show: function () {
+            $().ready(function () {
+                personalizarDataTableShow();
                 }
             );
         }

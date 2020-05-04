@@ -185,6 +185,18 @@ class Escuela
         return $this;
     }
 
+    public function getEstatus(): ?Estatus
+    {
+        return $this->estatus;
+    }
+
+    public function setEstatus(?Estatus $estatus): self
+    {
+        $this->estatus = $estatus;
+
+        return $this;
+    }
+
     public function __toString()
     {
         return $this->getEscuela().' '.$this->getCcts();
@@ -229,17 +241,5 @@ class Escuela
         }
 
 
-    }
-
-    public function getEstatus(): ?Estatus
-    {
-        return $this->estatus;
-    }
-
-    public function setEstatus(?Estatus $estatus): self
-    {
-        $this->estatus = $estatus;
-
-        return $this;
     }
 }

@@ -1,8 +1,7 @@
 <a data-href="{{ path('condicion_docente_educativa_new',{'id':diagnostico_plantel.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion_condicion_docente_educativa">
     Nuevo
 </a>
-
-<table class="table" id="condicion_docente_educativa_entity_table">
+<table class="table table-hover" id="condicion_docente_educativa_entity_table">
     <thead>
     <tr>
         <th>#</th>
@@ -16,18 +15,18 @@
     <tbody>
     {% set i=1 %}
     {% for condicion_docente_educativa in condicion_docente_educativas %}
-    <tr>
-        <td>{{ i }}</td>
-        <td>{{ condicion_docente_educativa.ccts }}</td>
-        <td>{{ condicion_docente_educativa.curp }}</td>
-        <td>{{ condicion_docente_educativa.nombre }}</td>
-        <td>{{ condicion_docente_educativa.grado }}</td>
-        <td>
-            <ul class="hidden_element list-inline pull-right">
-                <li class="list-inline-item"><a class="btn default btn-sm btn-primary edicion_condicion_docente_educativa"  data-href="{{ path('condicion_docente_educativa_edit', {'id': diagnostico_plantel.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
-            </ul>
-        </td>
-    </tr>
+        <tr>
+            <td>{{ i }}</td>
+            <td>{{ condicion_docente_educativa.ccts }}</td>
+            <td>{{ condicion_docente_educativa.curp }}</td>
+            <td>{{ condicion_docente_educativa.nombre }}</td>
+            <td>{{ condicion_docente_educativa.grado }}</td>
+            <td>
+                <ul class="hidden_element list-inline pull-right">
+                    <li class="list-inline-item"><a class="btn default btn-sm btn-primary edicion_condicion_docente_educativa"  data-href="{{ path('condicion_docente_educativa_edit', {'id': diagnostico_plantel.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
+                </ul>
+            </td>
+        </tr>
         {% set i=1+i %}
     {% endfor %}
     </tbody>

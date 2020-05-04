@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CodigoPostal;
 use App\Entity\Municipio;
+use App\Entity\Estado;
 use App\Entity\Ciudad;
 use App\Form\MunicipioType;
 use Knp\Component\Pager\PaginatorInterface;
@@ -67,6 +68,24 @@ class MunicipioController extends AbstractController
             'municipio' => $municipio,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/findbyestado", name="municipio_find_by_estado", methods={"GET"},options={"expose"=true})
+     */
+    public function findByEstado(Request $request, Estado $estado): Response
+    {
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        $em = $this->getDoctrine()->getManager();
+        $municipio=$em->getRepository(Municipio::class)->findByEstado($estado);
+
+        $municipio_array=[];
+        foreach ($municipio as $obj)
+            $municipio_array[]=['id'=>$obj->getId(),'nombre'=>$obj->getNombre()];
+
+        return $this->json($municipio_array);
     }
 
     /**

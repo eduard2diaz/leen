@@ -21,6 +21,7 @@ class DiagnosticoPlantelType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $required=!$options['data']->getId() ? true : false;
         $builder
             ->add('numeroaulas',IntegerType::class,['label'=>'Número de aulas','attr'=>['class'=>'form-control']])
             ->add('idcondicionesAula',null,['label'=>'Condiciones de las aulas','attr'=>['class'=>'form-control']])
@@ -65,7 +66,7 @@ class DiagnosticoPlantelType extends AbstractType
             ->add('descrip_energiaelectrica',ObservacionesType::class)
             ->add('descrip_telefonia',ObservacionesType::class)
             ->add('descrip_internet',ObservacionesType::class)
-            ->add('file', FileType::class, array('label'=>' ','required' => true))
+            ->add('file', FileType::class, array('label'=>' ','required' => $required))
         ;
 
         $builder->get('fecha')->addModelTransformer(new DatetoStringTransformer());

@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\CodigoPostal;
+use App\Form\Subscriber\AddCiudadMunicipioFieldSubscriber;
+use App\Form\Subscriber\AddMunicipioEstadoFieldSubscriber;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,11 +22,13 @@ class CodigoPostalType extends AbstractType
             ->add('d_zona',ChoiceType::class,['label'=>'Zona en la que se ubica el Asentamiento','choices'=>['Rural'=>'Rural','Urbana'=>'Urbana'],'attr'=>['class'=>'form-control']])
             ->add('d_cp',IntegerType::class,['label'=>'Código Postal de la Administración Postal que reparte el Asentamiento','attr'=>['class'=>'form-control']])
             ->add('id_asenta_cpcons',TextType::class,['label'=>'Identificador Único del Asentamiento(Nivel Municipal)','attr'=>['class'=>'form-control']])
-            ->add('municipio',null)
             ->add('estado',null)
-            ->add('ciudad',null)
             ->add('c_CP',TextType::class,['attr'=>['class'=>'form-control']])
         ;
+
+        $factory = $builder->getFormFactory();
+        $builder->addEventSubscriber(new AddMunicipioEstadoFieldSubscriber($factory));
+        $builder->addEventSubscriber(new AddCiudadMunicipioFieldSubscriber($factory));
     }
 
     public function configureOptions(OptionsResolver $resolver)

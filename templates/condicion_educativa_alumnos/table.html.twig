@@ -1,6 +1,3 @@
-<a data-href="{{ path('condicion_educativa_alumno_new',{'id':diagnostico_plantel.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion_condicion_docente_educativa">
-    Nuevo
-</a>
 <table class="table table-hover" id="condicion_educativa_alumno_entity_table">
     <thead>
     <tr>
@@ -9,7 +6,6 @@
         <th>Número de alumnas</th>
         <th>Número de alumnos</th>
         <th>Grado</th>
-        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -21,11 +17,6 @@
             <td>{{ condicion_educativa_alumno.numalumnas }}</td>
             <td>{{ condicion_educativa_alumno.numalumnos }}</td>
             <td>{{ condicion_educativa_alumno.grado }}</td>
-            <td>
-                <ul class="hidden_element list-inline pull-right">
-                    <li class="list-inline-item"><a class="btn default btn-sm btn-primary edicion_condicion_educativa_alumno"  data-href="{{ path('condicion_educativa_alumnos_edit', {'id': diagnostico_plantel.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
-                </ul>
-            </td>
         </tr>
         {% set i=1+i %}
     {% endfor %}
