@@ -16,10 +16,10 @@ class EscuelaType extends AbstractType
         $builder
             ->add('escuela',TextType::class,['attr'=>['class'=>'form-control']])
             ->add('ccts',TextType::class,['label'=>'Clave del Centro de Trabajo del Plantel','attr'=>['class'=>'form-control']])
-            ->add('d_codigo',null,['label'=>'Código Postal'])
+            ->add('d_codigo',null,['label'=>'Código Postal','placeholder'=>'Seleccione un código postal'])
 
-            ->add('estado',null)
-            ->add('tipoasentamiento',null,['label'=>'Tipo de Asentamiento'])
+            ->add('estado',null,['placeholder'=>'Seleccione un estado'])
+            ->add('tipoasentamiento',null,['label'=>'Tipo de Asentamiento','placeholder'=>'Seleccione un tipo de asentamiento'])
             ->add('asentamiento',TextType::class,['required'=>false,'attr'=>['class'=>'form-control']])
             ->add('calle',TextType::class,['required'=>false,'attr'=>['class'=>'form-control']])
             ->add('noexterior',TextType::class,['required'=>false,'label'=>'Número Exterior','attr'=>['class'=>'form-control']])

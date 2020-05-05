@@ -3,9 +3,11 @@ var ciudad = function () {
     var configurarFormulario = function () {
         $('select#ciudad_estado').select2({
             dropdownParent: $("#basicmodal"),
+            placeholder: "Seleccione un estado"
         });
         $('select#ciudad_municipio').select2({
             dropdownParent: $("#basicmodal"),
+            placeholder: "Seleccione un municipio"
         });
     }
 

@@ -22,7 +22,7 @@ var localidad = function () {
                         $.blockUI({message: '<small>Cargando...</small>'});
                     },
                     success: function (data) {
-                        var cadena="";
+                        var cadena="<option value=''> </option>";
                         var array=JSON.parse(data);
                         for(var i=0;i<array.length;i++)
                             cadena+="<option value="+array[i]['id']+">"+array[i]['nombre']+"</option>";
@@ -38,40 +38,12 @@ var localidad = function () {
         });
     }
 
-    var municipioListener = function () {
-        $('body').on('change', 'select#estadistica_localidad_municipio', function (evento)
-        {
-            if ($(this).val() > 0)
-                $.ajax({
-                    type: 'get', //Se uso get pues segun los desarrolladores de yahoo es una mejoria en el rendimineto de las peticiones ajax
-                    dataType: 'html',
-                    url: Routing.generate('ciudad_find_by_municipio', {'id': $(this).val()}),
-                    beforeSend: function (data) {
-                        $.blockUI({message: '<small>Cargando...</small>'});
-                    },
-                    success: function (data) {
-                        var cadena="";
-                        var array=JSON.parse(data);
-                        for(var i=0;i<array.length;i++)
-                            cadena+="<option value="+array[i]['id']+">"+array[i]['nombre']+"</option>";
-                        $('select#estadistica_localidad_ciudad').html(cadena);
-                    },
-                    error: function () {
-                        //base.Error();
-                    },
-                    complete: function () {
-                        $.unblockUI();
-                    }
-                });
-        });
-    }
 
     return {
         init: function () {
             $().ready(function () {
                     configurarFormulario();
                     estadoListener();
-                    municipioListener();
                 }
             );
         }

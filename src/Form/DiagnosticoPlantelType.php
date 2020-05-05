@@ -3,8 +3,12 @@
 namespace App\Form;
 
 use App\Entity\DiagnosticoPlantel;
+use App\Entity\Escuela;
+use App\Entity\Proyecto;
 use App\Form\ClasificacionDiagnosticoPlantelType;
 use App\Form\ObservacionesType;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use App\Form\Transformer\DatetoStringTransformer;
@@ -19,8 +23,10 @@ use App\Form\CondicionDocenteEducativaType;
 
 class DiagnosticoPlantelType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $escuela = $options['escuela'];
         $required=!$options['data']->getId() ? true : false;
         $builder
             ->add('numeroaulas',IntegerType::class,['label'=>'Número de aulas','attr'=>['class'=>'form-control']])
@@ -50,7 +56,6 @@ class DiagnosticoPlantelType extends AbstractType
             ->add('internet',CheckboxType::class,['required'=>false])
             ->add('idcondicioninternet',null,['label'=>'Condiciones del internet','attr'=>['class'=>'form-control']])
             ->add('iddiagnosticoplantel',IntegerType::class,['label'=>'Identificador del diagnóstico','attr'=>['class'=>'form-control']])
-            ->add('proyecto',null,['required'=>true])
             ->add('fecha',TextType::class,['attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}','autocomplete' => 'off']])
 
             ->add('descrip_num_aulas',ObservacionesType::class)
@@ -68,9 +73,28 @@ class DiagnosticoPlantelType extends AbstractType
             ->add('descrip_internet',ObservacionesType::class)
             ->add('file', FileType::class, array('label'=>' ','required' => $required))
         ;
-
         $builder->get('fecha')->addModelTransformer(new DatetoStringTransformer());
 
+        $builder->add('proyecto', EntityType::class, array(
+            'class' => Proyecto::class,
+            'required'=>true,
+            'query_builder' => function (EntityRepository $repository) use ($escuela) {
+                $qb = $repository->createQueryBuilder('proyecto')
+                    ->innerJoin('proyecto.escuela', 'p');
+                if ($escuela instanceof Escuela) {
+                    $qb->where('p.id = :id')
+                        ->setParameter('id', $escuela);
+                } elseif (is_numeric($escuela)) {
+                    $qb->where('p.id = :id')
+                        ->setParameter('id', $escuela);
+                } else {
+                    $qb->where('p.id = :id')
+                        ->setParameter('id', null);
+                }
+                return $qb;
+            }
+
+        , 'attr' => array('class' => 'form-control input-medium')));
 
     }
 
@@ -79,5 +103,6 @@ class DiagnosticoPlantelType extends AbstractType
         $resolver->setDefaults([
             'data_class' => DiagnosticoPlantel::class,
         ]);
+        $resolver->setRequired(['escuela']);
     }
 }

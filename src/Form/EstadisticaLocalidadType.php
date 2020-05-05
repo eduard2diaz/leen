@@ -17,11 +17,10 @@ class EstadisticaLocalidadType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('estado',EntityType::class,['class'=>Estado::class]);
+            ->add('estado',EntityType::class,['placeholder'=>'Seleccione un estado','class'=>Estado::class]);
 
         $factory = $builder->getFormFactory();
         $builder->addEventSubscriber(new AddMunicipioEstadisticaFieldSubscriber($factory));
-        $builder->addEventSubscriber(new AddCiudadEstadisticaFieldSubscriber($factory));
     }
 
     public function configureOptions(OptionsResolver $resolver)

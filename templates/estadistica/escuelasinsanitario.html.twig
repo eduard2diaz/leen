@@ -13,24 +13,9 @@
                 <div class="kt-widget14">
                     <div class="kt-widget14__header kt-margin-b-30">
                         <h3 class="kt-widget14__title">
-                            Resumen por localidad
+                            Escuelas sin sanitarios
                         </h3>
                     </div>
-                    {{ form_start(form) }}
-                    <div class="row">
-                        <div class="col-md-3">{{ form_row(form.estado) }}</div>
-                        <div class="col-md-3">{{ form_row(form.municipio) }}</div>
-                        <div class="col-md-3 kt-padding-t-30">
-                            <button class="btn btn-info btn-sm">
-                                <i class="fa fa-search"></i>Filtrar
-                            </button>
-                        </div>
-                    </div>
-                    {{ form_end(form) }}
-
-                    {% if  result is defined %}
-                        <h4 class="kt-margin-t-40">Resultados</h4>
-                        <hr/>
                         <table class="table" id="escuela_entity_table">
                             <thead>
                             <tr>
@@ -43,7 +28,7 @@
                             </thead>
                             <tbody>
                             {% set i=1 %}
-                            {% for escuela in result %}
+                            {% for escuela in escuelas %}
                                 <tr>
                                     <td>{{ i }}</td>
                                     <td>{{ escuela.escuela }}</td>
@@ -67,18 +52,9 @@
                             {% endfor %}
                             </tbody>
                         </table>
-
                         <div class="navigation">
-                            {{ knp_pagination_render(result,
-                                null,
-                                {
-                                    'estado': estado,
-                                    'municipio': municipio|default('-1')
-                                }
-                            ) }}
-
+                            {{ knp_pagination_render(escuelas) }}
                         </div>
-                    {% endif %}
                 </div>
             </div>
         </div>

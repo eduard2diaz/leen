@@ -80,7 +80,7 @@ class AddCiudadMunicipioFieldSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
         if (null == $data->getId())
-            $form->add('ciudad', null, array('required' => true, 'choices' => array()));
+            $form->add('ciudad', null, ['required' => true,'placeholder'=>'Seleccione una ciudad','choices' =>[]]);
          else {
             $municipio = is_array($data) ? $data['municipio'] : $data->getMunicipio();
             $this->addElements($event->getForm(), $municipio);

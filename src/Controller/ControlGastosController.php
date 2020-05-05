@@ -42,7 +42,7 @@ class ControlGastosController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $controlgasto = new ControlGastos();
-        $form = $this->createForm(ControlGastosType::class, $controlgasto, ['action' => $this->generateUrl('control_gastos_new',['id'=>$escuela->getId()])]);
+        $form = $this->createForm(ControlGastosType::class, $controlgasto, ['action' => $this->generateUrl('control_gastos_new',['id'=>$escuela->getId()]),'escuela'=>$escuela->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -91,7 +91,7 @@ class ControlGastosController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
-        $form = $this->createForm(ControlGastosType::class, $controlgastos, ['action' => $this->generateUrl('control_gastos_edit', ['id' => $controlgastos->getId()])]);
+        $form = $this->createForm(ControlGastosType::class, $controlgastos, ['action' => $this->generateUrl('control_gastos_edit', ['id' => $controlgastos->getId()]),'escuela'=>$controlgastos->getProyecto()->getEscuela()->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())

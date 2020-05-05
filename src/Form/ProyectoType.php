@@ -23,7 +23,7 @@ class ProyectoType extends AbstractType
             ->add('montoasignado',NumberType::class,['label'=>'Monto Asignado','attr'=>['class'=>'form-control']])
             ->add('montogastado',NumberType::class,['label'=>'Monto Gastado','attr'=>['class'=>'form-control']])
             ->add('saldofinal',NumberType::class,['label'=>'Saldo final','attr'=>['class'=>'form-control']])
-            ->add('escuela')
+            ->add('escuela',null,['placeholder'=>'Seleccione una escuela'])
         ;
 
         $builder->get('fechainicio')->addModelTransformer(new DatetoStringTransformer());

@@ -40,7 +40,7 @@ class AddMunicipioEstadisticaFieldSubscriber extends AddMunicipioEstadoFieldSubs
     {
         $data = $event->getData();
         $form = $event->getForm();
-        $form->add('municipio', EntityType::class, ['class'=>Municipio::class,'required' => false, 'choices' => array()]);
+        $form->add('municipio', EntityType::class, ['placeholder'=>'Seleccione un municipio','class'=>Municipio::class,'required' => false, 'choices' => []]);
     }
 
 

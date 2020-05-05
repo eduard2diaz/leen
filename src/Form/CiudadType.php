@@ -16,7 +16,7 @@ class CiudadType extends AbstractType
         $builder
             ->add('nombre', TextType::class, ['attr' => ['class' => 'form-control']])
             ->add('clave', TextType::class, ['attr' => ['class' => 'form-control']])
-            ->add('estado');
+            ->add('estado',null,['placeholder'=>'Seleccione un estado']);
 
         $factory = $builder->getFormFactory();
         $builder->addEventSubscriber(new AddMunicipioEstadoFieldSubscriber($factory));

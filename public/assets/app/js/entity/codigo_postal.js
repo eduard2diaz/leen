@@ -1,11 +1,21 @@
 var codigo_postal = function () {
 
     var configurarFormulario = function () {
-        $('select#codigo_postal_tipoasentamiento').select2();
-        $('select#codigo_postal_estado').select2();
-        $('select#codigo_postal_municipio').select2();
-        $('select#codigo_postal_ciudad').select2();
-        $('select#codigo_postal_d_zona').select2();
+        $('select#codigo_postal_tipoasentamiento').select2({
+            placeholder: "Seleccione un tipo de asentamiento"
+        });
+        $('select#codigo_postal_estado').select2({
+            placeholder: "Seleccione un estado"
+        });
+        $('select#codigo_postal_municipio').select2({
+            placeholder: "Seleccione un municipio"
+        });
+        $('select#codigo_postal_ciudad').select2({
+            placeholder: "Seleccione una ciudad"
+        });
+        $('select#codigo_postal_d_zona').select2({
+            placeholder: "Seleccione un código postal"
+        });
     }
 
     var addEditAction = function () {

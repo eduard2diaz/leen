@@ -76,7 +76,7 @@ class AddMunicipioEstadoFieldSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
         if (null == $data->getId())
-            $form->add('municipio', null, array('required' => true, 'choices' => array()));
+            $form->add('municipio', null, ['required' => true,'placeholder'=>'Seleccione un municipio', 'choices' => []]);
          else {
             $estado = is_array($data) ? $data['estado'] : $data->getEstado();
             $this->addElements($event->getForm(), $estado);

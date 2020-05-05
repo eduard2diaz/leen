@@ -42,7 +42,7 @@ class RendicionCuentasController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $controlgasto = new RendicionCuentas();
-        $form = $this->createForm(RendicionCuentasType::class, $controlgasto, ['action' => $this->generateUrl('rendicion_cuentas_new',['id'=>$escuela->getId()])]);
+        $form = $this->createForm(RendicionCuentasType::class, $controlgasto, ['action' => $this->generateUrl('rendicion_cuentas_new',['id'=>$escuela->getId()]),'escuela'=>$escuela->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -91,7 +91,7 @@ class RendicionCuentasController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
-        $form = $this->createForm(RendicionCuentasType::class, $rendicioncuentas, ['action' => $this->generateUrl('rendicion_cuentas_edit', ['id' => $rendicioncuentas->getId()])]);
+        $form = $this->createForm(RendicionCuentasType::class, $rendicioncuentas, ['action' => $this->generateUrl('rendicion_cuentas_edit', ['id' => $rendicioncuentas->getId()]),'escuela'=>$rendicioncuentas->getProyecto()->getEscuela()->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())

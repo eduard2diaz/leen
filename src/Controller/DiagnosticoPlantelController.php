@@ -38,7 +38,7 @@ class DiagnosticoPlantelController extends AbstractController
     public function new(Request $request, Escuela $escuela): Response
     {
         $diagnosticoPlantel = new DiagnosticoPlantel();
-        $form = $this->createForm(DiagnosticoPlantelType::class, $diagnosticoPlantel);
+        $form = $this->createForm(DiagnosticoPlantelType::class, $diagnosticoPlantel,['escuela'=>$escuela->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -93,7 +93,7 @@ class DiagnosticoPlantelController extends AbstractController
      */
     public function edit(Request $request, DiagnosticoPlantel $diagnosticoPlantel): Response
     {
-        $form = $this->createForm(DiagnosticoPlantelType::class, $diagnosticoPlantel);
+        $form = $this->createForm(DiagnosticoPlantelType::class, $diagnosticoPlantel,['escuela'=>$diagnosticoPlantel->getProyecto()->getEscuela()]);
         $form->handleRequest($request);
 
         $escuela = $diagnosticoPlantel->getProyecto()->getEscuela();

@@ -154,13 +154,13 @@ class EstadosCommand extends Command
                 $codigoPostal->setIdAsentaCpcons($idAsentamientoPCons);
                 $codigoPostal->setDCp($codigo_postalString);
                 $this->manager->persist($codigoPostal);
-                $this->manager->flush();
+
             }
             $i++;
 
             $progressBar->advance();
         }
-
+        $this->manager->flush();
         $progressBar->finish();
 
         return 0;

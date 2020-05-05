@@ -42,7 +42,7 @@ class PlanTrabajoController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $planTrabajo = new PlanTrabajo();
-        $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_new',['id'=>$escuela->getId()])]);
+        $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_new',['id'=>$escuela->getId()]),'escuela'=>$escuela->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -91,7 +91,7 @@ class PlanTrabajoController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
-        $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_edit', ['id' => $planTrabajo->getId()])]);
+        $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_edit', ['id' => $planTrabajo->getId()]),'escuela'=>$planTrabajo->getProyecto()->getEscuela()->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
