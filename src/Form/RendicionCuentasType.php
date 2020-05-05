@@ -23,7 +23,7 @@ class RendicionCuentasType extends AbstractType
         $required=!$options['data']->getId() ? true : false;
         $builder
             ->add('fechacaptura',TextType::class,['label'=>'Fecha de captura','attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}','autocomplete' => 'off']])
-            ->add('monto',NumberType::class,['attr'=>['class'=>'form-control']])
+            ->add('monto',NumberType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('tipoAccion',null,['label'=>'Tipo de acción'])
             ->add('file', FileType::class, array('label'=>' ','required' => $required))
         ;

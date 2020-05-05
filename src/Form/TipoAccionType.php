@@ -14,7 +14,7 @@ class TipoAccionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('accion',TextType::class,['label'=>'Acción','attr'=>['class'=>'form-control']])
+            ->add('accion',TextType::class,['label'=>'Acción','attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('descripcion',TextareaType::class,['label'=>'Descripción','attr'=>['class'=>'form-control']])
     //        ->add('fechacaptura')
             ->add('estatus')

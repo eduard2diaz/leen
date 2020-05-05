@@ -14,8 +14,8 @@ class EstadoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre',TextType::class,['attr'=>['class'=>'form-control']])
-            ->add('clave',TextType::class,['attr'=>['class'=>'form-control']])
+            ->add('nombre',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
+            ->add('clave',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
         ;
     }
 

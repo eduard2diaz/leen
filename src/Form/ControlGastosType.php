@@ -27,7 +27,7 @@ class ControlGastosType extends AbstractType
             ->add('fechacaptura',TextType::class,['label'=>'Fecha de captura','attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}','autocomplete' => 'off']])
             ->add('concepto',TextareaType::class,['label'=>'Descripción','attr'=>['class'=>'form-control']])
             ->add('numerocomprobante',IntegerType::class,['label'=>'Número de comprobante','attr'=>['class'=>'form-control']])
-            ->add('monto',NumberType::class,['attr'=>['class'=>'form-control']])
+            ->add('monto',NumberType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('tipoComprobante',null,['label'=>'Tipo de comprobante'])
             ->add('file', FileType::class, array('label'=>' ','required' => $required))
         ;

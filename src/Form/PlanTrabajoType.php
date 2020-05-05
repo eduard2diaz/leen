@@ -25,9 +25,9 @@ class PlanTrabajoType extends AbstractType
         $builder
             ->add('fechacaptura',TextType::class,['label'=>'Fecha de captura','attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}','autocomplete' => 'off']])
             ->add('descripcionaccion',TextareaType::class,['label'=>'Descripción','attr'=>['class'=>'form-control']])
-            ->add('tiempoestimado',TextType::class,['label'=>'Tiempo estimado','attr'=>['class'=>'form-control']])
-            ->add('costoestimado',NumberType::class,['label'=>'Costo estimado','attr'=>['class'=>'form-control']])
-            ->add('totalrecursosasignados',NumberType::class,['label'=>'Total de recursos asignados','attr'=>['class'=>'form-control']])
+            ->add('tiempoestimado',TextType::class,['label'=>'Tiempo estimado','attr'=>['class'=>'form-control','autocomplete'=>'off']])
+            ->add('costoestimado',NumberType::class,['label'=>'Costo estimado','attr'=>['class'=>'form-control','autocomplete'=>'off']])
+            ->add('totalrecursosasignados',NumberType::class,['label'=>'Total de recursos asignados','attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('tipoAccion',null,['label'=>'Tipo de acción'])
             ->add('file', FileType::class, array('label'=>' ','required' => $required))
         ;

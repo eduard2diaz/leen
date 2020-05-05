@@ -13,7 +13,7 @@ class TipoCondicionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('condicion',TextType::class,['label'=>'Condición','attr'=>['class'=>'form-control']])
+            ->add('condicion',TextType::class,['label'=>'Condición','attr'=>['class'=>'form-control','autocomplete'=>'off']])
         ;
     }
 
