@@ -76,7 +76,7 @@ class EstadisticaController extends AbstractController
     }
 
     /**
-     * @Route("/escuela/proyectos/{estatus<Activo|Inactivo|Cancelado|Eliminado>?Activo}", name="estadistica_escuela_proyectos_estatus")
+     * @Route("/escuela/proyectos/{estatus<Activo|Inactivo|Cancelado|Eliminado>}", name="estadistica_escuela_proyectos_estatus")
      */
     public function proyectosEstatus($estatus,Request $request, PaginatorInterface $paginator)
     {
