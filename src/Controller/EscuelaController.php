@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Controller;
 
 use App\Entity\Escuela;
@@ -7,11 +8,14 @@ use App\Entity\Estatus;
 use App\Entity\Proyecto;
 use App\Form\EscuelaType;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+ini_set('memory_limit', '-1');
 
 /**
  * @Route("/escuela")
@@ -80,6 +84,28 @@ class EscuelaController extends AbstractController
         return $this->render('escuela/details.html.twig',[
             'escuela'=>$escuela
         ]);
+    }
+
+    /**
+     * @Route("/{id}/exportar", name="escuela_exportar", methods={"GET"})
+     */
+    public function exportar(Escuela $escuela): Response
+    {
+        $html="<html><body>aaa</body></body>";
+        $filename="hola.pdf";
+
+        return new SnappyResponse($html,$filename,'application/pdf',
+            'attachment');
+
+        return new Response(
+        //    $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+        $html,
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            ]
+        );
     }
 
     /**

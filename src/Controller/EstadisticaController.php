@@ -62,8 +62,8 @@ class EstadisticaController extends AbstractController
     public function proyectos(Request $request, PaginatorInterface $paginator)
     {
         //PAGINANDO CONSULTAS SQL
-        $query="Select distinct e.id, e.escuela,e.ccts from escuela as e join proyecto as p on(e.id=p.escuela_id)";
-        $query2="Select count(e.id) from escuela as e";
+        $query="Select * FROM escuelas_con_proyecto_view";
+        $query2="SELECT * FROM total_escuelas_view";
         $total=$this->prepareDatabaseQuery($query2)[0]["count"];
         $escuelas=$this->preparePaginateDatabaseQuery($query,$request,$paginator);
         $con_proyectos=$escuelas->getTotalItemCount();
@@ -81,11 +81,11 @@ class EstadisticaController extends AbstractController
     public function proyectosEstatus($estatus,Request $request, PaginatorInterface $paginator)
     {
         //PAGINANDO CONSULTAS SQL
-        $query="Select distinct e.id, e.escuela,e.ccts from escuela as e join proyecto as p on(e.id=p.escuela_id) join estatus as est on(est.id=p.estatus_id)
-        where est.estatus='".$estatus."'";
+        $query="select * from  proyectoEstatus('".$estatus."')";
+        $escuelas=$this->preparePaginateDatabaseQuery($query,$request,$paginator);
 
         return $this->render('estadistica/escuelaproyectosestatus.html.twig', [
-            'escuelas' => $this->preparePaginateDatabaseQuery($query,$request,$paginator),
+            'escuelas' => $escuelas,
             'estatus'=>$estatus
         ]);
     }
@@ -96,9 +96,7 @@ class EstadisticaController extends AbstractController
      */
     public function montoProyecto(Request $request, PaginatorInterface $paginator)
     {
-        $query="Select e.id, e.escuela,e.ccts, SUM(p.montoasignado) as monto_asignado,
-                SUM(p.montogastado) as monto_gastado, SUM(p.saldofinal) as saldo_final from escuela
-                as e join proyecto as p on(e.id=p.escuela_id) GROUP BY e.id";
+        $query="Select * from escuelas_monto_por_proyecto_view";
 
         return $this->render('estadistica/escuelamontoproyectos.html.twig', [
             'escuelas' => $this->preparePaginateDatabaseQuery($query,$request,$paginator),
@@ -113,13 +111,7 @@ class EstadisticaController extends AbstractController
      */
     public function sanitario(Request $request, PaginatorInterface $paginator): Response
     {
-        $query = "
-            Select e.id, e.escuela,e.ccts from diagnostico_plantel as d join proyecto as p on(d.proyecto_id=p.id) join escuela as e on(p.escuela_id=e.id)
-            where d.fecha >= ALL (Select d2.fecha from diagnostico_plantel as d2 join proyecto as p2 on(d2.proyecto_id=p2.id)
-					 join escuela as e2 on(p2.escuela_id=e2.id)
-				     where e2.id=e.id						
-            ) and d.numerosanitarios=0
-        ";
+        $query = "Select * from escuelas_sin_sanitarios_view";
 
         return $this->render('estadistica/escuelasinsanitario.html.twig', [
             'escuelas' => $this->preparePaginateDatabaseQuery($query,$request,$paginator),
@@ -131,13 +123,7 @@ class EstadisticaController extends AbstractController
      */
     public function biblioteca(Request $request, PaginatorInterface $paginator): Response
     {
-        $query = "
-            Select e.id, e.escuela,e.ccts from diagnostico_plantel as d join proyecto as p on(d.proyecto_id=p.id) join escuela as e on(p.escuela_id=e.id)
-            where d.fecha >= ALL (Select d2.fecha from diagnostico_plantel as d2 join proyecto as p2 on(d2.proyecto_id=p2.id)
-					 join escuela as e2 on(p2.escuela_id=e2.id)
-				     where e2.id=e.id						
-            ) and d.numerobibliotecas=0
-        ";
+        $query = "Select * from escuelas_sin_bibliotecas_view";
 
         return $this->render('estadistica/escuelasinbiblioteca.html.twig', [
             'escuelas' => $this->preparePaginateDatabaseQuery($query,$request,$paginator),
@@ -149,13 +135,7 @@ class EstadisticaController extends AbstractController
      */
     public function aguapotable(Request $request, PaginatorInterface $paginator): Response
     {
-        $query = "
-            Select e.id, e.escuela,e.ccts from diagnostico_plantel as d join proyecto as p on(d.proyecto_id=p.id) join escuela as e on(p.escuela_id=e.id)
-            where d.fecha >= ALL (Select d2.fecha from diagnostico_plantel as d2 join proyecto as p2 on(d2.proyecto_id=p2.id)
-					 join escuela as e2 on(p2.escuela_id=e2.id)
-				     where e2.id=e.id						
-            ) and d.aguapotable=false
-        ";
+        $query = "Select * from escuelas_sin_aguapotable_view";
 
         return $this->render('estadistica/escuelasinaguapotable.html.twig', [
             'escuelas' => $this->preparePaginateDatabaseQuery($query,$request,$paginator),
@@ -167,13 +147,7 @@ class EstadisticaController extends AbstractController
      */
     public function drenaje(Request $request, PaginatorInterface $paginator): Response
     {
-        $query = "
-            Select e.id, e.escuela,e.ccts from diagnostico_plantel as d join proyecto as p on(d.proyecto_id=p.id) join escuela as e on(p.escuela_id=e.id)
-            where d.fecha >= ALL (Select d2.fecha from diagnostico_plantel as d2 join proyecto as p2 on(d2.proyecto_id=p2.id)
-					 join escuela as e2 on(p2.escuela_id=e2.id)
-				     where e2.id=e.id						
-            ) and d.drenaje=false
-        ";
+        $query = "Select * from escuelas_sin_drenaje_view";
 
         return $this->render('estadistica/escuelasindrenaje.html.twig', [
             'escuelas' => $this->preparePaginateDatabaseQuery($query,$request,$paginator),
@@ -185,13 +159,7 @@ class EstadisticaController extends AbstractController
      */
     public function electricidad(Request $request, PaginatorInterface $paginator): Response
     {
-        $query = "
-            Select e.id, e.escuela,e.ccts from diagnostico_plantel as d join proyecto as p on(d.proyecto_id=p.id) join escuela as e on(p.escuela_id=e.id)
-            where d.fecha >= ALL (Select d2.fecha from diagnostico_plantel as d2 join proyecto as p2 on(d2.proyecto_id=p2.id)
-					 join escuela as e2 on(p2.escuela_id=e2.id)
-				     where e2.id=e.id						
-            ) and d.energiaelectrica=false
-        ";
+        $query = "Select * from escuelas_sin_electricidad_view";
 
         return $this->render('estadistica/escuelasinelectricidad.html.twig', [
             'escuelas' => $this->preparePaginateDatabaseQuery($query,$request,$paginator),
@@ -203,13 +171,7 @@ class EstadisticaController extends AbstractController
      */
     public function internet(Request $request, PaginatorInterface $paginator): Response
     {
-        $query = "
-            Select e.id, e.escuela,e.ccts from diagnostico_plantel as d join proyecto as p on(d.proyecto_id=p.id) join escuela as e on(p.escuela_id=e.id)
-            where d.fecha >= ALL (Select d2.fecha from diagnostico_plantel as d2 join proyecto as p2 on(d2.proyecto_id=p2.id)
-					 join escuela as e2 on(p2.escuela_id=e2.id)
-				     where e2.id=e.id						
-            ) and d.internet=false
-        ";
+        $query = "Select * from escuelas_sin_internet_view";
 
         return $this->render('estadistica/escuelasininternet.html.twig', [
             'escuelas' => $this->preparePaginateDatabaseQuery($query,$request,$paginator),
@@ -231,9 +193,6 @@ class EstadisticaController extends AbstractController
         );
         return $result;
     }
-
-
-
 
     private function prepareDatabaseQuery($query){
         $em = $this->getDoctrine()->getManager();
