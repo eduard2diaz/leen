@@ -10,6 +10,7 @@ use App\Form\EscuelaType;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Knp\Component\Pager\PaginatorInterface;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,21 +90,20 @@ class EscuelaController extends AbstractController
     /**
      * @Route("/{id}/exportar", name="escuela_exportar", methods={"GET"})
      */
-    public function exportar(Escuela $escuela): Response
+    public function exportar(Escuela $escuela, Pdf $snappy): Response
     {
-        $html="<html><body>aaa</body></body>";
-        $filename="hola.pdf";
-
-        return new SnappyResponse($html,$filename,'application/pdf',
-            'attachment');
+        $proyectos = $this->getDoctrine()->getRepository(Proyecto::class)->findByEscuela($escuela);
+        $html=$this->renderView('escuela/pdf.html.twig',[
+            'escuela'=>$escuela,
+            'proyectos'=>$proyectos
+        ]);
 
         return new Response(
-        //    $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-        $html,
+            $snappy->getOutputFromHtml($html),
             200,
             [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+                'Content-Disposition' => sprintf('attachment; filename="%s"', "hola.pdf"),
             ]
         );
     }
