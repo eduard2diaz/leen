@@ -10,12 +10,13 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TipoComprobanteRepository")
  * @UniqueEntity("comprobante")
+ *
  */
 class TipoComprobante
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;

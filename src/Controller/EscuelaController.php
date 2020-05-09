@@ -7,6 +7,7 @@ use App\Entity\Escuela;
 use App\Entity\Estatus;
 use App\Entity\Proyecto;
 use App\Form\EscuelaType;
+use App\Form\FiltroType;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Knp\Component\Pager\PaginatorInterface;
@@ -24,12 +25,25 @@ ini_set('memory_limit', '-1');
 class EscuelaController extends AbstractController
 {
     /**
-     * @Route("/", name="escuela_index", methods={"GET"})
+     * @Route("/", name="escuela_index", methods={"GET","POST"})
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        $form=$this->createForm(FiltroType::class,[],['action'=>$this->generateUrl('escuela_index')]);
+        $form->handleRequest($request);
+
         $dql   = "SELECT e FROM App:Escuela e";
-        $query = $this->getDoctrine()->getManager()->createQuery($dql);
+        $data=$request->query->get('filtro');
+
+        if ($form->isSubmitted() || $data!="") {
+            if($form->isSubmitted())
+                $data = $form->getData()["filtro"];
+
+            $dql   = "SELECT e FROM App:Escuela e WHERE e.escuela LIKE :value OR e.ccts LIKE :value";
+            $query = $this->getDoctrine()->getManager()->createQuery($dql)->setParameter('value',"%".$data."%");
+        }
+        else
+            $query = $this->getDoctrine()->getManager()->createQuery($dql);
 
         $escuelas = $paginator->paginate(
             $query, /* query NOT result */
@@ -39,6 +53,8 @@ class EscuelaController extends AbstractController
 
         return $this->render('escuela/index.html.twig', [
             'escuelas' => $escuelas,
+            'filtro'=>$data,
+            'form' => $form->createView(),
         ]);
     }
 

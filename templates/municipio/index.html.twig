@@ -8,8 +8,12 @@
                 Nuevo
             </a>
         </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                {% include 'layout/recortes/KnpPaginatorMySkin/filtro.html.twig'%}
+            </div>
+        </div>
     </div>
-
     <div class="row">
         <div class="col-xl-12">
             <!--begin:: Widgets/Daily Sales-->
@@ -49,7 +53,13 @@
                         </tbody>
                     </table>
                     <div class="navigation">
-                        {{ knp_pagination_render(municipios) }}
+                        {{ knp_pagination_render(municipios,
+                            null,
+                            {
+                                'filtro': filtro,
+                            }
+                        ) }}
+
                     </div>
                 </div>
             </div>

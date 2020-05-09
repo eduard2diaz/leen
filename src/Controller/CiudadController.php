@@ -6,6 +6,7 @@ use App\Entity\CodigoPostal;
 use App\Entity\Ciudad;
 use App\Entity\Municipio;
 use App\Form\CiudadType;
+use App\Form\FiltroType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,12 +19,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class CiudadController extends AbstractController
 {
     /**
-     * @Route("/", name="ciudad_index", methods={"GET"})
+     * @Route("/", name="ciudad_index", methods={"GET","POST"})
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        $form=$this->createForm(FiltroType::class,[],['action'=>$this->generateUrl('ciudad_index')]);
+        $form->handleRequest($request);
+
         $dql   = "SELECT c FROM App:Ciudad c";
-        $query = $this->getDoctrine()->getManager()->createQuery($dql);
+        $data=$request->query->get('filtro');
+
+        if ($form->isSubmitted() || $data!="") {
+            if($form->isSubmitted())
+                $data = $form->getData()["filtro"];
+            $dql   = "SELECT c FROM App:Ciudad c JOIN c.municipio m JOIN m.estado e WHERE c.nombre LIKE :value OR m.nombre LIKE :value OR e.nombre LIKE :value OR c.clave LIKE :value";
+            $query = $this->getDoctrine()->getManager()->createQuery($dql)->setParameter('value',"%".$data."%");
+        }
+        else
+            $query = $this->getDoctrine()->getManager()->createQuery($dql);
 
         $ciudads = $paginator->paginate(
             $query, /* query NOT result */
@@ -33,6 +46,8 @@ class CiudadController extends AbstractController
 
         return $this->render('ciudad/index.html.twig', [
             'ciudads' => $ciudads,
+            'filtro'=>$data,
+            'form' => $form->createView(),
         ]);
     }
 

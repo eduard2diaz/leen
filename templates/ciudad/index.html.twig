@@ -8,6 +8,11 @@
                 Nuevo
             </a>
         </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                {% include 'layout/recortes/KnpPaginatorMySkin/filtro.html.twig'%}
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -52,7 +57,12 @@
                     </table>
 
                     <div class="navigation">
-                        {{ knp_pagination_render(ciudads) }}
+                        {{ knp_pagination_render(ciudads,
+                            null,
+                            {
+                                'filtro': filtro,
+                            }
+                        ) }}
                     </div>
 
                 </div>

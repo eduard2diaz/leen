@@ -68,13 +68,13 @@ class EscuelasCommand extends Command
                 $escuela->setCcts($ccts);
                 $escuela->setDCodigo($codigopostal);
                 $this->manager->persist($escuela);
-
+                $this->manager->flush();
 
             }
             $progressBar->advance();
             $i++;
         }
-        $this->manager->flush();
+
         $progressBar->finish();
 
         return 0;

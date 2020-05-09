@@ -15,6 +15,8 @@ class EntidadesSubscriber  implements EventSubscriber
         $entity = $args->getEntity();
         $em=$args->getEntityManager();
         $estatus=$em->getRepository(Estatus::class)->findOneByEstatus('Activo');
+        //$estatus=$em->getRepository(Estatus::class)->find(1);
+
         if($estatus!=null && property_exists($entity,'estatus')){
             $entity->setEstatus($estatus);
             $em->flush();

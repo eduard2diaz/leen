@@ -6,6 +6,7 @@ use App\Entity\CodigoPostal;
 use App\Entity\Direccion;
 use App\Entity\Escuela;
 use App\Form\CodigoPostalType;
+use App\Form\FiltroType;
 use App\Repository\CodigoPostalRepository;
 use Knp\Component\Pager\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
@@ -20,12 +21,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class CodigoPostalController extends AbstractController
 {
     /**
-     * @Route("/", name="codigo_postal_index", methods={"GET"})
+     * @Route("/", name="codigo_postal_index", methods={"GET","POST"})
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        $form=$this->createForm(FiltroType::class,[],['action'=>$this->generateUrl('codigo_postal_index')]);
+        $form->handleRequest($request);
+
         $dql   = "SELECT cp FROM App:CodigoPostal cp";
-        $query = $this->getDoctrine()->getManager()->createQuery($dql);
+        $data=$request->query->get('filtro');
+
+        if ($form->isSubmitted() || $data!="") {
+            if($form->isSubmitted())
+                $data = $form->getData()["filtro"];
+
+            $dql   = "SELECT cp FROM App:CodigoPostal cp JOIN cp.municipio m JOIN m.estado e WHERE m.nombre LIKE :value OR e.nombre LIKE :value OR m.clave LIKE :value";
+            $query = $this->getDoctrine()->getManager()->createQuery($dql)->setParameter('value',"%".$data."%");
+        }
+        else
+            $query = $this->getDoctrine()->getManager()->createQuery($dql);
 
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
@@ -35,6 +49,8 @@ class CodigoPostalController extends AbstractController
 
         return $this->render('codigo_postal/index.html.twig', [
             'pagination' => $pagination,
+            'filtro'=>$data,
+            'form' => $form->createView(),
         ]);
     }
 
