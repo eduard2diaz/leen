@@ -90,7 +90,7 @@ class CondicionEducativaAlumnosController extends AbstractController
 
         return $this->render('condicion_educativa_alumnos/new.html.twig', [
             'condicion_educativa_alumno' => $condicion_educativa_alumno,
-            'title' => 'Editar condicion_educativa_alumno',
+            'title' => 'Editar condición educativa alumno',
             'action' => 'Actualizar',
             'form_id' => 'condicion_educativa_alumno_edit',
             'form' => $form->createView(),
@@ -107,11 +107,13 @@ class CondicionEducativaAlumnosController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+
         if(!$estatus)
             throw new \Exception('No existe el estatus');
+
         $condicion_educativa_alumno->setEstatus($estatus);
         $em->flush();
-        return $this->json(['mensaje' => 'El condicion_educativa_alumno fue eliminado satisfactoriamente']);
+        return $this->json(['mensaje' => 'La condición educativa alumno fue eliminada satisfactoriamente']);
     }
 
 

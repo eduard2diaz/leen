@@ -42,6 +42,12 @@ class CondicionEducativaAlumnos
      */
     private $grado;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $estatus;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,4 +112,21 @@ class CondicionEducativaAlumnos
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEstatus()
+    {
+        return $this->estatus;
+    }
+
+    /**
+     * @param mixed $estatus
+     */
+    public function setEstatus($estatus): void
+    {
+        $this->estatus = $estatus;
+    }
+
 }

@@ -1,6 +1,6 @@
 var condicion_educativa_alumno = function () {
     var tableCondicionEducativa = null;
-    var objCondicionDocente = null;
+    var objetoCondicionEducativa = null;
 
     var configurarDataTableCEA = function () {
         tableCondicionEducativa = $('table#condicion_educativa_alumno_entity_table').DataTable({
@@ -133,7 +133,7 @@ var condicion_educativa_alumno = function () {
             });
         });
     }
-/*
+
     var eliminarCEA = function () {
         $('div#basicmodal').on('click', 'a.eliminar_condicion_educativa_alumno', function (evento) {
             evento.preventDefault();
@@ -142,8 +142,8 @@ var condicion_educativa_alumno = function () {
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar condicion_educativa_alumno',
-                message: '¿Está seguro que desea eliminar esta condicion_educativa_alumno?',
+                title: 'Eliminar condición educativa alumno',
+                message: '¿Está seguro que desea eliminar esta condición educativa alumno?',
                 buttons: {
                     confirm: {
                         label: 'Si, estoy seguro',
@@ -169,7 +169,7 @@ var condicion_educativa_alumno = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                table.row(obj.parents('tr'))
+                                tableCondicionEducativa.row(objetoCondicionEducativa.parents('tr'))
                                     .remove()
                                     .draw('page');
                                 toastr.success(data['mensaje']);
@@ -181,7 +181,7 @@ var condicion_educativa_alumno = function () {
                 }
             });
         });
-    }*/
+    }
 
 
     return {
@@ -192,7 +192,7 @@ var condicion_educativa_alumno = function () {
                     newCEAAction();
 
                     edicionCEAAction();
-                 //   eliminarCEA();
+                    eliminarCEA();
                 }
             );
         }

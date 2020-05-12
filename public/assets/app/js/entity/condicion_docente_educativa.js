@@ -133,7 +133,7 @@ var condicion_docente_educativa = function () {
             });
         });
     }
-/*
+
     var eliminarCDE = function () {
         $('div#basicmodal').on('click', 'a.eliminar_condicion_docente_educativa', function (evento) {
             evento.preventDefault();
@@ -142,8 +142,8 @@ var condicion_docente_educativa = function () {
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar condicion_docente_educativa',
-                message: '¿Está seguro que desea eliminar esta condicion_docente_educativa?',
+                title: 'Eliminar condición docente educativa',
+                message: '¿Está seguro que desea eliminar esta condición docente educativa?',
                 buttons: {
                     confirm: {
                         label: 'Si, estoy seguro',
@@ -169,7 +169,7 @@ var condicion_docente_educativa = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                table.row(obj.parents('tr'))
+                                tableCondicionDocente.row(objetoCondicionDocente.parents('tr'))
                                     .remove()
                                     .draw('page');
                                 toastr.success(data['mensaje']);
@@ -181,7 +181,7 @@ var condicion_docente_educativa = function () {
                 }
             });
         });
-    }*/
+    }
 
 
     return {
@@ -192,7 +192,7 @@ var condicion_docente_educativa = function () {
                     newCDEAction();
 
                     edicionCDEAction();
-                 //   eliminarCDE();
+                    eliminarCDE();
                 }
             );
         }
