@@ -4,8 +4,7 @@
     <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
 {% endblock %}
  {% block escuela_show_header %}
-     <h3 class="kt-subheader__title">Escuela {{ escuela.escuela }}</h3>
-     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+     {{ parent() }}
      <h3 class="kt-subheader__title">Planes de trabajo</h3>
      <span class="kt-subheader__separator kt-subheader__separator--v"></span>
      <a data-href="{{ path('plan_trabajo_new',{'id':escuela.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion">
@@ -25,7 +24,7 @@
                             Listado
                         </h3>
                     </div>
-                    <table class="table" id="plantrabajo_entity_table">
+                    <table class="table table-hover" id="plantrabajo_entity_table">
                         <thead>
                         <tr>
                             <th>#</th>

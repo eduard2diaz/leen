@@ -11,12 +11,33 @@
 {% block body %}
     <div class="kt-subheader   kt-grid__item" id="kt_subheader">
         <div class="kt-subheader__main">
-            <h3 class="kt-subheader__title">Mi primer mapa</h3>
+            <h3 class="kt-subheader__title">Mapa de escuelas</h3>
         </div>
     </div>
-    <div class="row">
+
+    {{ form_start(form,{'attr':{
+        'id': form_id|default('maps_form'),
+        'class': 'form-inline km-margin-b-40'
+    }}) }}
+        <div class="form-group kt-margin-r-5 col-md-3">
+            {{ form_widget(form.estado) }}
+            <div class="form-control-focus"> </div>
+        </div>
+        <div class="form-group kt-margin-r-5">
+            {{ form_widget(form.escuela) }}
+            <div class="form-control-focus"> </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>Buscar</button>
+    {{ form_end(form) }}
+
+
+    <div style="display: none;">
+        <div id="popup" title="Datos de la escuela"></div>
+    </div>
+
+    <div class="row kt-margin-t-20">
         <div class="col-xl-12">
-            <!--begin:: Widgets/Daily Sales-->
             <div class="kt-portlet kt-portlet--height-fluid">
                 <div class="kt-widget14" style="padding: 0px">
                     <div id="map" class="map"></div>

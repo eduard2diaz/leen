@@ -3,6 +3,9 @@
     <div class="kt-subheader   kt-grid__item" id="kt_subheader">
         <div class="kt-subheader__main">
             {% block escuela_show_header %}
+                <a data-container="body" data-toggle="popover" data-placement="bottom" data-content="<b>Escuela:</b> {{ escuela.escuela }} <br/> <b>CCTS:</b> {{ escuela.ccts }}" class="kt-margin-r-5">
+                    <i class="fa-2x flaticon-information"></i>
+                </a>
             {% endblock escuela_show_header %}
         </div>
         <div class="kt-subheader__toolbar">

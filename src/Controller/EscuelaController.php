@@ -119,7 +119,7 @@ class EscuelaController extends AbstractController
             200,
             [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => sprintf('attachment; filename="%s"', "hola.pdf"),
+                'Content-Disposition' => sprintf('attachment; filename="%s"', "detalles_escuela.pdf"),
             ]
         );
     }

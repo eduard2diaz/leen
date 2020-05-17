@@ -6,8 +6,7 @@
 {% endblock %}
 
 {% block escuela_show_header %}
-    <h3 class="kt-subheader__title">Escuela {{ escuela.escuela }}</h3>
-    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+    {{ parent() }}
     <h3 class="kt-subheader__title">Proyectos</h3>
 {% endblock escuela_show_header %}
 
@@ -24,7 +23,7 @@
                             Listado
                         </h3>
                     </div>
-                    <table class="table" id="proyecto_entity_table">
+                    <table class="table table-hover" id="proyecto_entity_table">
                         <thead>
                         <tr>
                             <th>#</th>
