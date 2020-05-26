@@ -43,22 +43,6 @@ class Proyecto
     private $montoasignado;
 
     /**
-     * @ORM\Column(type="float")
-     * @Assert\Range(
-     *      min = 0,
-     * )
-     */
-    private $montogastado;
-
-    /**
-     * @ORM\Column(type="float")
-     * @Assert\Range(
-     *      min = 0,
-     * )
-     */
-    private $saldofinal;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $numero;
@@ -122,48 +106,9 @@ class Proyecto
         return $this;
     }
 
-    public function getMontogastado(): ?float
-    {
-        return $this->montogastado;
-    }
-
-    public function setMontogastado(float $montogastado): self
-    {
-        $this->montogastado = $montogastado;
-
-        return $this;
-    }
-
-    public function getSaldofinal(): ?float
-    {
-        return $this->saldofinal;
-    }
-
-    public function setSaldofinal(float $saldofinal): self
-    {
-        $this->saldofinal = $saldofinal;
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->getNumero();
-    }
-
-    /**
-     * @Assert\Callback
-     */
-    public function validate(ExecutionContextInterface $context)
-    {
-        if (null==$this->getEscuela())
-            $context->addViolation('Seleccione una escuela.');
-        if ($this->getFechainicio()>$this->getFechafin())
-            $context->addViolation('Compruebe las fechas de inicio y fin.');
-        if ($this->getMontoasignado()<$this->getMontogastado())
-            $context->addViolation('Compruebe los montos asignados y gastados.');
-        elseif ($this->getMontoasignado()-$this->getMontogastado()!=$this->getSaldofinal())
-            $context->addViolation('El saldo final no concuerda con los montos asignados y gastados.');
     }
 
     public function getNumero(): ?string
@@ -189,4 +134,17 @@ class Proyecto
 
         return $this;
     }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (null==$this->getEscuela())
+            $context->addViolation('Seleccione una escuela.');
+        if ($this->getFechainicio()>$this->getFechafin())
+            $context->addViolation('Compruebe las fechas de inicio y fin.');
+    }
+
+
 }

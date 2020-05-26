@@ -17,7 +17,7 @@ class TipoAccionType extends AbstractType
             ->add('accion',TextType::class,['label'=>'Acción','attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('descripcion',TextareaType::class,['label'=>'Descripción','attr'=>['class'=>'form-control']])
     //        ->add('fechacaptura')
-            ->add('estatus')
+    //        ->add('estatus')
         ;
     }
 

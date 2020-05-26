@@ -1,5 +1,6 @@
 /*
 Instalando sass: npm install -g sass
+Exportar sass sass base.scss > ../css/base.css
 Monitoreas cambios: sass --watch sass/base.scss css/base.css
 */
 body {
@@ -14,6 +15,9 @@ a.btn {
 
 a[data-href]:hover {
   cursor: pointer; }
+
+.color-white {
+  color: white !important; }
 
 div.kt-head, div.kt-user-card {
   background-image: url("../../template/media/misc/bg-1.jpg"); }

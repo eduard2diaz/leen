@@ -86,6 +86,7 @@ var ciudad = function () {
                         padre.html(data['form']);
                         configurarFormulario();
                     }
+                    else
                     document.location.href = data['url'];
                 },
                 error: function () {

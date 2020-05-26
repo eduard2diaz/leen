@@ -22,12 +22,20 @@ class Ciudad
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre de la ciudad no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $nombre;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=10)
+     * @Assert\Length(
+     *      max = 10,
+     *      maxMessage = "La clave de la ciudad no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $clave;
 

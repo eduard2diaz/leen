@@ -15,6 +15,9 @@ a.btn {
 a[data-href]:hover {
   cursor: pointer; }
 
+.color-white {
+  color: white !important; }
+
 div.kt-head, div.kt-user-card {
   background-image: url("../../template/media/misc/bg-1.jpg"); }
 
@@ -63,5 +66,3 @@ div.modal-full {
 
 .select2-container--default {
   width: 100% !important; }
-
-/*# sourceMappingURL=base.css.map */

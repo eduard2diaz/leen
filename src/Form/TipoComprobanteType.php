@@ -17,7 +17,7 @@ class TipoComprobanteType extends AbstractType
             ->add('comprobante',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('descripcion',TextareaType::class,['label'=>'Descripción','attr'=>['class'=>'form-control']])
          //   ->add('fechacaptura')
-            ->add('estatus')
+      //      ->add('estatus')
         ;
     }
 

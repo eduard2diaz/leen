@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CodigoPostal;
 use App\Entity\Direccion;
 use App\Entity\Escuela;
+use App\Entity\Municipio;
 use App\Form\CodigoPostalType;
 use App\Form\FiltroType;
 use App\Repository\CodigoPostalRepository;
@@ -98,6 +99,24 @@ class CodigoPostalController extends AbstractController
         return $this->render('codigo_postal/show.html.twig', [
             'codigo_postal' => $codigoPostal,
         ]);
+    }
+
+    /**
+     * @Route("/{id}/findbymunicipio", name="codigo_postal_find_by_municipio", methods={"GET"},options={"expose"=true})
+     */
+    public function findByEstado(Request $request, Municipio $municipio): Response
+    {
+        if (!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        $em = $this->getDoctrine()->getManager();
+        $codigo_postales=$em->getRepository(CodigoPostal::class)->findByMunicipio($municipio);
+
+        $codigos_postales_array=[];
+        foreach ($codigo_postales as $obj)
+            $codigos_postales_array[]=['id'=>$obj->getId(),'nombre'=>$obj->getDCp()];
+
+        return $this->json($codigos_postales_array);
     }
 
     /**

@@ -22,7 +22,11 @@ class TipoComprobante
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre del tipo de comprobante no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $comprobante;
 

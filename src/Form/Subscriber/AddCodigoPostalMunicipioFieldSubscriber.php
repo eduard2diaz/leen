@@ -2,12 +2,10 @@
 
 namespace App\Form\Subscriber;
 
-use App\Entity\Estado;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use App\Entity\Municipio;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -17,7 +15,7 @@ use Symfony\Component\Form\FormFactoryInterface;
  *
  * @author eduardo
  */
-class AddMunicipioEstadoFieldSubscriber implements EventSubscriberInterface
+class AddCodigoPostalMunicipioFieldSubscriber implements EventSubscriberInterface
 {
 
     private $factory;
@@ -40,27 +38,28 @@ class AddMunicipioEstadoFieldSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         if (null === $data)
             return;
-        $estado = is_array($data) ? $data['estado'] : $data->getEstado();
-        $this->addElements($event->getForm(), $estado);
+        $municipio = is_array($data) ? $data['municipio'] : $data->getMunicipio();
+        $this->addElements($event->getForm(), $municipio);
     }
 
-    protected function addElements($form, $estado)
+    protected function addElements($form, $municipio)
     {
-        $form->add($this->factory->createNamed('municipio', EntityType::class, null, array(
+        $form->add($this->factory->createNamed('d_codigo', EntityType::class, null, array(
+            'label'=>'Código postal',
             'auto_initialize' => false,
-            'class' => 'App:Municipio',
+            'class' => 'App:CodigoPostal',
             'choice_label' => function ($elemento) {
-                return $elemento->getNombre();
+                return $elemento->getDCp();
             },
-            'query_builder' => function (EntityRepository $repository) use ($estado) {
-                $qb = $repository->createQueryBuilder('municipio')
-                    ->innerJoin('municipio.estado', 'p');
-                if ($estado instanceof Estado) {
+            'query_builder' => function (EntityRepository $repository) use ($municipio) {
+                $qb = $repository->createQueryBuilder('cp')
+                    ->innerJoin('cp.municipio', 'p');
+                if ($municipio instanceof Municipio) {
                     $qb->where('p.id = :id')
-                        ->setParameter('id', $estado);
-                } elseif (is_numeric($estado)) {
+                        ->setParameter('id', $municipio);
+                } elseif (is_numeric($municipio)) {
                     $qb->where('p.id = :id')
-                        ->setParameter('id', $estado);
+                        ->setParameter('id', $municipio);
                 } else {
                     $qb->where('p.id = :id')
                         ->setParameter('id', null);
@@ -75,10 +74,10 @@ class AddMunicipioEstadoFieldSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
         if (null == $data->getId())
-            $form->add('municipio', null, ['required' => true,'placeholder'=>'Seleccione un municipio', 'choices' => []]);
+            $form->add('d_codigo', null, ['label'=>'Código postal' ,'required' => true,'placeholder'=>'Seleccione un código postal', 'choices' => []]);
          else {
-            $estado = is_array($data) ? $data['estado'] : $data->getEstado();
-            $this->addElements($event->getForm(), $estado);
+            $municipio = is_array($data) ? $data['municipio'] : $data->getMunicipio();
+            $this->addElements($event->getForm(), $municipio);
         }
 
     }

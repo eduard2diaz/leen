@@ -21,7 +21,11 @@ class CodigoPostal
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre del asentamiento no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $d_Asenta;
 
@@ -35,16 +39,28 @@ class CodigoPostal
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Assert\Length(
+     *      max = 5,
+     *      maxMessage = "El identificador del asentamiento no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $id_asenta_cpcons;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre de la zona no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $d_zona;
 
     /**
-     * @ORM\Column(type="string", length=150,nullable=true)
+     * @ORM\Column(type="string", length=50,nullable=true)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El CCP no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $c_CP;
 

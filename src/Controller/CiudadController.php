@@ -142,7 +142,7 @@ class CiudadController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="ciudad_delete")
+     * @Route("/{id}/delete", name="ciudad_delete")
      */
     public function delete(Request $request, Ciudad $ciudad): Response
     {

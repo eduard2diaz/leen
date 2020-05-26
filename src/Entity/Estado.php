@@ -21,12 +21,20 @@ class Estado
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre del estado no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $nombre;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=10)
+     * @Assert\Length(
+     *      max = 10,
+     *      maxMessage = "La clave del estado no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $clave;
 

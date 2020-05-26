@@ -48,7 +48,6 @@ class TipoComprobanteController extends AbstractController
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El tipo de comprobante fue registrado satisfactoriamente',
                     'comprobante' => $tipocomprobante->getComprobante(),
-                    'estatus' => $tipocomprobante->getEstatus()->getEstatus(),
                     'id' => $tipocomprobante->getId(),
                 ]);
             } else {
@@ -94,9 +93,8 @@ class TipoComprobanteController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($tipocomprobante);
                 $em->flush();
-                return $this->json(['mensaje' => 'El tipo de acción fue actualizado satisfactoriamente',
+                return $this->json(['mensaje' => 'El tipo de comprobante fue actualizado satisfactoriamente',
                     'comprobante' => $tipocomprobante->getComprobante(),
-                    'estatus' => $tipocomprobante->getEstatus()->getEstatus(),
                 ]);
             } else {
                 $page = $this->renderView('tipo_comprobante/_form.html.twig', [
@@ -112,7 +110,7 @@ class TipoComprobanteController extends AbstractController
         return $this->render('tipo_comprobante/new.html.twig', [
             'tipocomprobante' => $tipocomprobante,
             'eliminable'=>$eliminable,
-            'title' => 'Editar tipo de acción',
+            'title' => 'Editar tipo de comprobante',
             'action' => 'Actualizar',
             'form_id' => 'tipocomprobante_edit',
             'form' => $form->createView(),

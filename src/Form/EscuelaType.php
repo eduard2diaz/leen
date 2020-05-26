@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Escuela;
+use App\Form\Subscriber\AddCodigoPostalMunicipioFieldSubscriber;
 use App\Form\Subscriber\AddMunicipioEstadoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,9 +17,7 @@ class EscuelaType extends AbstractType
         $builder
             ->add('escuela',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('ccts',TextType::class,['label'=>'Clave del Centro de Trabajo del Plantel','attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('d_codigo',null,['label'=>'Código Postal','placeholder'=>'Seleccione un código postal'])
-
-            ->add('estado',null,['placeholder'=>'Seleccione un estado'])
+            ->add('estado',null,['required'=>true,'placeholder'=>'Seleccione un estado'])
             ->add('tipoasentamiento',null,['label'=>'Tipo de Asentamiento','placeholder'=>'Seleccione un tipo de asentamiento'])
             ->add('asentamiento',TextType::class,['required'=>false,'attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('calle',TextType::class,['required'=>false,'attr'=>['class'=>'form-control','autocomplete'=>'off']])
@@ -28,6 +27,7 @@ class EscuelaType extends AbstractType
 
         $factory = $builder->getFormFactory();
         $builder->addEventSubscriber(new AddMunicipioEstadoFieldSubscriber($factory));
+        $builder->addEventSubscriber(new AddCodigoPostalMunicipioFieldSubscriber($factory));
     }
 
     public function configureOptions(OptionsResolver $resolver)

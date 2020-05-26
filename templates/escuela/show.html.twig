@@ -2,15 +2,19 @@
 {% block body %}
     <div class="kt-subheader   kt-grid__item" id="kt_subheader">
         <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Escuela "{{ escuela.escuela }}"</h3>
             {% block escuela_show_header %}
-                <a data-container="body" data-toggle="popover" data-placement="bottom" data-content="<b>Escuela:</b> {{ escuela.escuela }} <br/> <b>CCTS:</b> {{ escuela.ccts }}" class="kt-margin-r-5">
-                    <i class="fa-2x flaticon-information"></i>
-                </a>
+                <span class="kt-subheader__separator kt-subheader__separator--v"></span>
             {% endblock escuela_show_header %}
         </div>
         <div class="kt-subheader__toolbar">
+
             <div class="kt-subheader__wrapper">
-                <a href="{{ path('escuela_exportar',{'id':escuela.id}) }}" class="btn kt-subheader__btn-primary btn-icon">
+                <a href="{{ path('escuela_index') }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10"  data-toggle="m-tooltip" data-skin="dark" data-placement="bottom" data-original-title="Regresar al listado de escuelas">
+                    <i class="fa fa-list"></i>
+                </a>
+
+                <a href="{{ path('escuela_exportar',{'id':escuela.id}) }}" class="btn kt-subheader__btn-primary btn-icon"  data-toggle="m-tooltip" data-skin="dark" data-placement="bottom" data-original-title="Exportar">
                     <i class="flaticon2-file"></i>
                 </a>
                 <div class="dropdown dropdown-inline" data-toggle="kt-tooltip" title="" data-placement="left" data-original-title="Quick actions">

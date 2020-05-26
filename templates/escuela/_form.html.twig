@@ -15,8 +15,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col-md-4">
             <div class="form-group m-form__group">
                 <label>
@@ -25,6 +23,80 @@
                 <div>
                     {{ form_widget(form.ccts) }}
                     {{ form_errors(form.ccts) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.asentamiento) }}
+                </label>
+                <div>
+                    {{ form_widget(form.asentamiento) }}
+                    {{ form_errors(form.asentamiento) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.tipoasentamiento) }}
+                </label>
+                <div>
+                    {{ form_widget(form.tipoasentamiento) }}
+                    {{ form_errors(form.tipoasentamiento) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.calle) }}
+                </label>
+                <div>
+                    {{ form_widget(form.calle) }}
+                    {{ form_errors(form.calle) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.noexterior) }}
+                </label>
+                <div>
+                    {{ form_widget(form.noexterior) }}
+                    {{ form_errors(form.noexterior) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.estado) }}
+                </label>
+                <div>
+                    {{ form_widget(form.estado) }}
+                    {{ form_errors(form.estado) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.municipio) }}
+                </label>
+                <div>
+                    {{ form_widget(form.municipio) }}
+                    {{ form_errors(form.municipio) }}
                 </div>
             </div>
         </div>
@@ -41,88 +113,14 @@
         </div>
     </div>
 
-    <fieldset>
-        <h4>Otros datos</h4>
-        <hr/>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group m-form__group">
-                    <label>
-                        {{ form_label(form.asentamiento) }}
-                    </label>
-                    <div>
-                        {{ form_widget(form.asentamiento) }}
-                        {{ form_errors(form.asentamiento) }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group m-form__group">
-                    <label>
-                        {{ form_label(form.tipoasentamiento) }}
-                    </label>
-                    <div>
-                        {{ form_widget(form.tipoasentamiento) }}
-                        {{ form_errors(form.tipoasentamiento) }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group m-form__group">
-                    <label>
-                        {{ form_label(form.estado) }}
-                    </label>
-                    <div>
-                        {{ form_widget(form.estado) }}
-                        {{ form_errors(form.estado) }}
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group m-form__group">
-                    <label>
-                        {{ form_label(form.municipio) }}
-                    </label>
-                    <div>
-                        {{ form_widget(form.municipio) }}
-                        {{ form_errors(form.municipio) }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group m-form__group">
-                    <label>
-                        {{ form_label(form.calle) }}
-                    </label>
-                    <div>
-                        {{ form_widget(form.calle) }}
-                        {{ form_errors(form.calle) }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group m-form__group">
-                    <label>
-                        {{ form_label(form.noexterior) }}
-                    </label>
-                    <div>
-                        {{ form_widget(form.noexterior) }}
-                        {{ form_errors(form.noexterior) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </fieldset>
 </div>
 {{ form_errors(form) }}
 {{ form_rest(form) }}
 <div class="modal-footer">
     <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
     {% if escuela.id is not empty %}
-        <a class="btn btn-danger btn-sm  eliminar_escuela"
+        <a class="btn btn-danger btn-sm  color-white eliminar_escuela"
            data-href="{{ path('escuela_delete', { 'id': escuela.id }) }}"
            data-csrf="{{ csrf_token('delete' ~ escuela.id) }}">
             <i class="flaticon-delete-1"></i> Eliminar</a>

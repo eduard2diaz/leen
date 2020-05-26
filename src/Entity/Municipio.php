@@ -21,12 +21,20 @@ class Municipio
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre del municipio no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $nombre;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      max = 10,
+     *      maxMessage = "La clave del municipio no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $clave;
 

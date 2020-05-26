@@ -22,11 +22,19 @@ class Escuela
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "El nombre de la escuela no puede exceder los {{ limit }} caracteres",
+     * )
      */
     private $escuela;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "La clave del centro de Trabajo no puede exceder los {{ limit }} caracteres",
+     * )
      */
     private $ccts;
 
@@ -36,17 +44,29 @@ class Escuela
     private $d_codigo;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre de calle no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $calle;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre del asentamiento no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $asentamiento;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=10, nullable=true)
+     * @Assert\Length(
+     *      max = 10,
+     *      maxMessage = "El número exterior no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $noexterior;
 
@@ -207,39 +227,19 @@ class Escuela
      */
     public function validate(ExecutionContextInterface $context)
     {
-        if(null==$this->getDCodigo()){
-            if (null==$this->getTipoasentamiento())
-                $context->addViolation('Seleccione un tipo de asentamiento.');
-
-            if (empty($this->getAsentamiento()))
-                $context->addViolation('Escriba el nombre del asentamiento.');
-
-            if (empty($this->getNoexterior()))
-                $context->addViolation('Escriba el Número Exterior.');
-
-            if (empty($this->getCalle()))
-                $context->addViolation('Escriba la calle.');
-
-            if (null==$this->getEstado())
-                $context->addViolation('Seleccione un estado.');
+        if (null==$this->getEstado())
+            $context->addViolation('Seleccione un estado.');
+        else
+            if (null==$this->getMunicipio())
+                $context->addViolation('Seleccione un municipio.');
             else
-                if (null==$this->getMunicipio())
-                    $context->addViolation('Seleccione un municipio.');
+                if ($this->getEstado()->getId()!=$this->getMunicipio()->getEstado()->getId())
+                    $context->addViolation('Seleccione un municipio que pertenezca a dicho estado.');
                 else
-                    if ($this->getEstado()->getId()!=$this->getMunicipio()->getEstado()->getId())
-                        $context->addViolation('Seleccione un municipio que pertenezca a dicho estado.');
-        }
-        else{
-            $isError=null!=$this->getTipoasentamiento() ||
-                     null!=$this->getEstado() ||
-                     null!=$this->getMunicipio() ||
-                     !empty($this->getAsentamiento()) ||
-                     !empty($this->getNoexterior()) ||
-                     !empty($this->getCalle());
-            if($isError)
-                $context->addViolation('Capte el código postal o la restante información pero no ambos.');
-        }
-
-
+                    if (null==$this->getDCodigo())
+                        $context->addViolation('Seleccione un código postal.');
+                    else
+                        if ($this->getDCodigo()->getMunicipio()->getId()!=$this->getMunicipio()->getId())
+                            $context->addViolation('Seleccione un código postal que pertenezca a dicho municipio.');
     }
 }

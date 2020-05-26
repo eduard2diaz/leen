@@ -3,7 +3,7 @@
 {% block form_label %}
     {{ block('base_form_label') }}
     {% if required %}
-     <!--   <span class="required" title="This field is required">*</span>-->
+     <span class="required" title="This field is required">*</span>
     {% endif %}
 {% endblock form_label %}
 <!--Fin de la personalizacion-->
@@ -13,7 +13,7 @@
 {% block form_errors %}
 
     {% if errors|length > 0 %}
-        <ul style="list-style: none;" class="margin-bottom-10">
+        <ul style="list-style: none;" class="kt-margin-t-5">
             {% for error in errors %}
                 <li><span class="badge badge-danger">Error</span> {{ error.message |trans}}</li>
             {% endfor %}

@@ -120,6 +120,35 @@ var escuela = function () {
                         for(var i=0;i<array.length;i++)
                             cadena+="<option value="+array[i]['id']+">"+array[i]['nombre']+"</option>";
                         $('select#escuela_municipio').html(cadena);
+                        $('select#escuela_municipio').change();
+                    },
+                    error: function () {
+                        //base.Error();
+                    },
+                    complete: function () {
+                        $.unblockUI();
+                    }
+                });
+        });
+    }
+
+    var municipioListener = function () {
+        $('div#basicmodal').on('change', 'select#escuela_municipio', function (evento)
+        {
+            if ($(this).val() > 0)
+                $.ajax({
+                    type: 'get', //Se uso get pues segun los desarrolladores de yahoo es una mejoria en el rendimineto de las peticiones ajax
+                    dataType: 'html',
+                    url: Routing.generate('codigo_postal_find_by_municipio', {'id': $(this).val()}),
+                    beforeSend: function (data) {
+                        $.blockUI({message: '<small>Cargando...</small>'});
+                    },
+                    success: function (data) {
+                        var cadena="";
+                        var array=JSON.parse(data);
+                        for(var i=0;i<array.length;i++)
+                            cadena+="<option value="+array[i]['id']+">"+array[i]['nombre']+"</option>";
+                        $('select#escuela_d_codigo').html(cadena);
                     },
                     error: function () {
                         //base.Error();
@@ -185,6 +214,7 @@ var escuela = function () {
                     edicion();
                     edicionAction();
                     estadoListener();
+                    municipioListener();
                     eliminar();
                 }
             );
