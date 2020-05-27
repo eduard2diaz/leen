@@ -4,7 +4,7 @@
 }}) }}
 <div class="modal-body" id="modal-body">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.proyecto) }}
@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.tipoAccion) }}
@@ -26,7 +26,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+    </div>
+    <div class="row">
+        <div class="col-md-6">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.fechacaptura) }}
@@ -37,9 +39,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.monto) }}
@@ -61,7 +61,7 @@
         </li>
         {% if rendicion_cuentas.id is not empty%}
             <li class="list-inline-item">
-                <a class="btn btn-danger btn-sm  eliminar_rendicion"
+                <a class="btn btn-danger btn-sm color-white eliminar_rendicion"
                    data-href="{{ path('rendicion_cuentas_delete', { 'id': rendicion_cuentas.id }) }}"
                    data-csrf="{{ csrf_token('delete' ~ rendicion_cuentas.id) }}">
                     <i class="flaticon-delete-1"></i> Eliminar</a>

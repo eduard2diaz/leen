@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CondicionEducativaAlumnosRepository")
@@ -24,21 +26,34 @@ class CondicionEducativaAlumnos
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\Length(
+     *      max = 10,
+     *      maxMessage = "La clave del centro de trabajo no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $ccts;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $numalumnas;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min = 0,
+     * )
      */
     private $numalumnos;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min = 1,
+     * )
      */
     private $grado;
 
@@ -127,6 +142,15 @@ class CondicionEducativaAlumnos
     public function setEstatus($estatus): void
     {
         $this->estatus = $estatus;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (null==$this->getDiagnostico())
+            $context->addViolation('Seleccione un diagnóstico.');
     }
 
 }

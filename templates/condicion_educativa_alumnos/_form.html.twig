@@ -55,7 +55,7 @@
 <div class="modal-footer">
     {% if condicion_educativa_alumno.id is not empty%}
         <li class="list-inline-item">
-            <a class="btn btn-danger btn-sm  eliminar_condicion_educativa_alumno"
+            <a class="btn btn-danger btn-sm color-white  eliminar_condicion_educativa_alumno"
                data-href="{{ path('condicion_educativa_alumno_delete', { 'id': condicion_educativa_alumno.id }) }}"
                data-csrf="{{ csrf_token('delete' ~ condicion_educativa_alumno.id) }}">
                 <i class="flaticon-delete-1"></i> Eliminar</a>

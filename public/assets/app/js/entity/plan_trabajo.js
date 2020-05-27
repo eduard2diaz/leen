@@ -93,7 +93,7 @@ var plan_trabajo = function () {
                             "fecha": data['fecha'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='btn default btn-sm showPlan' data-href=" + Routing.generate('plan_trabajo_show', {id: data['id']}) + "><i class='fa eye'></i>Visualizar</a></li>" +
+                                "<a class='btn default btn-sm showPlan' data-href=" + Routing.generate('plan_trabajo_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('plan_trabajo_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",
@@ -178,15 +178,15 @@ var plan_trabajo = function () {
     }
 
     var eliminar = function () {
-        $('div#basicmodal').on('click', 'a.eliminar_diagonostico_plantel', function (evento) {
+        $('div#basicmodal').on('click', 'a.eliminar_plan_trabajo', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
             var token = $(this).attr('data-csrf');
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar diagnóstico plantel',
-                message: '¿Está seguro que desea eliminar este diagnóstico plantel?',
+                title: 'Eliminar plan de trabajo',
+                message: '¿Está seguro que desea eliminar este plan de trabajo?',
                 buttons: {
                     confirm: {
                         label: 'Si, estoy seguro',
@@ -212,7 +212,10 @@ var plan_trabajo = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                document.location.reload();
+                                table.row(obj.parents('tr'))
+                                    .remove()
+                                    .draw('page');
+                                toastr.success(data['mensaje']);
                             },
                             error: function () {
                                 //base.Error();

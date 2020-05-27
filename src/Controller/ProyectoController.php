@@ -78,6 +78,7 @@ class ProyectoController extends AbstractController
             } else {
                 $page = $this->renderView('proyecto/_form.html.twig', [
                     'form' => $form->createView(),
+                    'proyecto' => $proyecto,
                 ]);
                 return $this->json(['form' => $page, 'error' => true,]);
             }

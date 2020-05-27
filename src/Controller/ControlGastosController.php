@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\ControlGastos;
 use App\Entity\Escuela;
+use App\Entity\Estatus;
 use App\Form\ControlGastosType;
 use App\Repository\ControlGastosRepository;
 use App\Tool\FileStorageManager;
@@ -133,17 +134,22 @@ class ControlGastosController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="control_gastos_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="control_gastos_delete")
      */
     public function delete(Request $request, ControlGastos $controlgastos): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$controlgastos->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($controlgastos);
-            $entityManager->flush();
-        }
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $controlgastos->getId(), $request->query->get('_token')))
+            throw $this->createAccessDeniedException();
 
-        return $this->redirectToRoute('control_gastos_index');
+        $em = $this->getDoctrine()->getManager();
+        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+
+        if(!$estatus)
+            throw new \Exception('No existe el estatus');
+
+        $controlgastos->setEstatus($estatus);
+        $em->flush();
+        return $this->json(['mensaje' => 'El control de gastos fue eliminado satisfactoriamente']);
     }
 
     /**

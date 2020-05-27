@@ -4,8 +4,7 @@
 {% endblock %}
 
 {% block escuela_show_header %}
-    <h3 class="kt-subheader__title">Escuela {{ escuela.escuela }}</h3>
-    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+    {{ parent() }}
     <h3 class="kt-subheader__title">Detalles del diagnóstico</h3>
 {% endblock escuela_show_header %}
 
@@ -23,7 +22,7 @@
                         <b>Proyecto:</b> {{ diagnostico_plantel.proyecto }}
                     </div>
                     <div class="col-md-4">
-                        <b>Fecha:</b>{{ diagnostico_plantel.fecha | date('Y-m-d')}}
+                        <b>Fecha:</b> {{ diagnostico_plantel.fecha | date('Y-m-d')}}
                     </div>
                 </div>
 
@@ -57,18 +56,18 @@
                             <div class="tab-pane active" id="kt_tabs_3_1" role="tabpanel">
                                 <div class="row kt-margin-t-30">
                                     <div class="col-md-3">
-                                        <b>Número de aulas:</b>{{ diagnostico_plantel.numeroaulas }}
+                                        <b>Número de aulas:</b> {{ diagnostico_plantel.numeroaulas }}
                                     </div>
                                     <div class="col-md-3">
                                         <b>Condiciones:</b>  {{ diagnostico_plantel.idcondicionesAula }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripNumAulas() }}
+                                        <b>Observación:</b>  {{ diagnostico_plantel.getDescripNumAulas() }}
                                     </div>
                                 </div>
                                 <div class="row kt-margin-t-30">
                                     <div class="col-md-3">
-                                        <b>Número de sanitarios:</b>{{ diagnostico_plantel.numerosanitarios }}
+                                        <b>Número de sanitarios:</b> {{ diagnostico_plantel.numerosanitarios }}
                                     </div>
                                     <div class="col-md-3">
                                         <b>Condiciones:</b> {{ diagnostico_plantel.idcondicionessanitarios }}
@@ -83,10 +82,10 @@
                                         <b>Número de oficinas:</b> {{ diagnostico_plantel.numerooficinas }}
                                     </div>
                                     <div class="col-md-3">
-                                        <b>Condiciones:</b>{{ diagnostico_plantel.idcondicionoficina }}
+                                        <b>Condiciones:</b> {{ diagnostico_plantel.idcondicionoficina }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripNumOficinas() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripNumOficinas() }}
                                     </div>
                                 </div>
 
@@ -98,18 +97,18 @@
                                         <b>Condiciones:</b> {{ diagnostico_plantel.idcondicionesbliblioteca }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripNumBibliotecas() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripNumBibliotecas() }}
                                     </div>
                                 </div>
                                 <div class="row kt-margin-t-30">
                                     <div class="col-md-3">
-                                        <b>Número de aulas de medios:</b>{{ diagnostico_plantel.numeroaulasmedios }}
+                                        <b>Número de aulas de medios:</b> {{ diagnostico_plantel.numeroaulasmedios }}
                                     </div>
                                     <div class="col-md-3">
                                         <b>Condiciones:</b> {{ diagnostico_plantel.idcondicionaulamedios }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripNumAulamedios() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripNumAulamedios() }}
                                     </div>
                                 </div>
                                 <div class="row kt-margin-t-30">
@@ -120,18 +119,18 @@
                                         <b>Condiciones:</b> {{ diagnostico_plantel.idcondicionpatio }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripNumPatios() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripNumPatios() }}
                                     </div>
                                 </div>
                                 <div class="row kt-margin-t-30">
                                     <div class="col-md-3">
-                                        <b>Número de canchas:</b>{{ diagnostico_plantel.numerocanchasdeportivas }}
+                                        <b>Número de canchas:</b> {{ diagnostico_plantel.numerocanchasdeportivas }}
                                     </div>
                                     <div class="col-md-3">
                                         <b>Condiciones:</b> {{ diagnostico_plantel.idcondicioncanchasdeportivas }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripNumCanchasDeportivas() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripNumCanchasDeportivas() }}
                                     </div>
                                 </div>
                                 <div class="row kt-margin-t-30">
@@ -139,10 +138,10 @@
                                         <b>Número de bardas:</b> {{ diagnostico_plantel.numerobarda }}
                                     </div>
                                     <div class="col-md-3">
-                                        <b>Condiciones:</b>{{ diagnostico_plantel.idcondicionbarda }}
+                                        <b>Condiciones:</b> {{ diagnostico_plantel.idcondicionbarda }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripNumBardas() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripNumBardas() }}
                                     </div>
                                 </div>
 
@@ -159,7 +158,7 @@
                                         <b>Condiciones:</b> {{ diagnostico_plantel.idcondicionagua }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripAguaPotables() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripAguaPotables() }}
                                     </div>
                                 </div>
                                 <div class="row kt-margin-t-30">
@@ -172,7 +171,7 @@
                                         <b>Condiciones:</b> {{ diagnostico_plantel.idcondiciondrenaje }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripDrenaje() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripDrenaje() }}
                                     </div>
                                 </div>
                                 <div class="row kt-margin-t-30">
@@ -183,16 +182,16 @@
                                         </label>
                                     </div>
                                     <div class="col-md-3">
-                                        <b>Condiciones:</b>{{ diagnostico_plantel.idcondicionenergia }}
+                                        <b>Condiciones:</b> {{ diagnostico_plantel.idcondicionenergia }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripEnergiaelectrica() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripEnergiaelectrica() }}
                                     </div>
                                 </div>
                                 <div class="row kt-margin-t-30">
                                     <div class="col-md-3">
                                         <label class="kt-checkbox kt-checkbox--success kt-checkbox--bold kt-checkbox--disabled">
-                                            <b>Telefonía:</b>{{ diagnostico_plantel.telefono  ? 'Si' : 'No'}}
+                                            <b>Telefonía:</b> {{ diagnostico_plantel.telefono  ? 'Si' : 'No'}}
                                             <span></span>
                                         </label>
                                     </div>
@@ -200,7 +199,7 @@
                                         <b>Condiciones:</b> {{ diagnostico_plantel.idcondiciontelefono }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripTelefonia() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripTelefonia() }}
                                     </div>
                                 </div>
                                 <div class="row kt-margin-t-30">
@@ -211,10 +210,10 @@
                                         </label>
                                     </div>
                                     <div class="col-md-3">
-                                        <b>Condiciones:</b>{{ diagnostico_plantel.idcondicioninternet }}
+                                        <b>Condiciones:</b> {{ diagnostico_plantel.idcondicioninternet }}
                                     </div>
                                     <div class="col-md-6">
-                                        <b>Observación:</b>{{ diagnostico_plantel.getDescripInternet() }}
+                                        <b>Observación:</b> {{ diagnostico_plantel.getDescripInternet() }}
                                     </div>
                                 </div>
                             </div>

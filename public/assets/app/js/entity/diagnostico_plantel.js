@@ -50,6 +50,19 @@ var diagnostico_plantel = function () {
 
     var configurarFormulario = function () {
         $('select#diagnostico_plantel_proyecto').select2();
+        $('select#diagnostico_plantel_idcondicionesAula').select2();
+        $('select#diagnostico_plantel_idcondicionessanitarios').select2();
+        $('select#diagnostico_plantel_idcondicionoficina').select2();
+        $('select#diagnostico_plantel_idcondicionesbliblioteca').select2();
+        $('select#diagnostico_plantel_idcondicionaulamedios').select2();
+        $('select#diagnostico_plantel_idcondicionpatio').select2();
+        $('select#diagnostico_plantel_idcondicioncanchasdeportivas').select2();
+        $('select#diagnostico_plantel_idcondicionbarda').select2();
+        $('select#diagnostico_plantel_idcondicionagua').select2();
+        $('select#diagnostico_plantel_idcondiciondrenaje').select2();
+        $('select#diagnostico_plantel_idcondicionenergia').select2();
+        $('select#diagnostico_plantel_idcondiciontelefono').select2();
+        $('select#diagnostico_plantel_idcondicioninternet').select2();
         $('input#diagnostico_plantel_fecha').datepicker();
     }
 
@@ -86,7 +99,7 @@ var diagnostico_plantel = function () {
         });
     }
 
-    var show = function () {
+  /*  var show = function () {
         $('body').on('click', 'a.showDiagnostico', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
@@ -111,10 +124,10 @@ var diagnostico_plantel = function () {
                 }
             });
         });
-    }
+    }*/
 
     var eliminar = function () {
-        $('div#basicmodal').on('click', 'a.eliminar_diagonostico_plantel', function (evento) {
+        $('body').on('click', 'a.eliminar_diagonostico_plantel', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
             var token = $(this).attr('data-csrf');
@@ -148,7 +161,7 @@ var diagnostico_plantel = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                document.location.reload();
+                                document.location.href=data['url'];
                             },
                             error: function () {
                                 //base.Error();
@@ -165,7 +178,6 @@ var diagnostico_plantel = function () {
             $().ready(function () {
                     configurarDataTable();
                     show();
-                    eliminar();
                 }
             );
         },
@@ -173,6 +185,7 @@ var diagnostico_plantel = function () {
             $().ready(function () {
                 addEditAction();
                 configurarFormulario();
+                eliminar();
                 }
             );
         },

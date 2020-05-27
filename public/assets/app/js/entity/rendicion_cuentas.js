@@ -93,7 +93,7 @@ var rendicion_cuentas = function () {
                             "fecha": data['fecha'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='btn default btn-sm showRendicion' data-href=" + Routing.generate('rendicion_cuentas_show', {id: data['id']}) + "><i class='fa eye'></i>Visualizar</a></li>" +
+                                "<a class='btn default btn-sm showRendicion' data-href=" + Routing.generate('rendicion_cuentas_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('rendicion_cuentas_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",
@@ -212,7 +212,10 @@ var rendicion_cuentas = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                document.location.reload();
+                                table.row(obj.parents('tr'))
+                                    .remove()
+                                    .draw('page');
+                                toastr.success(data['mensaje']);
                             },
                             error: function () {
                                 //base.Error();

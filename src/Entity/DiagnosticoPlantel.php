@@ -56,6 +56,12 @@ class DiagnosticoPlantel
     private $idcondicionessanitarios;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $estatus;
+
+    /**
      * @ORM\Column(type="integer")
      *  @Assert\Range(
      *      min = 0,
@@ -810,6 +816,22 @@ class DiagnosticoPlantel
     }
 
     /**
+     * @return mixed
+     */
+    public function getEstatus()
+    {
+        return $this->estatus;
+    }
+
+    /**
+     * @param mixed $estatus
+     */
+    public function setEstatus($estatus): void
+    {
+        $this->estatus = $estatus;
+    }
+
+    /**
      * Sets file.
      *
      * @param UploadedFile $file
@@ -834,5 +856,8 @@ class DiagnosticoPlantel
     {
         if (null==$this->getProyecto())
             $context->addViolation('Seleccione un proyecto.');
+        else
+        if ($this->getFecha()<$this->getProyecto()->getFechainicio())
+            $context->addViolation('La fecha del diagnóstico no puede ser inferior a la fecha de inicio del proyecto.');
     }
 }

@@ -21,9 +21,9 @@ class TipoAccion
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=200)
      * @Assert\Length(
-     *      max = 50,
+     *      max = 200,
      *      maxMessage = "El nombre del tipo de acción no puede exceder los {{ limit }} caracteres",
      *)
      */

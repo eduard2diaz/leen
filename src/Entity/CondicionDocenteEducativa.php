@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CondicionDocenteEducativaRepository")
@@ -24,21 +26,37 @@ class CondicionDocenteEducativa
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\Length(
+     *      max = 10,
+     *      maxMessage = "La clave del centro de trabajo no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $ccts;
 
     /**
      * @ORM\Column(type="string", length=18)
+     * @Assert\Length(
+     *      max = 18,
+     *      maxMessage = "El CURP no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $curp;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "El nombre no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $nombre;
 
     /**
      * @ORM\Column(type="string", length=4)
+     * @Assert\Length(
+     *      max = 4,
+     *      maxMessage = "El grado no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $grado;
 
@@ -127,6 +145,15 @@ class CondicionDocenteEducativa
     public function setEstatus($estatus): void
     {
         $this->estatus = $estatus;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (null==$this->getDiagnostico())
+            $context->addViolation('Seleccione un diagnóstico.');
     }
 
 }

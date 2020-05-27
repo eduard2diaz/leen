@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Escuela;
+use App\Entity\Estatus;
 use App\Entity\PlanTrabajo;
 use App\Form\PlanTrabajoType;
 use App\Repository\PlanTrabajoRepository;
@@ -133,17 +134,22 @@ class PlanTrabajoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="plan_trabajo_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="plan_trabajo_delete")
      */
     public function delete(Request $request, PlanTrabajo $planTrabajo): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$planTrabajo->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($planTrabajo);
-            $entityManager->flush();
-        }
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $planTrabajo->getId(), $request->query->get('_token')))
+            throw $this->createAccessDeniedException();
 
-        return $this->redirectToRoute('plan_trabajo_index');
+        $em = $this->getDoctrine()->getManager();
+        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+
+        if(!$estatus)
+            throw new \Exception('No existe el estatus');
+
+        $planTrabajo->setEstatus($estatus);
+        $em->flush();
+        return $this->json(['mensaje' => 'El diagnóstico de plantel fue eliminado satisfactoriamente']);
     }
 
     /**

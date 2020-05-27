@@ -86,7 +86,7 @@
         </li>
         {% if control_gastos.id is not empty%}
             <li class="list-inline-item">
-                <a class="btn btn-danger btn-sm  eliminar_proyecto"
+                <a class="btn btn-danger btn-sm color-white eliminar_control_gasto"
                    data-href="{{ path('control_gastos_delete', { 'id': control_gastos.id }) }}"
                    data-csrf="{{ csrf_token('delete' ~ control_gastos.id) }}">
                     <i class="flaticon-delete-1"></i> Eliminar</a>

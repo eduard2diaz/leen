@@ -52,7 +52,7 @@ class DiagnosticoPlantelType extends AbstractType
             ->add('energiaelectrica',CheckboxType::class,['required'=>false,'label'=>'Energía eléctrica'])
             ->add('idcondicionenergia',null,['label'=>'Condiciones de la energia eléctrica','attr'=>['class'=>'form-control']])
             ->add('telefono',CheckboxType::class,['required'=>false,'label'=>'Teléfono'])
-            ->add('idcondiciontelefono',null,['label'=>'Condiciones de la tefonía','attr'=>['class'=>'form-control']])
+            ->add('idcondiciontelefono',null,['label'=>'Condiciones de la telefonía','attr'=>['class'=>'form-control']])
             ->add('internet',CheckboxType::class,['required'=>false])
             ->add('idcondicioninternet',null,['label'=>'Condiciones del internet','attr'=>['class'=>'form-control']])
             ->add('iddiagnosticoplantel',IntegerType::class,['label'=>'Identificador del diagnóstico','attr'=>['class'=>'form-control']])

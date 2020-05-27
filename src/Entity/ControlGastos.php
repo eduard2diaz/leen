@@ -26,6 +26,12 @@ class ControlGastos
     private $proyecto;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $estatus;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TipoComprobante")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -154,6 +160,22 @@ class ControlGastos
         $this->controlarchivos = $controlarchivos;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEstatus()
+    {
+        return $this->estatus;
+    }
+
+    /**
+     * @param mixed $estatus
+     */
+    public function setEstatus($estatus): void
+    {
+        $this->estatus = $estatus;
     }
 
     /**

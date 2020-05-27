@@ -7,7 +7,7 @@
      {{ parent() }}
      <h3 class="kt-subheader__title">Planes de trabajo</h3>
      <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-     <a data-href="{{ path('plan_trabajo_new',{'id':escuela.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion">
+     <a data-href="{{ path('plan_trabajo_new',{'id':escuela.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion"  data-toggle="m-tooltip" data-skin="dark" data-placement="bottom" data-original-title="Adicionar plan de trabajo">
          Nuevo
      </a>
  {% endblock escuela_show_header %}

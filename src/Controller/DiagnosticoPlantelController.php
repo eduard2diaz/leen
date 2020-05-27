@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DiagnosticoPlantel;
 use App\Entity\Escuela;
+use App\Entity\Estatus;
 use App\Form\DiagnosticoPlantelType;
 use App\Repository\DiagnosticoPlantelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -97,7 +98,6 @@ class DiagnosticoPlantelController extends AbstractController
         $form->handleRequest($request);
 
         $escuela = $diagnosticoPlantel->getProyecto()->getEscuela();
-
         $entityManager = $this->getDoctrine()->getManager();
 
         $consulta = $entityManager->createQuery('Select cde FROM App:CondicionDocenteEducativa cde JOIN cde.diagnostico d 
@@ -145,17 +145,21 @@ class DiagnosticoPlantelController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="diagnostico_plantel_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="diagnostico_plantel_delete")
      */
     public function delete(Request $request, DiagnosticoPlantel $diagnosticoPlantel): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $diagnosticoPlantel->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($diagnosticoPlantel);
-            $entityManager->flush();
-        }
+        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $diagnosticoPlantel->getId(), $request->query->get('_token')))
+            throw $this->createAccessDeniedException();
 
-        return $this->redirectToRoute('diagnostico_plantel_index');
+        $em = $this->getDoctrine()->getManager();
+        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+        if(!$estatus)
+            throw new \Exception('No existe el estatus');
+        $diagnosticoPlantel->setEstatus($estatus);
+        $em->flush();
+        $this->addFlash('success','El diagnóstico de plantel fue eliminado satisfactoriamente');
+        return $this->json(['url' => $this->generateUrl('diagnostico_plantel_index',['id'=>$diagnosticoPlantel->getProyecto()->getEscuela()->getId()])]);
     }
 
     /**

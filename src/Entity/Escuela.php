@@ -30,9 +30,9 @@ class Escuela
     private $escuela;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=10)
      * @Assert\Length(
-     *      max = 50,
+     *      max = 10,
      *      maxMessage = "La clave del centro de Trabajo no puede exceder los {{ limit }} caracteres",
      * )
      */
