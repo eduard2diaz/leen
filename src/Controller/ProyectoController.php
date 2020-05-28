@@ -9,6 +9,7 @@ use App\Entity\PlanTrabajo;
 use App\Entity\Proyecto;
 use App\Entity\RendicionCuentas;
 use App\Entity\ControlGastos;
+use App\Form\FiltroType;
 use App\Form\ProyectoType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,12 +23,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProyectoController extends AbstractController
 {
     /**
-     * @Route("/", name="proyecto_index", methods={"GET"})
+     * @Route("/", name="proyecto_index", methods={"GET","POST"})
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        $form=$this->createForm(FiltroType::class,[],['action'=>$this->generateUrl('proyecto_index')]);
+        $form->handleRequest($request);
+
         $dql   = "SELECT p FROM App:Proyecto p";
-        $query = $this->getDoctrine()->getManager()->createQuery($dql);
+        $data=$request->query->get('filtro');
+
+        if ($form->isSubmitted() || $data!="") {
+            if($form->isSubmitted())
+                $data = $form->getData()["filtro"];
+            $dql   = "SELECT p FROM App:Proyecto p JOIN p.escuela e WHERE e.escuela LIKE :value OR p.numero LIKE :value";
+            $query = $this->getDoctrine()->getManager()->createQuery($dql)->setParameter('value',"%".$data."%");
+        }
+        else
+            $query = $this->getDoctrine()->getManager()->createQuery($dql);
 
         $proyectos = $paginator->paginate(
             $query, /* query NOT result */
@@ -37,6 +50,8 @@ class ProyectoController extends AbstractController
 
         return $this->render('proyecto/index.html.twig', [
             'proyectos' => $proyectos,
+            'filtro'=>$data,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -97,8 +112,11 @@ class ProyectoController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
+        $gastos=$this->getDoctrine()->getRepository(Proyecto::class)->findSumaGastos($proyecto->getId());
         return $this->render('proyecto/show.html.twig', [
             'proyecto' => $proyecto,
+            'montogastado' => $gastos,
+            'saldofinal' => $proyecto->getMontoasignado()-$gastos,
         ]);
     }
 

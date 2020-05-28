@@ -61,3 +61,17 @@ services:
         public: true
         tags:
             - { name: doctrine.event_subscriber,  connection: default }
+
+    control_gastos.validator:
+        class: App\Validator\ControlGastosValidator
+        public: true
+        tags:
+            - { name: validator.constraint_validator, alias: control_gastos.validator }
+        arguments: ['@doctrine']
+
+    proyecto.validator:
+        class: App\Validator\ProyectoValidator
+        public: true
+        tags:
+            - { name: validator.constraint_validator, alias: proyecto.validator }
+        arguments: ['@doctrine']

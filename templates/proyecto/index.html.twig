@@ -12,6 +12,11 @@
                 Nuevo
             </a>
         </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                {% include 'layout/recortes/KnpPaginatorMySkin/filtro.html.twig'%}
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -40,7 +45,7 @@
                             <tr>
                                 <td>{{ i }}</td>
                                 <td>{{ proyecto.numero }}</td>
-                                <td>{{ proyecto.escuela }}</td>
+                                <td>{{ proyecto.escuela.escuela }}</td>
                                 <td>{{ proyecto.fechainicio | date('Y-m-d') }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
@@ -58,7 +63,12 @@
                         </tbody>
                     </table>
                     <div class="navigation">
-                        {{ knp_pagination_render(proyectos) }}
+                        {{ knp_pagination_render(proyectos,
+                            null,
+                            {
+                                'filtro': filtro,
+                            }
+                        ) }}
                     </div>
                 </div>
             </div>

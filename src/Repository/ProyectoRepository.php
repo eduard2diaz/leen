@@ -36,15 +36,14 @@ class ProyectoRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Proyecto
+
+    public function findSumaGastos($proyecto_id)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $cadena = "SELECT SUM(cg.monto) FROM App:ControlGastos cg JOIN cg.proyecto p JOIN cg.estatus s WHERE p.id= :proyecto AND s.estatus=:estatus";
+        $consulta = $this->getEntityManager()->createQuery($cadena);
+        $consulta->setParameter('proyecto', $proyecto_id);
+        $consulta->setParameter('estatus', 'Activo');
+        return $consulta->getResult()[0][1]==null ? 0 : $consulta->getResult()[0][1];
     }
-    */
+
 }

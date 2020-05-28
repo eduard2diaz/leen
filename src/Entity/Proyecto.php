@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Proyecto as ProyectoConstraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProyectoRepository")
+ * @ProyectoConstraint
  */
 class Proyecto
 {
@@ -43,7 +46,11 @@ class Proyecto
     private $montoasignado;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=10)
+     * @Assert\Length(
+     *      max = 10,
+     *      maxMessage = "El número del proyecto no puede exceder los {{ limit }} caracteres",
+     *)
      */
     private $numero;
 
