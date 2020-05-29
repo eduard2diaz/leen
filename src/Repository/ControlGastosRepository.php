@@ -19,32 +19,17 @@ class ControlGastosRepository extends ServiceEntityRepository
         parent::__construct($registry, ControlGastos::class);
     }
 
-    // /**
-    //  * @return ControlGastos[] Returns an array of ControlGastos objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActivos($escuela)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('cg')
+            ->join('cg.proyecto','p')
+            ->join('p.escuela','e')
+            ->join('cg.estatus','es')
+            ->andWhere('es.estatus = :val')
+            ->andWhere('e.id = :escuela')
+            ->setParameter('val', 'Activo')
+            ->setParameter('escuela', $escuela)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?ControlGastos
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

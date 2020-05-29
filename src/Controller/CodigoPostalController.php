@@ -104,17 +104,15 @@ class CodigoPostalController extends AbstractController
     /**
      * @Route("/{id}/findbymunicipio", name="codigo_postal_find_by_municipio", methods={"GET"},options={"expose"=true})
      */
-    public function findByEstado(Request $request, Municipio $municipio): Response
+    public function findByMunicipio(Request $request, Municipio $municipio): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $codigo_postales=$em->getRepository(CodigoPostal::class)->findByMunicipio($municipio);
 
-        $codigos_postales_array=[];
-        foreach ($codigo_postales as $obj)
-            $codigos_postales_array[]=['id'=>$obj->getId(),'nombre'=>$obj->getDCp()];
+        $codigos_postales_array=$em->getRepository(CodigoPostal::class)
+                                   ->findByMunicipioJson($municipio->getId());
 
         return $this->json($codigos_postales_array);
     }

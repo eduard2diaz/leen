@@ -19,32 +19,16 @@ class CondicionDocenteEducativaRepository extends ServiceEntityRepository
         parent::__construct($registry, CondicionDocenteEducativa::class);
     }
 
-    // /**
-    //  * @return CondicionDocenteEducativa[] Returns an array of CondicionDocenteEducativa objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActivos($diagnostico)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('cd')
+            ->join('cd.diagnostico','d')
+            ->join('cd.estatus','es')
+            ->andWhere('es.estatus = :val')
+            ->andWhere('d.id = :diagnostico')
+            ->setParameter('val', 'Activo')
+            ->setParameter('diagnostico', $diagnostico)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?CondicionDocenteEducativa
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

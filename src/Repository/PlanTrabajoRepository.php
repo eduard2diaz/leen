@@ -19,32 +19,17 @@ class PlanTrabajoRepository extends ServiceEntityRepository
         parent::__construct($registry, PlanTrabajo::class);
     }
 
-    // /**
-    //  * @return PlanTrabajo[] Returns an array of PlanTrabajo objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActivos($escuela)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('pt')
+            ->join('pt.proyecto','p')
+            ->join('p.escuela','e')
+            ->join('pt.estatus','es')
+            ->andWhere('es.estatus = :val')
+            ->andWhere('e.id = :escuela')
+            ->setParameter('val', 'Activo')
+            ->setParameter('escuela', $escuela)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?PlanTrabajo
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

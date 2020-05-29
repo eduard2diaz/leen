@@ -29,21 +29,24 @@ class EscuelaController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $form=$this->createForm(FiltroType::class,[],['action'=>$this->generateUrl('escuela_index')]);
+        $form = $this->createForm(FiltroType::class, [], ['action' => $this->generateUrl('escuela_index')]);
         $form->handleRequest($request);
 
-        $dql   = "SELECT e FROM App:Escuela e";
-        $data=$request->query->get('filtro');
+        $dql = "SELECT e FROM App:Escuela e JOIN e.estatus es WHERE es.estatus=:estatus";
+        $data = $request->query->get('filtro');
 
-        if ($form->isSubmitted() || $data!="") {
-            if($form->isSubmitted())
+        if ($form->isSubmitted() || $data != "") {
+            if ($form->isSubmitted())
                 $data = $form->getData()["filtro"];
 
-            $dql   = "SELECT e FROM App:Escuela e WHERE e.escuela LIKE :value OR e.ccts LIKE :value";
-            $query = $this->getDoctrine()->getManager()->createQuery($dql)->setParameter('value',"%".$data."%");
-        }
-        else
+            $dql = "SELECT e FROM App:Escuela e JOIN e.estatus es WHERE es.estatus=:estatus AND (e.escuela LIKE :value OR e.ccts LIKE :value)";
             $query = $this->getDoctrine()->getManager()->createQuery($dql);
+            $query->setParameter('value', "%" . $data . "%");
+            $query->setParameter('estatus', "Activo");
+        } else {
+            $query = $this->getDoctrine()->getManager()->createQuery($dql);
+            $query->setParameter('estatus', 'Activo');
+        }
 
         $escuelas = $paginator->paginate(
             $query, /* query NOT result */
@@ -53,7 +56,7 @@ class EscuelaController extends AbstractController
 
         return $this->render('escuela/index.html.twig', [
             'escuelas' => $escuelas,
-            'filtro'=>$data,
+            'filtro' => $data,
             'form' => $form->createView(),
         ]);
     }
@@ -75,13 +78,13 @@ class EscuelaController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($escuela);
                 $entityManager->flush();
-                $this->addFlash('success','La escuela fue registrada satisfactoriamente');
+                $this->addFlash('success', 'La escuela fue registrada satisfactoriamente');
                 return $this->json([
-                    'url'=>$this->generateUrl('escuela_index')
+                    'url' => $this->generateUrl('escuela_index')
                 ]);
             } else {
                 $page = $this->renderView('escuela/_form.html.twig', [
-                    'escuela'=>$escuela,
+                    'escuela' => $escuela,
                     'form' => $form->createView(),
                 ]);
                 return $this->json(['form' => $page, 'error' => true,]);
@@ -98,8 +101,8 @@ class EscuelaController extends AbstractController
      */
     public function show(Escuela $escuela): Response
     {
-        return $this->render('escuela/details.html.twig',[
-            'escuela'=>$escuela
+        return $this->render('escuela/details.html.twig', [
+            'escuela' => $escuela
         ]);
     }
 
@@ -109,9 +112,9 @@ class EscuelaController extends AbstractController
     public function exportar(Escuela $escuela, Pdf $snappy): Response
     {
         $proyectos = $this->getDoctrine()->getRepository(Proyecto::class)->findByEscuela($escuela);
-        $html=$this->renderView('escuela/pdf.html.twig',[
-            'escuela'=>$escuela,
-            'proyectos'=>$proyectos
+        $html = $this->renderView('escuela/pdf.html.twig', [
+            'escuela' => $escuela,
+            'proyectos' => $proyectos
         ]);
 
         return new Response(
@@ -132,6 +135,7 @@ class EscuelaController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
+        $eliminable=$this->esEliminable($escuela);
         $form = $this->createForm(EscuelaType::class, $escuela, ['action' => $this->generateUrl('escuela_edit', ['id' => $escuela->getId()])]);
         $form->handleRequest($request);
 
@@ -140,13 +144,14 @@ class EscuelaController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($escuela);
                 $em->flush();
-                $this->addFlash('success','La escuela fue actualizada satisfactoriamente');
+                $this->addFlash('success', 'La escuela fue actualizada satisfactoriamente');
                 return $this->json([
-                    'url'=>$this->generateUrl('escuela_index')
+                    'url' => $this->generateUrl('escuela_index')
                 ]);
             } else {
                 $page = $this->renderView('escuela/_form.html.twig', [
                     'escuela' => $escuela,
+                    'eliminable' => $eliminable,
                     'form' => $form->createView(),
                     'form_id' => 'escuela_edit',
                     'action' => 'Actualizar',
@@ -159,28 +164,41 @@ class EscuelaController extends AbstractController
             'title' => 'Editar escuela',
             'action' => 'Actualizar',
             'form_id' => 'escuela_edit',
+            'eliminable' => $eliminable,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="escuela_delete")
+     * @Route("/{id}/delete", name="escuela_delete")
      */
     public function delete(Request $request, Escuela $escuela): Response
     {
-        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $escuela->getId(), $request->query->get('_token')))
+        if (!$request->isXmlHttpRequest() ||
+            !$this->isCsrfTokenValid('delete' . $escuela->getId(), $request->query->get('_token'))
+            || !$this->esEliminable($escuela))
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
-        if(!$estatus)
+        $estatus = $this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+
+        if (!$estatus)
             throw new \Exception('No existe el estatus');
+
         $escuela->setEstatus($estatus);
         $em->flush();
-        $this->addFlash('success','La escuela fue eliminada satisfactoriamente');
+
+        $this->addFlash('success', 'La escuela fue eliminada satisfactoriamente');
         return $this->json([
-            'url'=>$this->generateUrl('escuela_index')
+            'url' => $this->generateUrl('escuela_index')
         ]);
+    }
+
+    private function esEliminable(Escuela $escuela)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $proyecto=$em->getRepository(Proyecto::class)->findOneByEscuela($escuela);
+        return $proyecto==null;
     }
 
 }

@@ -24,9 +24,7 @@ class ControlGastosController extends AbstractController
     public function index(Escuela $escuela): Response
     {
         $em=$this->getDoctrine()->getManager();
-        $consulta = $em->createQuery('Select cg FROM App:ControlGastos cg JOIN cg.proyecto p JOIN p.escuela e 
-        WHERE e.id=:id')->setParameter('id', $escuela->getId());
-        $gastos=$consulta->getResult();
+        $gastos=$consulta = $em->getRepository(ControlGastos::class)->findActivos($escuela->getId());
 
         return $this->render('control_gastos/index.html.twig', [
             'control_gastos' => $gastos,
@@ -60,6 +58,8 @@ class ControlGastosController extends AbstractController
             } else {
                 $page = $this->renderView('control_gastos/_form.html.twig', [
                     'form' => $form->createView(),
+                    'control_gastos' => $controlgasto,
+                    'escuela' => $escuela,
                 ]);
                 return $this->json(['control_gastos' => $page, 'error' => true,]);
             }

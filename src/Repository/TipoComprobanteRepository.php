@@ -19,32 +19,13 @@ class TipoComprobanteRepository extends ServiceEntityRepository
         parent::__construct($registry, TipoComprobante::class);
     }
 
-    // /**
-    //  * @return TipoComprobante[] Returns an array of TipoComprobante objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActivos()
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->join('t.estatus','e')
+            ->andWhere('e.estatus = :val')
+            ->setParameter('val', 'Activo')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?TipoComprobante
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

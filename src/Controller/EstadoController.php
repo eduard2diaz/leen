@@ -20,9 +20,7 @@ class EstadoController extends AbstractController
      */
     public function index(): Response
     {
-        $estados = $this->getDoctrine()
-            ->getRepository(Estado::class)
-            ->findAll();
+        $estados = $this->getDoctrine()->getRepository(Estado::class)->findAll();
 
         return $this->render('estado/index.html.twig', [
             'estados' => $estados,
@@ -107,7 +105,7 @@ class EstadoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="estado_delete")
+     * @Route("/{id}/delete", name="estado_delete")
      */
     public function delete(Request $request, Estado $estado): Response
     {

@@ -42,8 +42,8 @@ class MunicipioController extends AbstractController
 
         $municipios = $paginator->paginate(
             $query, /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            10 /*limit per page*/
+            $request->query->getInt('page', 1),
+            10
         );
 
         return $this->render('municipio/index.html.twig', [
@@ -95,11 +95,7 @@ class MunicipioController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $municipio=$em->getRepository(Municipio::class)->findByEstado($estado);
-
-        $municipio_array=[];
-        foreach ($municipio as $obj)
-            $municipio_array[]=['id'=>$obj->getId(),'nombre'=>$obj->getNombre()];
+        $municipio_array=$em->getRepository(Municipio::class)->findByEstadoJson($estado->getId());
 
         return $this->json($municipio_array);
     }
@@ -145,7 +141,7 @@ class MunicipioController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="municipio_delete")
+     * @Route("/{id}/delete", name="municipio_delete")
      */
     public function delete(Request $request, Municipio $municipio): Response
     {

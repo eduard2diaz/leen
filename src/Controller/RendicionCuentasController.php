@@ -24,9 +24,7 @@ class RendicionCuentasController extends AbstractController
     public function index(Escuela $escuela): Response
     {
         $em=$this->getDoctrine()->getManager();
-        $consulta = $em->createQuery('Select rc FROM App:RendicionCuentas rc JOIN rc.proyecto p JOIN p.escuela e 
-        WHERE e.id=:id')->setParameter('id', $escuela->getId());
-        $rendiciones=$consulta->getResult();
+        $rendiciones=$em->getRepository(RendicionCuentas::class)->findActivos($escuela->getId());
 
         return $this->render('rendicion_cuentas/index.html.twig', [
             'rendicion_cuentas' => $rendiciones,
@@ -42,20 +40,20 @@ class RendicionCuentasController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
-        $controlgasto = new RendicionCuentas();
-        $form = $this->createForm(RendicionCuentasType::class, $controlgasto, ['action' => $this->generateUrl('rendicion_cuentas_new',['id'=>$escuela->getId()]),'escuela'=>$escuela->getId()]);
+        $rendicioncuentas = new RendicionCuentas();
+        $form = $this->createForm(RendicionCuentasType::class, $rendicioncuentas, ['action' => $this->generateUrl('rendicion_cuentas_new',['id'=>$escuela->getId()]),'escuela'=>$escuela->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
             if ($form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($controlgasto);
+                $entityManager->persist($rendicioncuentas);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'La rendición de cuentas fue registrada satisfactoriamente',
-                    'proyecto' => $controlgasto->getProyecto()->__toString(),
-                    'tipoaccion' => $controlgasto->getTipoAccion()->__toString(),
-                    'fecha' => $controlgasto->getFechacaptura()->format('Y-m-d'),
-                    'id' => $controlgasto->getId(),
+                    'proyecto' => $rendicioncuentas->getProyecto()->__toString(),
+                    'tipoaccion' => $rendicioncuentas->getTipoAccion()->__toString(),
+                    'fecha' => $rendicioncuentas->getFechacaptura()->format('Y-m-d'),
+                    'id' => $rendicioncuentas->getId(),
                 ]);
             } else {
                 $page = $this->renderView('rendicion_cuentas/_form.html.twig', [
@@ -65,7 +63,7 @@ class RendicionCuentasController extends AbstractController
             }
 
         return $this->render('rendicion_cuentas/new.html.twig', [
-            'rendicion_cuentas' => $controlgasto,
+            'rendicion_cuentas' => $rendicioncuentas,
             'escuela' => $escuela,
             'form' => $form->createView(),
         ]);

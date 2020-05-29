@@ -92,11 +92,7 @@ class CiudadController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $ciudad=$em->getRepository(Ciudad::class)->findByMunicipio($municipio);
-
-        $ciudad_array=[];
-        foreach ($ciudad as $obj)
-            $ciudad_array[]=['id'=>$obj->getId(),'nombre'=>$obj->getNombre()];
+        $ciudad_array=$em->getRepository(Ciudad::class)->findByMunicipioJson($municipio->getId());
 
         return $this->json($ciudad_array);
     }

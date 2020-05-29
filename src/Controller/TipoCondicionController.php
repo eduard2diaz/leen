@@ -106,7 +106,7 @@ class TipoCondicionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tipo_condicion_delete")
+     * @Route("/{id}/delete", name="tipo_condicion_delete")
      */
     public function delete(Request $request, TipoCondicion $tipocondicion): Response
     {
@@ -122,24 +122,7 @@ class TipoCondicionController extends AbstractController
     private function esEliminable(TipoCondicion $tipocondicion)
     {
         $em = $this->getDoctrine()->getManager();
-        $consulta = $em->createQuery('Select dp FROM App:DiagnosticoPlantel dp 
-        WHERE 
-        dp.idcondicionesAula=:id OR
-        dp.idcondicionessanitarios=:id OR
-        dp.idcondicionoficina=:id OR
-        dp.idcondicionesbliblioteca=:id OR
-        dp.idcondicionaulamedios=:id OR
-        dp.idcondicionpatio=:id OR
-        dp.idcondicioncanchasdeportivas=:id OR
-        dp.idcondicionbarda=:id OR
-        dp.idcondicionagua=:id OR
-        dp.idcondiciondrenaje=:id OR
-        dp.idcondicionenergia=:id OR
-        dp.idcondiciontelefono=:id OR
-        dp.idcondicioninternet=:id         
-        ')->setParameter('id', $tipocondicion->getId());
-        $consulta->setMaxResults(1);
-        $diagnostico=$consulta->getResult();
+        $diagnostico=$em->getRepository(DiagnosticoPlantel::class)->findOneByTipoCondicion($tipocondicion->getId());
         return $diagnostico==null;
     }
 }

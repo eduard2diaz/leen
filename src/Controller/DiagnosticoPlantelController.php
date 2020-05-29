@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\CondicionDocenteEducativa;
+use App\Entity\CondicionEducativaAlumnos;
 use App\Entity\DiagnosticoPlantel;
 use App\Entity\Escuela;
 use App\Entity\Estatus;
@@ -24,9 +26,8 @@ class DiagnosticoPlantelController extends AbstractController
     public function index(Escuela $escuela): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $consulta = $em->createQuery('Select dp FROM App:DiagnosticoPlantel dp JOIN dp.proyecto p JOIN p.escuela e 
-        WHERE e.id=:id')->setParameter('id', $escuela->getId());
-        $diagnosticos = $consulta->getResult();
+        $diagnosticos=$em->getRepository(DiagnosticoPlantel::class)->findActivos($escuela->getId());
+
         return $this->render('diagnostico_plantel/index.html.twig', [
             'diagnosticos' => $diagnosticos,
             'escuela' => $escuela,
@@ -55,6 +56,8 @@ class DiagnosticoPlantelController extends AbstractController
                 } else {
                     $page = $this->renderView('diagnostico_plantel/_form.html.twig', [
                         'form' => $form->createView(),
+                        'diagnostico_plantel' => $diagnosticoPlantel,
+                        'escuela' => $escuela,
                     ]);
                     return $this->json(['form' => $page, 'error' => true,]);
                 }
@@ -73,13 +76,8 @@ class DiagnosticoPlantelController extends AbstractController
     {
         $entityManager=$this->getDoctrine()->getManager();
 
-        $consulta = $entityManager->createQuery('Select cde FROM App:CondicionDocenteEducativa cde JOIN cde.diagnostico d 
-        WHERE d.id=:id')->setParameter('id', $diagnosticoPlantel->getId());
-        $condicion_docente_educativas = $consulta->getResult();
-
-        $consulta = $entityManager->createQuery('Select cea FROM App:CondicionEducativaAlumnos cea JOIN cea.diagnostico d 
-        WHERE d.id=:id')->setParameter('id', $diagnosticoPlantel->getId());
-        $condicion_educativa_alumnos = $consulta->getResult();
+        $condicion_docente_educativas = $entityManager->getRepository(CondicionDocenteEducativa::class)->findActivos($diagnosticoPlantel->getId());
+        $condicion_educativa_alumnos = $entityManager->getRepository(CondicionEducativaAlumnos::class)->findActivos($diagnosticoPlantel->getId());
 
         return $this->render('diagnostico_plantel/show.html.twig', [
             'diagnostico_plantel' => $diagnosticoPlantel,
@@ -100,13 +98,8 @@ class DiagnosticoPlantelController extends AbstractController
         $escuela = $diagnosticoPlantel->getProyecto()->getEscuela();
         $entityManager = $this->getDoctrine()->getManager();
 
-        $consulta = $entityManager->createQuery('Select cde FROM App:CondicionDocenteEducativa cde JOIN cde.diagnostico d 
-        WHERE d.id=:id')->setParameter('id', $diagnosticoPlantel->getId());
-        $condicion_docente_educativas = $consulta->getResult();
-
-        $consulta = $entityManager->createQuery('Select cea FROM App:CondicionEducativaAlumnos cea JOIN cea.diagnostico d 
-        WHERE d.id=:id')->setParameter('id', $diagnosticoPlantel->getId());
-        $condicion_educativa_alumnos = $consulta->getResult();
+        $condicion_docente_educativas = $entityManager->getRepository(CondicionDocenteEducativa::class)->findActivos($diagnosticoPlantel->getId());
+        $condicion_educativa_alumnos = $entityManager->getRepository(CondicionEducativaAlumnos::class)->findActivos($diagnosticoPlantel->getId());
 
         if ($form->isSubmitted())
             if (!$request->isXmlHttpRequest())
@@ -130,6 +123,8 @@ class DiagnosticoPlantelController extends AbstractController
                 } else {
                     $page = $this->renderView('diagnostico_plantel/_form.html.twig', [
                         'form' => $form->createView(),
+                        'diagnostico_plantel' => $diagnosticoPlantel,
+                        'escuela' => $escuela,
                     ]);
                     return $this->json(['form' => $page, 'error' => true,]);
                 }

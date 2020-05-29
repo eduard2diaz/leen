@@ -44,7 +44,7 @@ var ciudad = function () {
             if ($(this).val() > 0)
                 $.ajax({
                     type: 'get', //Se uso get pues segun los desarrolladores de yahoo es una mejoria en el rendimineto de las peticiones ajax
-                    dataType: 'html',
+                    dataType: 'json',
                     url: Routing.generate('municipio_find_by_estado', {'id': $(this).val()}),
                     beforeSend: function (data) {
                         $.blockUI({message: '<small>Cargando...</small>'});
@@ -52,8 +52,10 @@ var ciudad = function () {
                     success: function (data) {
                         var cadena="";
                         var array=JSON.parse(data);
-                        for(var i=0;i<array.length;i++)
-                            cadena+="<option value="+array[i]['id']+">"+array[i]['nombre']+"</option>";
+                        if(data!=null) {
+                            for (var i = 0; i < array.length; i++)
+                                cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
+                        }
                         $('select#ciudad_municipio').html(cadena);
                     },
                     error: function () {

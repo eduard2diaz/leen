@@ -52,11 +52,10 @@ class CondicionDocenteEducativa
     private $nombre;
 
     /**
-     * @ORM\Column(type="string", length=4)
-     * @Assert\Length(
-     *      max = 4,
-     *      maxMessage = "El grado no puede exceder los {{ limit }} caracteres",
-     *)
+     * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min = 1,
+     * )
      */
     private $grado;
 
@@ -119,12 +118,12 @@ class CondicionDocenteEducativa
         return $this;
     }
 
-    public function getGrado(): ?string
+    public function getGrado(): ?int
     {
         return $this->grado;
     }
 
-    public function setGrado(string $grado): self
+    public function setGrado(int $grado): self
     {
         $this->grado = $grado;
 

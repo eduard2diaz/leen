@@ -19,32 +19,12 @@ class CodigoPostalRepository extends ServiceEntityRepository
         parent::__construct($registry, CodigoPostal::class);
     }
 
-    // /**
-    //  * @return CodigoPostal[] Returns an array of CodigoPostal objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByMunicipioJson($municipio)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $consulta="Select array_to_json(array_agg(data)) from (Select cp.id as id, cp.d_cp as nombre from codigo_postal as cp join municipio m on m.id = cp.municipio_id WHERE m.id=".$municipio.") as data";
+        $connection=$this->getEntityManager()->getConnection();
+        $statement=$connection->query($consulta);
+        $result = $statement->fetchAll();
+        return $result[0]['array_to_json'];
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?CodigoPostal
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

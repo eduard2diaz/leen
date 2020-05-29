@@ -19,32 +19,41 @@ class DiagnosticoPlantelRepository extends ServiceEntityRepository
         parent::__construct($registry, DiagnosticoPlantel::class);
     }
 
-    // /**
-    //  * @return DiagnosticoPlantel[] Returns an array of DiagnosticoPlantel objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActivos($escuela)
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('dp')
+            ->join('dp.proyecto','p')
+            ->join('p.escuela','e')
+            ->join('dp.estatus','es')
+            ->andWhere('es.estatus = :val')
+            ->andWhere('e.id = :escuela')
+            ->setParameter('val', 'Activo')
+            ->setParameter('escuela', $escuela)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?DiagnosticoPlantel
+    public function findOneByTipoCondicion($tipo_condicion): ?DiagnosticoPlantel
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query= 'Select dp FROM App:DiagnosticoPlantel dp 
+        WHERE 
+        dp.idcondicionesAula=:id OR
+        dp.idcondicionessanitarios=:id OR
+        dp.idcondicionoficina=:id OR
+        dp.idcondicionesbliblioteca=:id OR
+        dp.idcondicionaulamedios=:id OR
+        dp.idcondicionpatio=:id OR
+        dp.idcondicioncanchasdeportivas=:id OR
+        dp.idcondicionbarda=:id OR
+        dp.idcondicionagua=:id OR
+        dp.idcondiciondrenaje=:id OR
+        dp.idcondicionenergia=:id OR
+        dp.idcondiciontelefono=:id OR
+        dp.idcondicioninternet=:id         
+        ';
+
+        $consulta = $this->getEntityManager()->createQuery($query)->setParameter('id', $tipo_condicion);
+        return $consulta->getOneOrNullResult();
     }
-    */
+
 }

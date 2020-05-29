@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Estatus;
 use App\Entity\PlanTrabajo;
 use App\Entity\RendicionCuentas;
 use App\Entity\TipoAccion;
@@ -23,7 +24,7 @@ class TipoAccionController extends AbstractController
     {
         $tipoaccions = $this->getDoctrine()
             ->getRepository(TipoAccion::class)
-            ->findAll();
+            ->findActivos();
 
         return $this->render('tipo_accion/index.html.twig', [
             'tipo_accions' => $tipoaccions,
@@ -121,15 +122,18 @@ class TipoAccionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tipo_accion_delete")
+     * @Route("/{id}/delete", name="tipo_accion_delete")
      */
     public function delete(Request $request, TipoAccion $tipoaccion): Response
     {
         if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $tipoaccion->getId(), $request->query->get('_token')) || false==$this->esEliminable($tipoaccion))
             throw $this->createAccessDeniedException();
 
+
         $em = $this->getDoctrine()->getManager();
-        $em->remove($tipoaccion);
+        $estatus=$em->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+        $tipoaccion->setEstatus($estatus);
+        $em->persist($tipoaccion);
         $em->flush();
         return $this->json(['mensaje' => 'El tipo de acción fue eliminado satisfactoriamente']);
     }

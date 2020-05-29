@@ -45,6 +45,7 @@ class CondicionEducativaAlumnosController extends AbstractController
             } else {
                 $page = $this->renderView('condicion_educativa_alumnos/_form.html.twig', [
                     'form' => $form->createView(),
+                    'condicion_educativa_alumno' => $condicion_educativa_alumno,
                 ]);
                 return $this->json(['form' => $page, 'error' => true,]);
             }

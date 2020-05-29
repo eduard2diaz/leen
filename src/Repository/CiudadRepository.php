@@ -19,32 +19,12 @@ class CiudadRepository extends ServiceEntityRepository
         parent::__construct($registry, Ciudad::class);
     }
 
-    // /**
-    //  * @return Ciudad[] Returns an array of Ciudad objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByMunicipioJson($municipio)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $consulta="Select array_to_json(array_agg(data)) from (Select c.id as id, c.nombre as nombre from ciudad as c join municipio m on c.municipio_id = m.id WHERE m.id=".$municipio.") as data";
+        $connection=$this->getEntityManager()->getConnection();
+        $statement=$connection->query($consulta);
+        $result = $statement->fetchAll();
+        return $result[0]['array_to_json'];
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Ciudad
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

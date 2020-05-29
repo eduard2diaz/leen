@@ -75,7 +75,7 @@ class TipoAsentamientoController extends AbstractController
         $form = $this->createForm(TipoAsentamientoType::class, $tipoasentamiento, ['action' => $this->generateUrl('tipo_asentamiento_edit', ['id' => $tipoasentamiento->getId()])]);
         $form->handleRequest($request);
 
-        $eliminable=$this->esEliminable($tipoasentamiento);
+        $eliminable = $this->esEliminable($tipoasentamiento);
         if ($form->isSubmitted())
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
@@ -88,7 +88,7 @@ class TipoAsentamientoController extends AbstractController
             } else {
                 $page = $this->renderView('tipo_asentamiento/_form.html.twig', [
                     'tipoasentamiento' => $tipoasentamiento,
-                    'eliminable'=>$eliminable,
+                    'eliminable' => $eliminable,
                     'form' => $form->createView(),
                     'form_id' => 'tipo_asentamiento_edit',
                     'action' => 'Actualizar',
@@ -98,7 +98,7 @@ class TipoAsentamientoController extends AbstractController
 
         return $this->render('tipo_asentamiento/new.html.twig', [
             'tipoasentamiento' => $tipoasentamiento,
-            'eliminable'=>$eliminable,
+            'eliminable' => $eliminable,
             'title' => 'Editar tipo de asentamiento',
             'action' => 'Actualizar',
             'form_id' => 'tipo_asentamiento_edit',
@@ -107,11 +107,13 @@ class TipoAsentamientoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tipo_asentamiento_delete")
+     * @Route("/{id}/delete", name="tipo_asentamiento_delete")
      */
     public function delete(Request $request, TipoAsentamiento $tipoasentamiento): Response
     {
-        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $tipoasentamiento->getId(), $request->query->get('_token')) || !$this->esEliminable($tipoasentamiento))
+        if (!$request->isXmlHttpRequest() ||
+            !$this->isCsrfTokenValid('delete' . $tipoasentamiento->getId(),$request->query->get('_token'))
+            || !$this->esEliminable($tipoasentamiento))
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
@@ -123,7 +125,7 @@ class TipoAsentamientoController extends AbstractController
     private function esEliminable(TipoAsentamiento $tipoAsentamiento)
     {
         $em = $this->getDoctrine()->getManager();
-        $codigo_postal=$em->getRepository(CodigoPostal::class)->findOneByTipoasentamiento($tipoAsentamiento);
-        return $codigo_postal==null;
+        $codigo_postal = $em->getRepository(CodigoPostal::class)->findOneByTipoasentamiento($tipoAsentamiento);
+        return $codigo_postal == null;
     }
 }

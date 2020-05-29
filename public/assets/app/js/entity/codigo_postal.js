@@ -123,7 +123,7 @@ var codigo_postal = function () {
             if ($(this).val() > 0)
                 $.ajax({
                     type: 'get', //Se uso get pues segun los desarrolladores de yahoo es una mejoria en el rendimineto de las peticiones ajax
-                    dataType: 'html',
+                    dataType: 'json',
                     url: Routing.generate('municipio_find_by_estado', {'id': $(this).val()}),
                     beforeSend: function (data) {
                         $.blockUI({message: '<small>Cargando...</small>'});
@@ -131,10 +131,16 @@ var codigo_postal = function () {
                     success: function (data) {
                         var cadena="";
                         var array=JSON.parse(data);
-                        for(var i=0;i<array.length;i++)
-                            cadena+="<option value="+array[i]['id']+">"+array[i]['nombre']+"</option>";
-                        $('select#codigo_postal_municipio').html(cadena);
-                        $('select#codigo_postal_municipio').change();
+                        if(data!=null) {
+                            for (var i = 0; i < array.length; i++)
+                                cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
+                            $('select#codigo_postal_municipio').html(cadena);
+                            $('select#codigo_postal_municipio').change();
+                        }
+                        else{
+                            $('select#codigo_postal_municipio').html(cadena);
+                            $('select#codigo_postal_ciudad').html(cadena);
+                        }
                     },
                     error: function () {
                         //base.Error();
@@ -152,7 +158,7 @@ var codigo_postal = function () {
             if ($(this).val() > 0)
                 $.ajax({
                     type: 'get', //Se uso get pues segun los desarrolladores de yahoo es una mejoria en el rendimineto de las peticiones ajax
-                    dataType: 'html',
+                    dataType: 'json',
                     url: Routing.generate('ciudad_find_by_municipio', {'id': $(this).val()}),
                     beforeSend: function (data) {
                         $.blockUI({message: '<small>Cargando...</small>'});
@@ -160,8 +166,10 @@ var codigo_postal = function () {
                     success: function (data) {
                         var cadena="";
                         var array=JSON.parse(data);
-                        for(var i=0;i<array.length;i++)
-                            cadena+="<option value="+array[i]['id']+">"+array[i]['nombre']+"</option>";
+                        if(data!=null) {
+                            for (var i = 0; i < array.length; i++)
+                                cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
+                        }
                         $('select#codigo_postal_ciudad').html(cadena);
                     },
                     error: function () {

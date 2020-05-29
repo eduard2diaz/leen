@@ -19,32 +19,13 @@ class MunicipioRepository extends ServiceEntityRepository
         parent::__construct($registry, Municipio::class);
     }
 
-    // /**
-    //  * @return Municipio[] Returns an array of Municipio objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByEstadoJson($estado)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $consulta="Select array_to_json(array_agg(data)) from (Select m.id as id, m.nombre as nombre from municipio as m join estado e on m.estado_id = e.id WHERE e.id=".$estado.") as data";
+        $connection=$this->getEntityManager()->getConnection();
+        $statement=$connection->query($consulta);
+        $result = $statement->fetchAll();
+        return $result[0]['array_to_json'];
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Municipio
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

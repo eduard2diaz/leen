@@ -19,32 +19,13 @@ class TipoAccionRepository extends ServiceEntityRepository
         parent::__construct($registry, TipoAccion::class);
     }
 
-    // /**
-    //  * @return TipoAccion[] Returns an array of TipoAccion objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActivos()
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->join('t.estatus','e')
+            ->andWhere('e.estatus = :val')
+            ->setParameter('val', 'Activo')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?TipoAccion
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

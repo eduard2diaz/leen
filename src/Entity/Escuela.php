@@ -219,7 +219,7 @@ class Escuela
 
     public function __toString()
     {
-        return $this->getEscuela().' '.$this->getCcts();
+        return $this->getEscuela().'('.$this->getCcts().')';
     }
 
     /**

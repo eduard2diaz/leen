@@ -19,32 +19,17 @@ class RendicionCuentasRepository extends ServiceEntityRepository
         parent::__construct($registry, RendicionCuentas::class);
     }
 
-    // /**
-    //  * @return RendicionCuentas[] Returns an array of RendicionCuentas objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActivos($escuela)
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('rc')
+            ->join('rc.proyecto','p')
+            ->join('p.escuela','e')
+            ->join('rc.estatus','es')
+            ->andWhere('es.estatus = :val')
+            ->andWhere('e.id = :escuela')
+            ->setParameter('val', 'Activo')
+            ->setParameter('escuela', $escuela)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?RendicionCuentas
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

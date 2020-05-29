@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ControlGastos;
+use App\Entity\Estatus;
 use App\Entity\TipoComprobante;
 use App\Form\TipoComprobanteType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +23,7 @@ class TipoComprobanteController extends AbstractController
     {
         $tipocomprobante = $this->getDoctrine()
             ->getRepository(TipoComprobante::class)
-            ->findAll();
+            ->findActivos();
 
         return $this->render('tipo_comprobante/index.html.twig', [
             'tipo_comprobantes' => $tipocomprobante,
@@ -118,7 +119,7 @@ class TipoComprobanteController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tipo_comprobante_delete")
+     * @Route("/{id}/delete", name="tipo_comprobante_delete")
      */
     public function delete(Request $request, TipoComprobante $tipocomprobante): Response
     {
@@ -126,9 +127,11 @@ class TipoComprobanteController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $em->remove($tipocomprobante);
+        $estatus=$em->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+        $tipocomprobante->setEstatus($estatus);
+        $em->persist($tipocomprobante);
         $em->flush();
-        return $this->json(['mensaje' => 'El tipo de acción fue eliminado satisfactoriamente']);
+        return $this->json(['mensaje' => 'El tipo de comprobante fue eliminado satisfactoriamente']);
     }
 
     private function esEliminable(TipoComprobante $tipocomprobante)

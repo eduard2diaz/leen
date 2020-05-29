@@ -30,17 +30,21 @@ class ProyectoController extends AbstractController
         $form=$this->createForm(FiltroType::class,[],['action'=>$this->generateUrl('proyecto_index')]);
         $form->handleRequest($request);
 
-        $dql   = "SELECT p FROM App:Proyecto p";
+        $dql   = "SELECT p FROM App:Proyecto p JOIN p.estatus es WHERE es.estatus=:estatus";
         $data=$request->query->get('filtro');
 
         if ($form->isSubmitted() || $data!="") {
             if($form->isSubmitted())
                 $data = $form->getData()["filtro"];
-            $dql   = "SELECT p FROM App:Proyecto p JOIN p.escuela e WHERE e.escuela LIKE :value OR p.numero LIKE :value";
-            $query = $this->getDoctrine()->getManager()->createQuery($dql)->setParameter('value',"%".$data."%");
-        }
-        else
+            $dql   = "SELECT p FROM App:Proyecto p JOIN p.estatus es JOIN p.escuela e WHERE es.estatus=:estatus  AND (e.escuela LIKE :value OR p.numero LIKE :value)";
             $query = $this->getDoctrine()->getManager()->createQuery($dql);
+            $query->setParameter('value',"%".$data."%");
+            $query->setParameter('estatus','Activo');
+        }
+        else{
+            $query = $this->getDoctrine()->getManager()->createQuery($dql);
+            $query->setParameter('estatus', 'Activo');
+        }
 
         $proyectos = $paginator->paginate(
             $query, /* query NOT result */
@@ -128,6 +132,7 @@ class ProyectoController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
+        $eliminable=$this->esEliminable($proyecto);
         $form = $this->createForm(ProyectoType::class, $proyecto, ['action' => $this->generateUrl('proyecto_edit', ['id' => $proyecto->getId()])]);
         $form->handleRequest($request);
 
@@ -146,6 +151,7 @@ class ProyectoController extends AbstractController
                     'form' => $form->createView(),
                     'form_id' => 'proyecto_edit',
                     'action' => 'Actualizar',
+                    'eliminable' => $eliminable,
                 ]);
                 return $this->json(['form' => $page, 'error' => true]);
             }
@@ -155,6 +161,7 @@ class ProyectoController extends AbstractController
             'title' => 'Editar proyecto',
             'action' => 'Actualizar',
             'form_id' => 'proyecto_edit',
+            'eliminable' => $eliminable,
             'form' => $form->createView(),
         ]);
     }
@@ -164,19 +171,33 @@ class ProyectoController extends AbstractController
      */
     public function delete(Request $request, Proyecto $proyecto): Response
     {
-        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $proyecto->getId(), $request->query->get('_token')))
+        if (!$request->isXmlHttpRequest() ||
+            !$this->isCsrfTokenValid('delete' . $proyecto->getId(), $request->query->get('_token'))
+            || !$this->esEliminable($proyecto))
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
         $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+
         if(!$estatus)
             throw new \Exception('No existe el estatus');
+
         $proyecto->setEstatus($estatus);
         $em->flush();
         $this->addFlash('success','El proyecto fue eliminado satisfactoriamente');
         return $this->json([
             'url'=>$this->generateUrl('proyecto_index')
         ]);
+    }
+
+    private function esEliminable(Proyecto $proyecto)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $diagnostico=$em->getRepository(DiagnosticoPlantel::class)->findOneByProyecto($proyecto);
+        $plan_trabajo=$em->getRepository(PlanTrabajo::class)->findOneByProyecto($proyecto);
+        $control_gasto=$em->getRepository(ControlGastos::class)->findOneByProyecto($proyecto);
+        $rendicion_cuenta=$em->getRepository(RendicionCuentas::class)->findOneByProyecto($proyecto);
+        return $diagnostico==null && $plan_trabajo==null && $control_gasto==null && $rendicion_cuenta==null;
     }
 
 

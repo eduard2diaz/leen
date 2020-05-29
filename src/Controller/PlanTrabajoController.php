@@ -24,9 +24,7 @@ class PlanTrabajoController extends AbstractController
     public function index(Escuela $escuela): Response
     {
         $em=$this->getDoctrine()->getManager();
-        $consulta = $em->createQuery('Select pt FROM App:PlanTrabajo pt JOIN pt.proyecto p JOIN p.escuela e 
-        WHERE e.id=:id')->setParameter('id', $escuela->getId());
-        $planTrabajos=$consulta->getResult();
+        $planTrabajos=$em->getRepository(PlanTrabajo::class)->findActivos($escuela->getId());
 
         return $this->render('plan_trabajo/index.html.twig', [
             'plan_trabajos' => $planTrabajos,
