@@ -25,15 +25,6 @@ class CondicionDocenteEducativa
     private $diagnostico;
 
     /**
-     * @ORM\Column(type="string", length=10)
-     * @Assert\Length(
-     *      max = 10,
-     *      maxMessage = "La clave del centro de trabajo no puede exceder los {{ limit }} caracteres",
-     *)
-     */
-    private $ccts;
-
-    /**
      * @ORM\Column(type="string", length=18)
      * @Assert\Length(
      *      max = 18,
@@ -63,6 +54,12 @@ class CondicionDocenteEducativa
      */
     private $estatus;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\EscuelaCCTS")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $ccts;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,18 +73,6 @@ class CondicionDocenteEducativa
     public function setDiagnostico(?DiagnosticoPlantel $diagnostico): self
     {
         $this->diagnostico = $diagnostico;
-
-        return $this;
-    }
-
-    public function getCcts(): ?string
-    {
-        return $this->ccts;
-    }
-
-    public function setCcts(string $ccts): self
-    {
-        $this->ccts = $ccts;
 
         return $this;
     }
@@ -148,6 +133,18 @@ class CondicionDocenteEducativa
         $this->estatus = $estatus;
     }
 
+    public function getCcts(): ?EscuelaCCTS
+    {
+        return $this->ccts;
+    }
+
+    public function setCcts(?EscuelaCCTS $ccts): self
+    {
+        $this->ccts = $ccts;
+
+        return $this;
+    }
+
     /**
      * @Assert\Callback
      */
@@ -155,6 +152,7 @@ class CondicionDocenteEducativa
     {
         if (null==$this->getDiagnostico())
             $context->addViolation('Seleccione un diagnóstico.');
+        if (null==$this->getCcts())
+            $context->addViolation('Seleccione una clave del centro de trabajo.');
     }
-
 }

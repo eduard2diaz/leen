@@ -6,6 +6,9 @@ var condicion_docente_educativa = function () {
         $('select#condicion_docente_educativa_grado').select2({
             dropdownParent: $("#basicmodal"),
         });
+        $('select#condicion_docente_educativa_ccts').select2({
+            dropdownParent: $("#basicmodal"),
+        });
     }
 
     var configurarDataTableCDE = function () {

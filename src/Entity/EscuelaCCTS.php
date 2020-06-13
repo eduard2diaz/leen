@@ -64,6 +64,11 @@ class EscuelaCCTS
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->getValue();
+    }
+
     /**
      * @Assert\Callback
      */

@@ -19,6 +19,15 @@ var condicion_educativa_alumno = function () {
         });
     }
 
+    var configurarFormularioCEA = function () {
+        $('select#condicion_educativa_alumnos_ccts').select2({
+            dropdownParent: $("#basicmodal"),
+        });
+        $('select#condicion_educativa_alumnos_grado').select2({
+            dropdownParent: $("#basicmodal"),
+        });
+    }
+
     var edicionCEA = function () {
         $('body').on('click', 'a.edicion_condicion_educativa_alumno', function (evento) {
             evento.preventDefault();
@@ -33,6 +42,7 @@ var condicion_educativa_alumno = function () {
                 },
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
+                        configurarFormularioCEA();
                         $('div#basicmodal').modal('show');
                     }
                 },
@@ -45,7 +55,6 @@ var condicion_educativa_alumno = function () {
             });
         });
     }
-
 
     var newCEAAction = function () {
 
@@ -66,6 +75,7 @@ var condicion_educativa_alumno = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
+                        configurarFormularioCEA();
                     } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
@@ -114,6 +124,7 @@ var condicion_educativa_alumno = function () {
                 success: function (data) {
                     if (data['error']){
                         padre.html(data['form']);
+                        configurarFormularioCEA();
                     }
                     else {
                         if (data['mensaje'])
@@ -190,7 +201,6 @@ var condicion_educativa_alumno = function () {
                     configurarDataTableCEA();
                     edicionCEA();
                     newCEAAction();
-
                     edicionCEAAction();
                     eliminarCEA();
                 }

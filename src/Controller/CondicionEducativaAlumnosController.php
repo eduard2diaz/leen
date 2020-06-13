@@ -27,7 +27,8 @@ class CondicionEducativaAlumnosController extends AbstractController
 
         $condicion_educativa_alumno = new CondicionEducativaAlumnos();
         $condicion_educativa_alumno->setDiagnostico($diagnostico);
-        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicion_educativa_alumno, ['action' => $this->generateUrl('condicion_educativa_alumno_new',['id'=>$diagnostico->getId()])]);
+        $escuela=$diagnostico->getProyecto()->getEscuela()->getId();
+        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicion_educativa_alumno, ['escuela'=>$escuela,'action' => $this->generateUrl('condicion_educativa_alumno_new',['id'=>$diagnostico->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -36,10 +37,10 @@ class CondicionEducativaAlumnosController extends AbstractController
                 $entityManager->persist($condicion_educativa_alumno);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'la condición docente educativa fue registrada satisfactoriamente',
-                    'ccts' => $condicion_educativa_alumno->getCcts(),
+                    'ccts' => $condicion_educativa_alumno->getCcts()->getValue(),
                     'numalumnas' => $condicion_educativa_alumno->getNumalumnas(),
                     'numalumnos' => $condicion_educativa_alumno->getNumalumnos(),
-                    'grado' => $condicion_educativa_alumno->getGrado(),
+                    'grado' => $condicion_educativa_alumno->getGrado()->getNombre(),
                     'id' => $condicion_educativa_alumno->getId(),
                 ]);
             } else {
@@ -65,7 +66,8 @@ class CondicionEducativaAlumnosController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
-        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicion_educativa_alumno, ['action' => $this->generateUrl('condicion_educativa_alumno_edit', ['id' => $condicion_educativa_alumno->getId()])]);
+        $escuela=$condicion_educativa_alumno->getDiagnostico()->getProyecto()->getEscuela()->getId();
+        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicion_educativa_alumno, ['escuela'=>$escuela,'action' => $this->generateUrl('condicion_educativa_alumno_edit', ['id' => $condicion_educativa_alumno->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -74,10 +76,10 @@ class CondicionEducativaAlumnosController extends AbstractController
                 $em->persist($condicion_educativa_alumno);
                 $em->flush();
                 return $this->json(['mensaje' => 'El condicion_educativa_alumno fue actualizado satisfactoriamente',
-                    'ccts' => $condicion_educativa_alumno->getCcts(),
+                    'ccts' => $condicion_educativa_alumno->getCcts()->getValue(),
                     'numalumnas' => $condicion_educativa_alumno->getNumalumnas(),
                     'numalumnos' => $condicion_educativa_alumno->getNumalumnos(),
-                    'grado' => $condicion_educativa_alumno->getGrado(),
+                    'grado' => $condicion_educativa_alumno->getGrado()->getNombre(),
                 ]);
             } else {
                 $page = $this->renderView('condicion_educativa_alumnos/_form.html.twig', [
