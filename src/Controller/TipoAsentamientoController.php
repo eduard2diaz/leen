@@ -20,9 +20,7 @@ class TipoAsentamientoController extends AbstractController
      */
     public function index(): Response
     {
-        $tipoasentamientos = $this->getDoctrine()
-            ->getRepository(TipoAsentamiento::class)
-            ->findAll();
+        $tipoasentamientos = $this->getDoctrine()->getRepository(TipoAsentamiento::class)->findAll();
 
         return $this->render('tipo_asentamiento/index.html.twig', [
             'tipo_asentamientos' => $tipoasentamientos,
@@ -49,6 +47,7 @@ class TipoAsentamientoController extends AbstractController
                 return $this->json(['mensaje' => 'El tipo de asentamiento fue registrado satisfactoriamente',
                     'nombre' => $tipoasentamiento->getNombre(),
                     'clave' => $tipoasentamiento->getClave(),
+                    'estatus' => $tipoasentamiento->getEstatus()->getEstatus(),
                     'id' => $tipoasentamiento->getId(),
                 ]);
             } else {
@@ -84,6 +83,7 @@ class TipoAsentamientoController extends AbstractController
                 return $this->json(['mensaje' => 'El tipo de asentamiento fue actualizado satisfactoriamente',
                     'nombre' => $tipoasentamiento->getNombre(),
                     'clave' => $tipoasentamiento->getClave(),
+                    'estatus' => $tipoasentamiento->getEstatus()->getEstatus(),
                 ]);
             } else {
                 $page = $this->renderView('tipo_asentamiento/_form.html.twig', [

@@ -38,6 +38,6 @@ class TipoAccionFixtures extends Fixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 5;
+        return 4;
     }
 }

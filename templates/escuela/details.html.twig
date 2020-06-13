@@ -43,7 +43,15 @@
                             </tr>
                             <tr>
                                 <th>Estatus</th>
-                                <td colspan="3">{{escuela.estatus}}</td>
+                                <td colspan>{{escuela.estatus}}</td>
+                                <th>Tipo de enseñanza</th>
+                                <td colspan>
+                                    <ul>
+                                    {% for tipo_ensenanza_obj in escuela.tipoensenanza %}
+                                    <li>{{ tipo_ensenanza_obj.nombre }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                </td>
                             </tr>
                         </table>
                     </div>

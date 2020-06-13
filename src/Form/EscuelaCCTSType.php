@@ -2,28 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Direccion;
+use App\Entity\EscuelaCCTS;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DireccionType extends AbstractType
+class EscuelaCCTSType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('calle',TextType::class,['attr'=>['class'=>'form-control']])
-            ->add('numero_exterior',IntegerType::class,['label'=>'Número Exterior','attr'=>['class'=>'form-control']])
-            ->add('d_codigo')
+            ->add('value',TextType::class,['label'=>'Clave del Centro de Trabajo','attr'=>['class'=>'form-control','autocomplete'=>'off']])
+         //   ->add('escuela')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Direccion::class,
+            'data_class' => EscuelaCCTS::class,
         ]);
     }
 }

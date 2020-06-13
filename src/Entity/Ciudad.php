@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CiudadRepository")
  *@UniqueEntity(fields={"nombre","estado","municipio"})
- *@UniqueEntity(fields={"clave","estado","municipio"})
+ *@UniqueEntity("clave")
  */
 class Ciudad
 {
@@ -50,6 +50,12 @@ class Ciudad
      * @ORM\JoinColumn(nullable=false)
      */
     private $municipio;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $estatus;
 
     public function getId(): ?int
     {
@@ -100,6 +106,18 @@ class Ciudad
     public function setMunicipio(?Municipio $municipio): self
     {
         $this->municipio = $municipio;
+
+        return $this;
+    }
+
+    public function getEstatus(): ?Estatus
+    {
+        return $this->estatus;
+    }
+
+    public function setEstatus(?Estatus $estatus): self
+    {
+        $this->estatus = $estatus;
 
         return $this;
     }

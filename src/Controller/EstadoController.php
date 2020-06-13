@@ -47,6 +47,7 @@ class EstadoController extends AbstractController
                 return $this->json(['mensaje' => 'El estado fue registrado satisfactoriamente',
                     'nombre' => $estado->getNombre(),
                     'clave' => $estado->getClave(),
+                    'estatus' => $estado->getEstatus()->getEstatus(),
                     'id' => $estado->getId(),
                 ]);
             } else {
@@ -82,6 +83,7 @@ class EstadoController extends AbstractController
                 return $this->json(['mensaje' => 'El estado fue actualizado satisfactoriamente',
                     'nombre' => $estado->getNombre(),
                     'clave' => $estado->getClave(),
+                    'estatus' => $estado->getEstatus()->getEstatus(),
                 ]);
             } else {
                 $page = $this->renderView('estado/_form.html.twig', [

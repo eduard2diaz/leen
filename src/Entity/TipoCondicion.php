@@ -47,6 +47,6 @@ class TipoCondicion
 
     public function __toString()
     {
-     return $this->getCondicion();
+        return $this->getCondicion();
     }
 }

@@ -9,9 +9,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EstatusRepository")
  * @UniqueEntity("estatus")
+ * @UniqueEntity("code")
  */
 class Estatus
 {
+    const DELETE_CODE=0;
+    const ACTIVE_CODE=1;
+    const INACTIVE_CODE=2;
+    const CANCEL_CODE=3;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -23,6 +29,11 @@ class Estatus
      * @ORM\Column(type="string", length=250)
      */
     private $estatus;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $code;
 
     public function getId(): ?int
     {
@@ -44,5 +55,17 @@ class Estatus
     public function __toString()
     {
         return $this->getEstatus();
+    }
+
+    public function getCode(): ?int
+    {
+        return $this->code;
+    }
+
+    public function setCode(int $code): self
+    {
+        $this->code = $code;
+
+        return $this;
     }
 }

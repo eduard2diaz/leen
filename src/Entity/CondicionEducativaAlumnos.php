@@ -50,10 +50,8 @@ class CondicionEducativaAlumnos
     private $numalumnos;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\Range(
-     *      min = 1,
-     * )
+     * @ORM\ManyToOne(targetEntity="App\Entity\GradoEnsenanza")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $grado;
 
@@ -116,16 +114,20 @@ class CondicionEducativaAlumnos
         return $this;
     }
 
-    public function getGrado(): ?int
+    /**
+     * @return mixed
+     */
+    public function getGrado()
     {
         return $this->grado;
     }
 
-    public function setGrado(int $grado): self
+    /**
+     * @param mixed $grado
+     */
+    public function setGrado($grado): void
     {
         $this->grado = $grado;
-
-        return $this;
     }
 
     /**

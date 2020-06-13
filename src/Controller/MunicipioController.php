@@ -41,7 +41,7 @@ class MunicipioController extends AbstractController
             $query = $this->getDoctrine()->getManager()->createQuery($dql);
 
         $municipios = $paginator->paginate(
-            $query, /* query NOT result */
+            $query,
             $request->query->getInt('page', 1),
             10
         );
@@ -137,6 +137,19 @@ class MunicipioController extends AbstractController
             'action' => 'Actualizar',
             'form_id' => 'municipio_edit',
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/show", name="municipio_show", methods={"GET"})
+     */
+    public function show(Request $request, Municipio $municipio): Response
+    {
+        if(!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        return $this->render('municipio/show.html.twig', [
+            'municipio' => $municipio,
         ]);
     }
 

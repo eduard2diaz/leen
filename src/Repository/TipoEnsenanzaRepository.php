@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\TipoCondicion;
+use App\Entity\TipoEnsenanza;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method TipoCondicion|null find($id, $lockMode = null, $lockVersion = null)
- * @method TipoCondicion|null findOneBy(array $criteria, array $orderBy = null)
- * @method TipoCondicion[]    findAll()
- * @method TipoCondicion[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TipoEnsenanza|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TipoEnsenanza|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TipoEnsenanza[]    findAll()
+ * @method TipoEnsenanza[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TipoCondicionRepository extends ServiceEntityRepository
+class TipoEnsenanzaRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TipoCondicion::class);
+        parent::__construct($registry, TipoEnsenanza::class);
     }
 
     // /**
-    //  * @return TipoCondicion[] Returns an array of TipoCondicion objects
+    //  * @return TipoEnsenanza[] Returns an array of TipoEnsenanza objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TipoCondicionRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TipoCondicion
+    public function findOneBySomeField($value): ?TipoEnsenanza
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

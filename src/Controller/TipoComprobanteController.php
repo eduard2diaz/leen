@@ -21,9 +21,7 @@ class TipoComprobanteController extends AbstractController
      */
     public function index(): Response
     {
-        $tipocomprobante = $this->getDoctrine()
-            ->getRepository(TipoComprobante::class)
-            ->findActivos();
+        $tipocomprobante = $this->getDoctrine()->getRepository(TipoComprobante::class)->findAll();
 
         return $this->render('tipo_comprobante/index.html.twig', [
             'tipo_comprobantes' => $tipocomprobante,
@@ -49,6 +47,7 @@ class TipoComprobanteController extends AbstractController
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El tipo de comprobante fue registrado satisfactoriamente',
                     'comprobante' => $tipocomprobante->getComprobante(),
+                    'estatus' => $tipocomprobante->getEstatus()->getEstatus(),
                     'id' => $tipocomprobante->getId(),
                 ]);
             } else {
@@ -96,6 +95,7 @@ class TipoComprobanteController extends AbstractController
                 $em->flush();
                 return $this->json(['mensaje' => 'El tipo de comprobante fue actualizado satisfactoriamente',
                     'comprobante' => $tipocomprobante->getComprobante(),
+                    'estatus' => $tipocomprobante->getEstatus()->getEstatus(),
                 ]);
             } else {
                 $page = $this->renderView('tipo_comprobante/_form.html.twig', [
@@ -127,7 +127,7 @@ class TipoComprobanteController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $estatus=$em->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
+        $estatus=$em->getRepository(Estatus::class)->findOneByCode(Estatus::DELETE_CODE);
         $tipocomprobante->setEstatus($estatus);
         $em->persist($tipocomprobante);
         $em->flush();

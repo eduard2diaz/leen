@@ -30,9 +30,9 @@
                         <tr>
                             <th>#</th>
                             <th>Asentamiento</th>
-                            <th>Tipo de Asentamiento</th>
-                            <th>Municipio</th>
                             <th>Estado</th>
+                            <th>Municipio</th>
+                            <th>Estatus</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -42,9 +42,9 @@
                             <tr >
                                 <td>{{ i }}</td>
                                 <td>{{ codigo_postal.getDAsenta() | default('Indefinido') }}</td>
-                                <td>{{ codigo_postal.tipoasentamiento }}</td>
-                                <td>{{ codigo_postal.municipio }}</td>
                                 <td>{{ codigo_postal.estado }}</td>
+                                <td>{{ codigo_postal.municipio }}</td>
+                                <td>{{ codigo_postal.estatus }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item"><a class="btn default btn-sm showCp" data-href="{{ path('codigo_postal_show', {'id': codigo_postal.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>

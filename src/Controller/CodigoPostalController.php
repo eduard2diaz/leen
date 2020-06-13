@@ -36,7 +36,7 @@ class CodigoPostalController extends AbstractController
             if($form->isSubmitted())
                 $data = $form->getData()["filtro"];
 
-            $dql   = "SELECT cp FROM App:CodigoPostal cp JOIN cp.municipio m JOIN m.estado e WHERE m.nombre LIKE :value OR e.nombre LIKE :value OR m.clave LIKE :value";
+            $dql   = "SELECT cp FROM App:CodigoPostal cp JOIN cp.municipio m JOIN m.estado e WHERE m.nombre LIKE :value OR e.nombre LIKE :value OR cp.d_Asenta LIKE :value";
             $query = $this->getDoctrine()->getManager()->createQuery($dql)->setParameter('value',"%".$data."%");
         }
         else
@@ -168,8 +168,7 @@ class CodigoPostalController extends AbstractController
 
     private function esEliminable(CodigoPostal $codigoPostal){
         $em = $this->getDoctrine()->getManager();
-        $direccion=$em->getRepository(Direccion::class)->findOneBy(['d_codigo'=>$codigoPostal]);
         $escuela=$em->getRepository(Escuela::class)->findOneBy(['d_codigo'=>$codigoPostal]);
-        return $direccion==null && $escuela==null;
+        return  $escuela==null;
     }
 }

@@ -2,6 +2,12 @@ var condicion_docente_educativa = function () {
     var tableCondicionDocente = null;
     var objCondicionDocente = null;
 
+    var configurarFormulario = function () {
+        $('select#condicion_docente_educativa_grado').select2({
+            dropdownParent: $("#basicmodal"),
+        });
+    }
+
     var configurarDataTableCDE = function () {
         tableCondicionDocente = $('table#condicion_docente_educativa_entity_table').DataTable({
             "pagingType": "simple_numbers",
@@ -33,6 +39,7 @@ var condicion_docente_educativa = function () {
                 },
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
+                        configurarFormulario();
                         $('div#basicmodal').modal('show');
                     }
                 },
@@ -66,6 +73,7 @@ var condicion_docente_educativa = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
+                        configurarFormulario();
                     } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
@@ -114,6 +122,7 @@ var condicion_docente_educativa = function () {
                 success: function (data) {
                     if (data['error']){
                         padre.html(data['form']);
+                        configurarFormulario();
                     }
                     else {
                         if (data['mensaje'])

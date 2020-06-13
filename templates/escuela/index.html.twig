@@ -31,7 +31,6 @@
                         <tr>
                             <th>#</th>
                             <th>Nombre</th>
-                            <th>Ccts</th>
                             <th>Código postal</th>
                             <th></th>
                         </tr>
@@ -42,7 +41,6 @@
                             <tr>
                                 <td>{{ i }}</td>
                                 <td>{{ escuela.escuela }}</td>
-                                <td>{{ escuela.ccts }}</td>
                                 <td>{% if escuela.getDCodigo() is not empty %}  {{ escuela.getDCodigo().__toString() }} {% endif %}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">

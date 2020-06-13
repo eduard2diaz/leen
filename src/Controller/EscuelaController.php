@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Escuela;
+use App\Entity\EscuelaCCTS;
 use App\Entity\Estatus;
 use App\Entity\Proyecto;
 use App\Form\EscuelaType;
@@ -70,6 +71,8 @@ class EscuelaController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $escuela = new Escuela();
+        $escuelaCCTS = new EscuelaCCTS();
+        $escuela->setCcts($escuelaCCTS);
         $form = $this->createForm(EscuelaType::class, $escuela, ['action' => $this->generateUrl('escuela_new')]);
         $form->handleRequest($request);
 
@@ -78,6 +81,10 @@ class EscuelaController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($escuela);
                 $entityManager->flush();
+
+                $entityManager->persist($escuelaCCTS);
+                $entityManager->flush();
+
                 $this->addFlash('success', 'La escuela fue registrada satisfactoriamente');
                 return $this->json([
                     'url' => $this->generateUrl('escuela_index')

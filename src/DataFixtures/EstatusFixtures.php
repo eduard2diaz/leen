@@ -11,10 +11,16 @@ class EstatusFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $estados=['Activo','Inactivo','Cancelado','Eliminado'];
+        $estados=[
+            ['nombre'=>'Activo','code'=>Estatus::ACTIVE_CODE],
+            ['nombre'=>'Inactivo','code'=>Estatus::INACTIVE_CODE],
+            ['nombre'=>'Cancelado','code'=>Estatus::CANCEL_CODE],
+            ['nombre'=>'Eliminado','code'=>Estatus::DELETE_CODE],
+        ];
         foreach ($estados as $estado){
             $value=new Estatus();
-            $value->setEstatus($estado);
+            $value->setEstatus($estado['nombre']);
+            $value->setCode($estado['code']);
             $manager->persist($value);
         }
         $manager->flush();
@@ -22,7 +28,7 @@ class EstatusFixtures extends Fixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        return 4;
+        return 1;
     }
 
 

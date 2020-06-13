@@ -14,15 +14,17 @@
                         <tbody>
                         <tr>
                             <th>Comprobante</th>
-                            <td>{{ tipocomprobante.comprobante }}</td>
+                            <td colspan="3">{{ tipocomprobante.comprobante }}</td>
                         </tr>
                         <tr>
                             <th>Fecha de captura</th>
                             <td>{{ tipocomprobante.fechacaptura ? tipocomprobante.fechacaptura|date('Y-m-d') : '' }}</td>
+                            <th>Estatus</th>
+                            <td>{{ tipocomprobante.estatus }}</td>
                         </tr>
                         <tr>
                             <th>Descripción</th>
-                            <td>{{ tipocomprobante.descripcion }}</td>
+                            <td colspan="3">{{ tipocomprobante.descripcion }}</td>
                         </tr>
                         </tbody>
                     </table>

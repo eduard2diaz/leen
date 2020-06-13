@@ -93,6 +93,31 @@ var municipio = function () {
         });
     }
 
+    var show = function () {
+        $('body').on('click', 'a.show-municipio', function (evento) {
+            evento.preventDefault();
+            var link = $(this).attr('data-href');
+            $.ajax({
+                type: 'get',
+                dataType: 'html',
+                url: link,
+                beforeSend: function (data) {
+                    $.blockUI({ message: '<small>Cargando...</small>' });
+                },
+                success: function (data) {
+                    if ($('div#basicmodal').html(data))
+                        $('div#basicmodal').modal('show');
+                },
+                error: function () {
+                    //base.Error();
+                },
+                complete: function () {
+                    $.unblockUI();
+                }
+            });
+        });
+    }
+
     var eliminar = function () {
         $('div#basicmodal').on('click', 'a.eliminar_municipio', function (evento) {
             evento.preventDefault();
@@ -143,6 +168,7 @@ var municipio = function () {
     return {
         init: function () {
             $().ready(function () {
+                    show()
                     newAction();
                     edicion();
                     edicionAction();

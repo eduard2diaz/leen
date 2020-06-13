@@ -32,7 +32,7 @@ class CiudadController extends AbstractController
         if ($form->isSubmitted() || $data!="") {
             if($form->isSubmitted())
                 $data = $form->getData()["filtro"];
-            $dql   = "SELECT c FROM App:Ciudad c JOIN c.municipio m JOIN m.estado e WHERE c.nombre LIKE :value OR m.nombre LIKE :value OR e.nombre LIKE :value OR c.clave LIKE :value";
+            $dql   = "SELECT c FROM App:Ciudad c JOIN c.municipio m JOIN m.estado e WHERE c.nombre LIKE :value OR m.nombre LIKE :value OR e.nombre LIKE :value";
             $query = $this->getDoctrine()->getManager()->createQuery($dql)->setParameter('value',"%".$data."%");
         }
         else
@@ -134,6 +134,19 @@ class CiudadController extends AbstractController
             'action' => 'Actualizar',
             'form_id' => 'ciudad_edit',
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/show", name="ciudad_show", methods={"GET"})
+     */
+    public function show(Request $request, Ciudad $ciudad): Response
+    {
+        if(!$request->isXmlHttpRequest())
+            throw $this->createAccessDeniedException();
+
+        return $this->render('ciudad/show.html.twig', [
+            'ciudad' => $ciudad,
         ]);
     }
 

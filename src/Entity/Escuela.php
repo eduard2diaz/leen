@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -9,7 +11,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EscuelaRepository")
- *@UniqueEntity("ccts")
+ * @UniqueEntity("coordenada")
  */
 class Escuela
 {
@@ -28,15 +30,6 @@ class Escuela
      * )
      */
     private $escuela;
-
-    /**
-     * @ORM\Column(type="string", length=10)
-     * @Assert\Length(
-     *      max = 10,
-     *      maxMessage = "La clave del centro de Trabajo no puede exceder los {{ limit }} caracteres",
-     * )
-     */
-    private $ccts;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CodigoPostal")
@@ -91,6 +84,37 @@ class Escuela
      */
     private $estatus;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\TipoEnsenanza")
+     */
+    private $tipoensenanza;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\EscuelaCCTS", mappedBy="escuela")
+     */
+    private $ccts_collection;
+
+    /**
+     * @ORM\Column(type="string", length=80)
+     * @Assert\Length(
+     *      max = 80,
+     *      maxMessage = "Ls coordenada no puede exceder los {{ limit }} caracteres",
+     *)
+     */
+    private $coordenada;
+
+    /**
+     * @Assert\Type(type="App\Entity\EscuelaCCTS")
+     * @Assert\Valid
+     */
+    private $ccts;
+
+    public function __construct()
+    {
+        $this->tipoensenanza = new ArrayCollection();
+        $this->ccts_collection = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -105,18 +129,6 @@ class Escuela
     public function setEscuela(string $escuela): self
     {
         $this->escuela = $escuela;
-
-        return $this;
-    }
-
-    public function getCcts(): ?string
-    {
-        return $this->ccts;
-    }
-
-    public function setCcts(string $ccts): self
-    {
-        $this->ccts = $ccts;
 
         return $this;
     }
@@ -217,9 +229,83 @@ class Escuela
         return $this;
     }
 
+    /**
+     * @return Collection|TipoEnsenanza[]
+     */
+    public function getTipoensenanza(): Collection
+    {
+        return $this->tipoensenanza;
+    }
+
+    public function addTipoensenanza(TipoEnsenanza $tipoensenanza): self
+    {
+        if (!$this->tipoensenanza->contains($tipoensenanza)) {
+            $this->tipoensenanza[] = $tipoensenanza;
+        }
+
+        return $this;
+    }
+
+    public function getCoordenada(): ?string
+    {
+        return $this->coordenada;
+    }
+
+    public function setCoordenada(string $coordenada): self
+    {
+        $this->coordenada = $coordenada;
+
+        return $this;
+    }
+
+    public function removeTipoensenanza(TipoEnsenanza $tipoensenanza): self
+    {
+        if ($this->tipoensenanza->contains($tipoensenanza)) {
+            $this->tipoensenanza->removeElement($tipoensenanza);
+        }
+
+        return $this;
+    }
+
+    public function addCct(EscuelaCCTS $cct): self
+    {
+        if (!$this->ccts_collection->contains($cct)) {
+            $this->ccts_collection[] = $cct;
+            $cct->setEscuela($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCct(EscuelaCCTS $cct): self
+    {
+        if ($this->ccts_collection->contains($cct)) {
+            $this->ccts_collection->removeElement($cct);
+            // set the owning side to null (unless already changed)
+            if ($cct->getEscuela() === $this) {
+                $cct->setEscuela(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCcts(): ?EscuelaCCTS
+    {
+        return $this->ccts;
+    }
+
+    public function setCcts(EscuelaCCTS $ccts): self
+    {
+        $this->ccts = $ccts;
+        $ccts->setEscuela($this);
+
+        return $this;
+    }
+
     public function __toString()
     {
-        return $this->getEscuela().'('.$this->getCcts().')';
+        return $this->getEscuela();
     }
 
     /**
@@ -227,6 +313,9 @@ class Escuela
      */
     public function validate(ExecutionContextInterface $context)
     {
+        if($this->getTipoensenanza()->isEmpty())
+            $context->addViolation('Seleccione al menos un tipo de enseñanza.');
+
         if (null==$this->getEstado())
             $context->addViolation('Seleccione un estado.');
         else
@@ -242,4 +331,5 @@ class Escuela
                         if ($this->getDCodigo()->getMunicipio()->getId()!=$this->getMunicipio()->getId())
                             $context->addViolation('Seleccione un código postal que pertenezca a dicho municipio.');
     }
+
 }

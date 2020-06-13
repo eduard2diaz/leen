@@ -29,8 +29,8 @@
                         <tr>
                             <th>#</th>
                             <th>Nombre</th>
-                            <th>Clave</th>
                             <th>Estado</th>
+                            <th>Estatus</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -40,10 +40,11 @@
                             <tr>
                                 <td>{{ i }}</td>
                                 <td>{{ municipio.nombre }}</td>
-                                <td>{{ municipio.clave }}</td>
                                 <td>{{ municipio.estado }}</td>
+                                <td>{{ municipio.estatus }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
+                                        <li class="list-inline-item"><a class="btn btn-sm show-municipio" data-href="{{ path('municipio_show', {'id': municipio.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>
                                         <li class="list-inline-item"><a class="btn btn-primary btn-sm edicion" data-href="{{ path('municipio_edit', {'id': municipio.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>
                                     </ul>
                                 </td>

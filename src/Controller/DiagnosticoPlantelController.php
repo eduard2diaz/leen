@@ -7,6 +7,7 @@ use App\Entity\CondicionEducativaAlumnos;
 use App\Entity\DiagnosticoPlantel;
 use App\Entity\Escuela;
 use App\Entity\Estatus;
+use App\Entity\GradoEnsenanza;
 use App\Form\DiagnosticoPlantelType;
 use App\Repository\DiagnosticoPlantelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

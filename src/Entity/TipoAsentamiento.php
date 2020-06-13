@@ -37,6 +37,12 @@ class TipoAsentamiento
      */
     private $clave;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $estatus;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +68,18 @@ class TipoAsentamiento
     public function setClave(int $clave): self
     {
         $this->clave = $clave;
+
+        return $this;
+    }
+
+    public function getEstatus(): ?Estatus
+    {
+        return $this->estatus;
+    }
+
+    public function setEstatus(?Estatus $estatus): self
+    {
+        $this->estatus = $estatus;
 
         return $this;
     }

@@ -17,7 +17,7 @@ class CondicionEducativaAlumnosType extends AbstractType
             ->add('ccts',TextType::class,['label'=>'Ccts','attr'=>['class'=>'form-control']])
             ->add('numalumnas',IntegerType::class,['label'=>'Número de alumnas','attr'=>['class'=>'form-control']])
             ->add('numalumnos',IntegerType::class,['label'=>'Número de alumnos','attr'=>['class'=>'form-control']])
-            ->add('grado',IntegerType::class,['attr'=>['class'=>'form-control']])
+            ->add('grado')
             //->add('diagnostico')
         ;
     }

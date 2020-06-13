@@ -13,6 +13,9 @@ var escuela = function () {
         $('select#escuela_municipio').select2({
             dropdownParent: $("#basicmodal"),
         });
+        $('select#escuela_tipoensenanza').select2({
+            dropdownParent: $("#basicmodal"),
+        });
     }
 
     var edicion = function () {

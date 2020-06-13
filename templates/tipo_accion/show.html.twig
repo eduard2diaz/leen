@@ -14,15 +14,17 @@
                         <tbody>
                         <tr>
                             <th>Acción</th>
-                            <td>{{ tipoaccion.accion }}</td>
+                            <td colspan="3">{{ tipoaccion.accion }}</td>
                         </tr>
                         <tr>
                             <th>Fecha de captura</th>
                             <td>{{ tipoaccion.fechacaptura ? tipoaccion.fechacaptura|date('Y-m-d') : '' }}</td>
+                            <th>Estatus</th>
+                            <td>{{ tipoaccion.estatus }}</td>
                         </tr>
                         <tr>
                             <th>Descripción</th>
-                            <td>{{ tipoaccion.descripcion }}</td>
+                            <td colspan="3">{{ tipoaccion.descripcion }}</td>
                         </tr>
 
                         </tbody>

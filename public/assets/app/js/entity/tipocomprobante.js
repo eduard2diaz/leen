@@ -11,6 +11,7 @@ var tipocomprobante = function () {
             columns: [
                 {data: 'numero'},
                 {data: 'comprobante'},
+                {data: 'estatus'},
                 {data: 'acciones'}
             ]
         });
@@ -81,6 +82,7 @@ var tipocomprobante = function () {
                         objeto = table.row.add({
                             "numero": tipoComprobanteCounter,
                             "comprobante": data['comprobante'],
+                            "estatus": data['estatus'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn default btn-sm edicion' data-href=" + Routing.generate('tipo_comprobante_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
@@ -126,6 +128,7 @@ var tipocomprobante = function () {
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
                         obj.parents('tr').children('td:nth-child(2)').html(data['comprobante']);
+                        obj.parents('tr').children('td:nth-child(3)').html(data['estatus']);
                     }
                 },
                 error: function () {

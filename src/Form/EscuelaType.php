@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Escuela;
+use App\Form\EscuelaCCTSType;
 use App\Form\Subscriber\AddCodigoPostalMunicipioFieldSubscriber;
 use App\Form\Subscriber\AddMunicipioEstadoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
@@ -16,14 +17,17 @@ class EscuelaType extends AbstractType
     {
         $builder
             ->add('escuela',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('ccts',TextType::class,['label'=>'Clave del Centro de Trabajo del Plantel','attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('estado',null,['required'=>true,'placeholder'=>'Seleccione un estado'])
             ->add('tipoasentamiento',null,['label'=>'Tipo de Asentamiento','placeholder'=>'Seleccione un tipo de asentamiento'])
+            ->add('tipoensenanza',null,['required'=>true,'label'=>'Tipo de Enseñanza','placeholder'=>'Seleccione un tipo de enseñanza'])
             ->add('asentamiento',TextType::class,['required'=>false,'attr'=>['class'=>'form-control','autocomplete'=>'off']])
+            ->add('coordenada',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('calle',TextType::class,['required'=>false,'attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('noexterior',TextType::class,['required'=>false,'label'=>'Número Exterior','attr'=>['class'=>'form-control','autocomplete'=>'off']])
         ;
 
+        if(!$options['data']->getId())
+            $builder->add('ccts',EscuelaCCTSType::class);
 
         $factory = $builder->getFormFactory();
         $builder->addEventSubscriber(new AddMunicipioEstadoFieldSubscriber($factory));
