@@ -92,21 +92,6 @@ class EstadisticaController extends AbstractController
 
 
     /**
-     * @Route("/escuela/montoproyectos", name="estadistica_escuela_monto_proyectos")
-     */
-    public function montoProyecto(Request $request, PaginatorInterface $paginator)
-    {
-        $query="Select * from escuelas_monto_por_proyecto_view";
-
-        return $this->render('estadistica/escuelamontoproyectos.html.twig', [
-            'escuelas' => $this->preparePaginateDatabaseQuery($query,$request,$paginator),
-        ]);
-    }
-
-
-
-
-    /**
      * @Route("/escuela/sanitario", name="estadistica_escuela_sin_sanitarios", methods={"GET"})
      */
     public function sanitario(Request $request, PaginatorInterface $paginator): Response
