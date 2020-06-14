@@ -11,6 +11,7 @@ use App\Entity\RendicionCuentas;
 use App\Entity\ControlGastos;
 use App\Form\FiltroType;
 use App\Form\ProyectoType;
+use App\Twig\EstatusExtension;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,15 +75,16 @@ class ProyectoController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="proyecto_new", methods={"GET","POST"},options={"expose"=true})
+     * @Route("/{id}/new", name="proyecto_new", methods={"GET","POST"},options={"expose"=true})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,Escuela $escuela): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $proyecto = new Proyecto();
-        $form = $this->createForm(ProyectoType::class, $proyecto, ['action' => $this->generateUrl('proyecto_new')]);
+        $proyecto->setEscuela($escuela);
+        $form = $this->createForm(ProyectoType::class, $proyecto, ['action' => $this->generateUrl('proyecto_new',['id'=>$escuela->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -90,9 +92,11 @@ class ProyectoController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($proyecto);
                 $entityManager->flush();
-                $this->addFlash('success','El proyecto fue registrado satisfactoriamente');
-                return $this->json([
-                    'url'=>$this->generateUrl('proyecto_index')
+                return $this->json(['mensaje' => 'El proyecto fue registrado satisfactoriamente',
+                    'id' => $proyecto->getId(),
+                    'numero' => $proyecto->getNumero(),
+                    'fechainicio' => $proyecto->getFechainicio()->format('Y-m-d'),
+                    'estatus' => EstatusExtension::drawAsHtmlStatic($proyecto->getEstatus()->getCode(),$proyecto->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('proyecto/_form.html.twig', [
@@ -141,9 +145,10 @@ class ProyectoController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($proyecto);
                 $em->flush();
-                $this->addFlash('success','El proyecto fue actualizado satisfactoriamente');
-                return $this->json([
-                    'url'=>$this->generateUrl('proyecto_index')
+                return $this->json(['mensaje' => 'El tipo de asentamiento fue actualizado satisfactoriamente',
+                    'numero' => $proyecto->getNumero(),
+                    'fechainicio' => $proyecto->getFechainicio()->format('Y-m-d'),
+                    'estatus' => EstatusExtension::drawAsHtmlStatic($proyecto->getEstatus()->getCode(),$proyecto->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('proyecto/_form.html.twig', [

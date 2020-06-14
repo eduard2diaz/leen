@@ -21,7 +21,7 @@ class ProyectoType extends AbstractType
             ->add('fechafin',TextType::class,['label'=>'Fecha de Fin','attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}',
                 'autocomplete' => 'off',]])
             ->add('montoasignado',NumberType::class,['label'=>'Monto Asignado','attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('escuela',null,['placeholder'=>'Seleccione una escuela'])
+          //  ->add('escuela',null,['placeholder'=>'Seleccione una escuela'])
         ;
 
         $builder->get('fechainicio')->addModelTransformer(new DatetoStringTransformer());

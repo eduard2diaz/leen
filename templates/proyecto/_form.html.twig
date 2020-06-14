@@ -4,7 +4,7 @@
 }}) }}
 <div class="modal-body" id="modal-body">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.numero) }}
@@ -15,42 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.escuela) }}
-                </label>
-                <div>
-                    {{ form_widget(form.escuela) }}
-                    {{ form_errors(form.escuela) }}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.fechainicio) }}
-                </label>
-                <div>
-                    {{ form_widget(form.fechainicio) }}
-                    {{ form_errors(form.fechainicio) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.fechafin) }}
-                </label>
-                <div>
-                    {{ form_widget(form.fechafin) }}
-                    {{ form_errors(form.fechafin) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.montoasignado) }}
@@ -61,6 +26,32 @@
                 </div>
             </div>
         </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.fechainicio) }}
+                </label>
+                <div>
+                    {{ form_widget(form.fechainicio) }}
+                    {{ form_errors(form.fechainicio) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.fechafin) }}
+                </label>
+                <div>
+                    {{ form_widget(form.fechafin) }}
+                    {{ form_errors(form.fechafin) }}
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 {{ form_errors(form) }}
