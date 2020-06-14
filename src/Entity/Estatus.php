@@ -52,11 +52,6 @@ class Estatus
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->getEstatus();
-    }
-
     public function getCode(): ?int
     {
         return $this->code;
@@ -68,4 +63,10 @@ class Estatus
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getEstatus();
+    }
+
 }

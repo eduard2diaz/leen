@@ -40,8 +40,8 @@
                             <tr>
                                 <td>{{ i }}</td>
                                 <td>{{ municipio.nombre }}</td>
-                                <td>{{ municipio.estado }}</td>
-                                <td>{{ municipio.estatus }}</td>
+                                <td>{{  municipio.estado }}</td>
+                                <td>{{ draw_estatus(municipio.estatus.code,municipio.estatus.estatus) }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item"><a class="btn btn-sm show-municipio" data-href="{{ path('municipio_show', {'id': municipio.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>

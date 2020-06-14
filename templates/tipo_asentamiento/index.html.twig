@@ -41,7 +41,7 @@
                                 <td>{{ i }}</td>
                                 <td>{{ asentamiento.nombre }}</td>
                                 <td>{{ asentamiento.clave }}</td>
-                                <td>{{ asentamiento.estatus }}</td>
+                                <td>{{ draw_estatus(asentamiento.estatus.code,asentamiento.estatus.estatus) }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item"><a class="btn btn-primary btn-sm edicion" data-href="{{ path('tipo_asentamiento_edit', {'id': asentamiento.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>

@@ -44,7 +44,7 @@
                                 <td>{{ ciudad.nombre }}</td>
                                 <td>{{ ciudad.estado }}</td>
                                 <td>{{ ciudad.municipio }}</td>
-                                <td>{{ ciudad.estatus }}</td>
+                                <td>{{ draw_estatus(ciudad.estatus.code,ciudad.estatus.estatus) }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item"><a class="btn btn-sm show-ciudad" data-href="{{ path('ciudad_show', {'id': ciudad.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>

@@ -44,7 +44,7 @@
                                 <td>{{ codigo_postal.getDAsenta() | default('Indefinido') }}</td>
                                 <td>{{ codigo_postal.estado }}</td>
                                 <td>{{ codigo_postal.municipio }}</td>
-                                <td>{{ codigo_postal.estatus }}</td>
+                                <td>{{ draw_estatus(codigo_postal.estatus.code,codigo_postal.estatus.estatus) }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item"><a class="btn default btn-sm showCp" data-href="{{ path('codigo_postal_show', {'id': codigo_postal.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>

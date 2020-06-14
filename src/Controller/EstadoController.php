@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Estado;
 use App\Entity\Municipio;
 use App\Form\EstadoType;
+use App\Twig\EstatusExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +48,7 @@ class EstadoController extends AbstractController
                 return $this->json(['mensaje' => 'El estado fue registrado satisfactoriamente',
                     'nombre' => $estado->getNombre(),
                     'clave' => $estado->getClave(),
-                    'estatus' => $estado->getEstatus()->getEstatus(),
+                    'estatus' => EstatusExtension::drawAsHtmlStatic($estado->getEstatus()->getCode(),$estado->getEstatus()->getEstatus()),
                     'id' => $estado->getId(),
                 ]);
             } else {
@@ -83,7 +84,7 @@ class EstadoController extends AbstractController
                 return $this->json(['mensaje' => 'El estado fue actualizado satisfactoriamente',
                     'nombre' => $estado->getNombre(),
                     'clave' => $estado->getClave(),
-                    'estatus' => $estado->getEstatus()->getEstatus(),
+                    'estatus' => EstatusExtension::drawAsHtmlStatic($estado->getEstatus()->getCode(),$estado->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('estado/_form.html.twig', [

@@ -41,7 +41,7 @@
                                 <td>{{ i }}</td>
                                 <td>{{ estado.nombre }}</td>
                                 <td>{{ estado.clave }}</td>
-                                <td>{{ estado.estatus }}</td>
+                                <td>{{ draw_estatus(estado.estatus.code,estado.estatus.estatus) }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item"><a class="btn btn-primary btn-sm edicion" data-href="{{ path('estado_edit', {'id': estado.id}) }}"><i class="fa fa-edit"></i>Editar</a></li>

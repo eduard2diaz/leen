@@ -20,7 +20,7 @@
                             <th>Fecha de captura</th>
                             <td>{{ tipoaccion.fechacaptura ? tipoaccion.fechacaptura|date('Y-m-d') : '' }}</td>
                             <th>Estatus</th>
-                            <td>{{ tipoaccion.estatus }}</td>
+                            <td>{{ draw_estatus(tipoaccion.estatus.code,tipoaccion.estatus.estatus) }}</td>
                         </tr>
                         <tr>
                             <th>Descripción</th>

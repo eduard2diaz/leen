@@ -39,6 +39,10 @@
                             <th>Descripción</th>
                             <td>{{ plan_trabajo.descripcionaccion }}</td>
                         </tr>
+                        <tr>
+                            <th>Estatus</th>
+                            <td>{{ draw_estatus(plan_trabajo.estatus.code,plan_trabajo.estatus.estatus) }}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

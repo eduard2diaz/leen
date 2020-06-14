@@ -21,8 +21,11 @@
                     <div class="col-md-4">
                         <b>Proyecto:</b> {{ diagnostico_plantel.proyecto }}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <b>Fecha:</b> {{ diagnostico_plantel.fecha | date('Y-m-d')}}
+                    </div>
+                    <div class="col-md-2">
+                        <b>Estatus:</b> {{ draw_estatus(diagnostico_plantel.estatus.code,diagnostico_plantel.estatus.estatus) }}
                     </div>
                 </div>
 

@@ -40,7 +40,7 @@
                             <tr>
                                 <td>{{ i }}</td>
                                 <td>{{ tipo_accion.accion }}</td>
-                                <td>{{ tipo_accion.estatus }}</td>
+                                <td>{{ draw_estatus(tipo_accion.estatus.code,tipo_accion.estatus.estatus) }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item"><a class="btn default btn-sm edicion" data-href="{{ path('tipo_accion_show', {'id': tipo_accion.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>

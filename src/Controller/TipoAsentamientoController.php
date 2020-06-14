@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CodigoPostal;
 use App\Entity\TipoAsentamiento;
 use App\Form\TipoAsentamientoType;
+use App\Twig\EstatusExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +48,7 @@ class TipoAsentamientoController extends AbstractController
                 return $this->json(['mensaje' => 'El tipo de asentamiento fue registrado satisfactoriamente',
                     'nombre' => $tipoasentamiento->getNombre(),
                     'clave' => $tipoasentamiento->getClave(),
-                    'estatus' => $tipoasentamiento->getEstatus()->getEstatus(),
+                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipoasentamiento->getEstatus()->getCode(),$tipoasentamiento->getEstatus()->getEstatus()),
                     'id' => $tipoasentamiento->getId(),
                 ]);
             } else {
@@ -83,7 +84,7 @@ class TipoAsentamientoController extends AbstractController
                 return $this->json(['mensaje' => 'El tipo de asentamiento fue actualizado satisfactoriamente',
                     'nombre' => $tipoasentamiento->getNombre(),
                     'clave' => $tipoasentamiento->getClave(),
-                    'estatus' => $tipoasentamiento->getEstatus()->getEstatus(),
+                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipoasentamiento->getEstatus()->getCode(),$tipoasentamiento->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('tipo_asentamiento/_form.html.twig', [

@@ -6,6 +6,7 @@ use App\Entity\ControlGastos;
 use App\Entity\Estatus;
 use App\Entity\TipoComprobante;
 use App\Form\TipoComprobanteType;
+use App\Twig\EstatusExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +48,7 @@ class TipoComprobanteController extends AbstractController
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El tipo de comprobante fue registrado satisfactoriamente',
                     'comprobante' => $tipocomprobante->getComprobante(),
-                    'estatus' => $tipocomprobante->getEstatus()->getEstatus(),
+                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipocomprobante->getEstatus()->getCode(),$tipocomprobante->getEstatus()->getEstatus()),
                     'id' => $tipocomprobante->getId(),
                 ]);
             } else {
@@ -95,7 +96,7 @@ class TipoComprobanteController extends AbstractController
                 $em->flush();
                 return $this->json(['mensaje' => 'El tipo de comprobante fue actualizado satisfactoriamente',
                     'comprobante' => $tipocomprobante->getComprobante(),
-                    'estatus' => $tipocomprobante->getEstatus()->getEstatus(),
+                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipocomprobante->getEstatus()->getCode(),$tipocomprobante->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('tipo_comprobante/_form.html.twig', [

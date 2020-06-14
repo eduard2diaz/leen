@@ -7,6 +7,7 @@ use App\Entity\PlanTrabajo;
 use App\Entity\RendicionCuentas;
 use App\Entity\TipoAccion;
 use App\Form\TipoAccionType;
+use App\Twig\EstatusExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,7 +51,7 @@ class TipoAccionController extends AbstractController
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El tipo de acción fue registrado satisfactoriamente',
                     'accion' => $tipoaccion->getAccion(),
-                    'estatus' => $tipoaccion->getEstatus()->getEstatus(),
+                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipoaccion->getEstatus()->getCode(),$tipoaccion->getEstatus()->getEstatus()),
                     'id' => $tipoaccion->getId(),
                 ]);
             } else {
@@ -98,7 +99,7 @@ class TipoAccionController extends AbstractController
                 $em->flush();
                 return $this->json(['mensaje' => 'El tipo de acción fue actualizado satisfactoriamente',
                     'accion' => $tipoaccion->getAccion(),
-                    'estatus' => $tipoaccion->getEstatus()->getEstatus(),
+                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipoaccion->getEstatus()->getCode(),$tipoaccion->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('tipo_accion/_form.html.twig', [
