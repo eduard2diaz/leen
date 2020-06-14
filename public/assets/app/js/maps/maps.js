@@ -164,13 +164,13 @@ var maps = function () {
 
             //Si selecciona un marcador
             if (feature) {
-                var cctt = feature.get('cctt');
+                var id = feature.get('id');
                 var coordinate = evt.coordinate;
 
                 $.ajax({
-                    url: Routing.generate('maps_findBycctt'),
+                    url: Routing.generate('maps_findById'),
                     type: "POST",
-                    data: {"cctt": cctt},
+                    data: {"id": id},
                     beforeSend: function () {
                     },
                     complete: function () {

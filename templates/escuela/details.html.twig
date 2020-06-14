@@ -11,13 +11,15 @@
             <div class="kt-portlet kt-portlet--height-fluid">
                 <div class="kt-widget14">
                     <div class="kt-widget14__header kt-margin-b-30">
-                        <h4 class="kt-widget14__title">Información General</h4>
-                        <table class="table">
+                        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+                            <div class="kt-subheader__main">
+                                <h3 class="kt-subheader__title">Ubicación</h3>
+                            </div>
+                        </div>
+                        <table class="table kt-margin-t-20">
                             <tr>
                                 <th>Nombre</th>
-                                <td>{{escuela.escuela}}</td>
-                                <th>Clave del Centro</th>
-                                <td>{{escuela.ccts}}</td>
+                                <td colspan="3">{{ escuela.escuela }}</td>
                             </tr>
                             <tr>
                                 <th>Código Postal</th>
@@ -42,16 +44,10 @@
                                 <td>{{ escuela.noexterior }}</td>
                             </tr>
                             <tr>
+                                <th>Coordenada</th>
+                                <td>{{ escuela.coordenada }}</td>
                                 <th>Estatus</th>
                                 <td colspan>{{ draw_estatus(escuela.estatus.code,escuela.estatus.estatus) }}</td>
-                                <th>Tipo de enseñanza</th>
-                                <td colspan>
-                                    <ul>
-                                    {% for tipo_ensenanza_obj in escuela.tipoensenanza %}
-                                    <li>{{ tipo_ensenanza_obj.nombre }}</li>
-                                    {% endfor %}
-                                    </ul>
-                                </td>
                             </tr>
                         </table>
                     </div>
@@ -59,4 +55,72 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-widget14">
+                    <div class="kt-widget14__header kt-margin-b-30">
+                        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+                            <div class="kt-subheader__main">
+                                <h3 class="kt-subheader__title">Enseñanza</h3>
+                            </div>
+                        </div>
+                        <table class="table kt-margin-t-20">
+                            {% for tipo_ensenanza_obj in escuela.tipoensenanza %}
+                                <tr>
+                                    <td>{{ tipo_ensenanza_obj.nombre }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-widget14">
+                    <div class="kt-widget14__header kt-margin-b-30">
+
+                        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+                            <div class="kt-subheader__main">
+                                <h3 class="kt-subheader__title">Clave del Centro</h3>
+                            </div>
+                            <div class="kt-subheader__toolbar">
+
+                                <div class="kt-subheader__wrapper">
+                                    <a data-href="{{ path('escuela_ccts_new',{'id':escuela.id}) }}" class="color-white btn btn-info edicion" data-toggle="m-tooltip" data-skin="dark" data-placement="bottom" data-original-title="Adicionar una nueva clave">
+                                        <i class="fa fa-plus-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table kt-margin-t-20 table-hover" id="escuela_ccts_entity_table">
+                            {% for ccts in escuela.ccts_collection %}
+                                <tr>
+                                    <td>{{ ccts.value }}</td>
+                                    <td>
+                                        <ul class="hidden_element list-inline pull-right">
+                                            <li class="list-inline-item"><a class="font-weight-bold text-uppercase edicion" data-href="{{ path('escuela_ccts_edit',{'id':ccts.id}) }}">Editar</a></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 {% endblock escuela_show_body %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('vendors/custom/datatables/datatables.bundle.js','template') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/entity/escuela_ccts.js','app') }}" type="text/javascript"></script>
+    <script>
+        escuela_ccts.init();
+    </script>
+{% endblock %}

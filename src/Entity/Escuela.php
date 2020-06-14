@@ -277,6 +277,10 @@ class Escuela
         return $this;
     }
 
+    public function getccts_collection(){
+        return $this->ccts_collection;
+    }
+
     public function removeCct(EscuelaCCTS $cct): self
     {
         if ($this->ccts_collection->contains($cct)) {

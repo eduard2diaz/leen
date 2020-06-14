@@ -14,7 +14,6 @@ class EscuelaCCTSType extends AbstractType
     {
         $builder
             ->add('value',TextType::class,['label'=>'Clave del Centro de Trabajo','attr'=>['class'=>'form-control','autocomplete'=>'off']])
-         //   ->add('escuela')
         ;
     }
 

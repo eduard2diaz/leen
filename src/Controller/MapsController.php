@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Escuela;
 use App\Entity\Estado;
 use App\Form\MapsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,38 +20,38 @@ class MapsController extends AbstractController
      */
     public function index(Request $request)
     {
-        $form=$this->createForm(MapsType::class,[],['action'=>$this->generateUrl('maps_index')]);
+        $form = $this->createForm(MapsType::class, [], ['action' => $this->generateUrl('maps_index')]);
         $form->handleRequest($request);
 
         if ($request->isXmlHttpRequest()) {
             $connectionParams = array(
-                'url' => 'pgsql://postgres:postgres@127.0.0.1:5432/Escuelav2?serverVersion=5.7',
+                'url' => 'pgsql://postgres:postgres@127.0.0.1:5432/leen21?serverVersion=5.7',
             );
             $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
             $conn->connect();
 
-            $escuela=$request->request->get('maps')['escuela'];
-            $estado=$request->request->get('maps')['estado'];
-            $estadoObj=$this->getDoctrine()->getManager()
-                            ->getRepository(Estado::class)->find($estado);
+            $escuela = $request->request->get('maps')['escuela'];
+            $estado = $request->request->get('maps')['estado'];
+            $estadoObj = $this->getDoctrine()->getManager()
+                ->getRepository(Estado::class)->find($estado);
 
-            if(!$estadoObj)
+            if (!$estadoObj)
                 throw new \Exception("Unable find Estado entity");
 
-            $condicion="escuela.nom_ent LIKE '%".$estadoObj->getNombre()."%'";
+            $condicion = "est.nombre LIKE '%" . $estadoObj->getNombre() . "%'";
 
-            if($escuela!="")
-                $condicion.=" AND escuela.nom_cct like '%".$escuela."%'";
+            if ($escuela != "")
+                $condicion .= "AND esc2.escuela like '%" . $escuela . "%'";
 
             $consulta = "SELECT row_to_json(fc)
-                            FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features
-                                    FROM (
-                                        SELECT 'Feature' As type
-                                        , ST_AsGeoJSON(esc.the_geom)::json As geometry
-                                        , row_to_json(lp) As properties
-                                        FROM escuela As esc
-                                            INNER JOIN (SELECT cctt FROM escuela where ".$condicion.") As lp
-                                                    ON esc.cctt = lp.cctt ) As f ) As fc;";
+       FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features
+       FROM ( SELECT 'Feature' As type
+              , ST_AsGeoJSON(esc.coordenada)::json As geometry
+              , row_to_json(lp) As properties
+               FROM escuela As esc
+               INNER JOIN (SELECT esc2.id FROM escuela as esc2 join estado as est 
+						   ON (est.id = esc2.estado_id) where " . $condicion . ") As lp
+               ON esc.id = lp.id ) As f ) As fc;";
 
             $statement = $conn->query($consulta);
             $result = $statement->fetchAll();
@@ -64,29 +65,27 @@ class MapsController extends AbstractController
     }
 
     /**
-     * @Route("/findByCCTT", name="maps_findBycctt",options={"expose"=true})
+     * @Route("/findById", name="maps_findById",options={"expose"=true})
      */
-    public function findByCCTT(Request $request){
-        if (!$request->isXmlHttpRequest() || !$request->request->has('cctt'))
+    public function findById(Request $request)
+    {
+        if (!$request->isXmlHttpRequest() || !$request->request->has('id'))
             throw $this->createAccessDeniedException();
 
-        $cctt=$request->request->get('cctt');
-        $connectionParams = array(
-            'url' => 'pgsql://postgres:postgres@127.0.0.1:5432/Escuelav2?serverVersion=5.7',
-        );
-        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
-        $conn->connect();
+        $id = $request->request->get('id');
 
-       // $consulta = "Select row_to_json(p) from escuela as p where cctt='".$cctt."' limit 1";
-        $consulta = "Select p.cctt as cctt, p.nom_ent as estado, p.nom_mun as municipio, p.nom_cct as nombre from escuela as p where cctt='".$cctt."' limit 1";
+        $em=$this->getDoctrine()->getManager();
+        $escuela=$em->getRepository(Escuela::class)->find($id);
+        $result=['nombre'=>'Undefined','estado'=>'Undefined','municipio'=>'Undefined','cctt'=>'Undefined'];
+        if($escuela!=null){
+            $result['nombre']=$escuela->getEscuela();
+            $result['estado']=$escuela->getEstado()->getNombre();
+            $result['municipio']=$escuela->getMunicipio()->getNombre();
+            $result['cctt']=$escuela->getccts_collection()->first()->getValue();
+        }
 
-        $statement = $conn->query($consulta);
-        $result = $statement->fetchAll();
-        $conn->close();
-        return $this->render('maps/info_escuela.html.twig',['escuela'=>$result[0]]);
-       // return $this->json($result[0]['row_to_json']);
+        return $this->render('maps/info_escuela.html.twig', ['escuela' => $result]);
     }
-
 
 
 }
