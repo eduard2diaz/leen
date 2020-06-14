@@ -120,10 +120,15 @@ var escuela = function () {
                     success: function (data) {
                         var cadena="";
                         var array=JSON.parse(data);
-                        for(var i=0;i<array.length;i++)
-                            cadena+="<option value="+array[i]['id']+">"+array[i]['nombre']+"</option>";
-                        $('select#escuela_municipio').html(cadena);
-                        $('select#escuela_municipio').change();
+                        if(data!=null) {
+                            for (var i = 0; i < array.length; i++)
+                                cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
+                            $('select#escuela_municipio').html(cadena);
+                            $('select#escuela_municipio').change();
+                        }else{
+                            $('select#escuela_municipio').html(cadena);
+                            $('select#escuela_d_codigo').html(cadena);
+                        }
                     },
                     error: function () {
                         //base.Error();
