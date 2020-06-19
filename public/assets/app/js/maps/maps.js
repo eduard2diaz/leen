@@ -85,7 +85,7 @@ var maps = function () {
             }),
             ],
             view: new ol.View({
-                center: ol.proj.transform([-99.41, 25], 'EPSG:4326', 'EPSG:3857'),
+                center: ol.proj.transform([-99.41, 25], 'EPSG:4218', 'EPSG:3857'),
                 zoom: 5
             })
         });

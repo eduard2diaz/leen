@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity
- * @UniqueEntity("coordenada")
+
  */
 class Plantel
 {
@@ -79,18 +79,28 @@ class Plantel
     private $estado;
 
     /**
-     * @ORM\Column(type="string", length=80)
+     * @ORM\Column(type="string", length=80,nullable=true)
      * @Assert\Length(
      *      max = 80,
      *      maxMessage = "Ls coordenada no puede exceder los {{ limit }} caracteres",
      *)
      */
-    private $coordenada;
+    private $coord_geometry;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Escuela", mappedBy="plantel")
      */
     private $escuelas;
+
+    /**
+     * @ORM\Column(type="decimal", precision=8, scale=3)
+     */
+    private $latitud;
+
+    /**
+     * @ORM\Column(type="decimal", precision=8, scale=3)
+     */
+    private $longitud;
 
     public function __construct()
     {
@@ -187,16 +197,20 @@ class Plantel
         return $this;
     }
 
-    public function getCoordenada(): ?string
+    /**
+     * @return mixed
+     */
+    public function getCoordGeometry()
     {
-        return $this->coordenada;
+        return $this->coord_geometry;
     }
 
-    public function setCoordenada(string $coordenada): self
+    /**
+     * @param mixed $coord_geometry
+     */
+    public function setCoordGeometry($coord_geometry): void
     {
-        $this->coordenada = $coordenada;
-
-        return $this;
+        $this->coord_geometry = $coord_geometry;
     }
 
     /**
@@ -218,27 +232,6 @@ class Plantel
     public function __toString()
     {
         return $this->getNombre();
-    }
-
-    /**
-     * @Assert\Callback
-     */
-    public function validate(ExecutionContextInterface $context)
-    {
-        if (null==$this->getEstado())
-            $context->addViolation('Seleccione un estado.');
-        else
-            if (null==$this->getMunicipio())
-                $context->addViolation('Seleccione un municipio.');
-            else
-                if ($this->getEstado()->getId()!=$this->getMunicipio()->getEstado()->getId())
-                    $context->addViolation('Seleccione un municipio que pertenezca a dicho estado.');
-                else
-                    if (null==$this->getDCodigo())
-                        $context->addViolation('Seleccione un código postal.');
-                    else
-                        if ($this->getDCodigo()->getMunicipio()->getId()!=$this->getMunicipio()->getId())
-                            $context->addViolation('Seleccione un código postal que pertenezca a dicho municipio.');
     }
 
     /**
@@ -272,4 +265,48 @@ class Plantel
         return $this;
     }
 
+    public function getLatitud(): ?string
+    {
+        return $this->latitud;
+    }
+
+    public function setLatitud(string $latitud): self
+    {
+        $this->latitud = $latitud;
+
+        return $this;
+    }
+
+    public function getLongitud(): ?string
+    {
+        return $this->longitud;
+    }
+
+    public function setLongitud(string $longitud): self
+    {
+        $this->longitud = $longitud;
+
+        return $this;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (null==$this->getEstado())
+            $context->addViolation('Seleccione un estado.');
+        else
+            if (null==$this->getMunicipio())
+                $context->addViolation('Seleccione un municipio.');
+            else
+                if ($this->getEstado()->getId()!=$this->getMunicipio()->getEstado()->getId())
+                    $context->addViolation('Seleccione un municipio que pertenezca a dicho estado.');
+                else
+                    if (null==$this->getDCodigo())
+                        $context->addViolation('Seleccione un código postal.');
+                    else
+                        if ($this->getDCodigo()->getMunicipio()->getId()!=$this->getMunicipio()->getId())
+                            $context->addViolation('Seleccione un código postal que pertenezca a dicho municipio.');
+    }
 }

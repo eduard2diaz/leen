@@ -6,6 +6,7 @@ use App\Entity\Plantel;
 use App\Form\Subscriber\AddCodigoPostalMunicipioFieldSubscriber;
 use App\Form\Subscriber\AddMunicipioEstadoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,7 +20,8 @@ class PlantelType extends AbstractType
             ->add('estado',null,['required'=>true,'placeholder'=>'Seleccione un estado'])
             ->add('tipoasentamiento',null,['label'=>'Tipo de Asentamiento','placeholder'=>'Seleccione un tipo de asentamiento'])
             ->add('asentamiento',TextType::class,['required'=>false,'attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('coordenada',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
+            ->add('latitud',NumberType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
+            ->add('longitud',NumberType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('calle',TextType::class,['required'=>false,'attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('noexterior',TextType::class,['required'=>false,'label'=>'Número Exterior','attr'=>['class'=>'form-control','autocomplete'=>'off']])
         ;

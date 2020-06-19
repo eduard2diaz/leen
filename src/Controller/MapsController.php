@@ -24,11 +24,7 @@ class MapsController extends AbstractController
         $form->handleRequest($request);
 
         if ($request->isXmlHttpRequest()) {
-            $connectionParams = array(
-                'url' => 'pgsql://postgres:postgres@127.0.0.1:5432/leen21?serverVersion=5.7',
-            );
-            $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
-            $conn->connect();
+            $conn =$this->getDoctrine()->getConnection();
 
             $plantel = $request->request->get('maps')['plantel'];
             $estado = $request->request->get('maps')['estado'];
@@ -46,7 +42,7 @@ class MapsController extends AbstractController
             $consulta="SELECT row_to_json(fc)
        FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features
        FROM ( SELECT 'Feature' As type
-              , ST_AsGeoJSON(p.coordenada)::json As geometry
+              , ST_AsGeoJSON(p.coord_geometry)::json As geometry
               , row_to_json(lp) As properties
                FROM plantel As p
                INNER JOIN (SELECT p2.id FROM plantel as p2 join estado as est 
@@ -56,7 +52,6 @@ class MapsController extends AbstractController
 
             $statement = $conn->query($consulta);
             $result = $statement->fetchAll();
-            $conn->close();
             return $this->json($result[0]['row_to_json']);
         }
 

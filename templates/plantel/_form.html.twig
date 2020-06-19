@@ -39,9 +39,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-
         <div class="col-md-4">
             <div class="form-group m-form__group">
                 <label>
@@ -53,6 +50,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-4">
             <div class="form-group m-form__group">
                 <label>
@@ -67,11 +66,22 @@
         <div class="col-md-4">
             <div class="form-group m-form__group">
                 <label>
-                    {{ form_label(form.coordenada) }}
+                    {{ form_label(form.latitud) }}
                 </label>
                 <div>
-                    {{ form_widget(form.coordenada) }}
-                    {{ form_errors(form.coordenada) }}
+                    {{ form_widget(form.latitud) }}
+                    {{ form_errors(form.latitud) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.longitud) }}
+                </label>
+                <div>
+                    {{ form_widget(form.longitud) }}
+                    {{ form_errors(form.longitud) }}
                 </div>
             </div>
         </div>

@@ -24,8 +24,6 @@
                             <tr>
                                 <th>Código Postal</th>
                                 <td>{% if plantel.getDCodigo() is not empty %}  {{ plantel.getDCodigo().__toString() }} {% endif %}</td>
-                                <th>Coordenada</th>
-                                <td>{{ plantel.coordenada }}</td>
                             </tr>
                             <tr>
                                 <th>Asentamiento</th>
@@ -44,6 +42,12 @@
                                 <td>{{ plantel.calle }}</td>
                                 <th>Número Exterior</th>
                                 <td>{{ plantel.noexterior }}</td>
+                            </tr>
+                            <tr>
+                                <th>Latitud</th>
+                                <td>{{ plantel.latitud }}</td>
+                                <th>Longitud</th>
+                                <td>{{ plantel.longitud }}</td>
                             </tr>
                         </table>
                     </div>
