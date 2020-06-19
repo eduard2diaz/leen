@@ -8,8 +8,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TipoAccionRepository")
- * @UniqueEntity(fields={"accion","estatus"},message="Este valor ya ha sido usado con este Estatus")
+ * @ORM\Entity
+ * @UniqueEntity(fields={"accion"},message="Este valor ya ha sido usado con este Estatus")
  */
 class TipoAccion
 {
@@ -38,12 +38,6 @@ class TipoAccion
      * @ORM\Column(type="date")
      */
     private $fechacaptura;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $estatus;
 
     public function __construct()
     {
@@ -87,18 +81,6 @@ class TipoAccion
     public function setFechacaptura(\DateTimeInterface $fechacaptura): self
     {
         $this->fechacaptura = $fechacaptura;
-
-        return $this;
-    }
-
-    public function getEstatus(): ?Estatus
-    {
-        return $this->estatus;
-    }
-
-    public function setEstatus(?Estatus $estatus): self
-    {
-        $this->estatus = $estatus;
 
         return $this;
     }

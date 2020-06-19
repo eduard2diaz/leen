@@ -4,7 +4,7 @@
 }}) }}
 <div class="modal-body" id="modal-body">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.numerocomprobante) }}
@@ -15,18 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.proyecto) }}
-                </label>
-                <div>
-                    {{ form_widget(form.proyecto) }}
-                    {{ form_errors(form.proyecto) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.tipoComprobante) }}
@@ -37,10 +26,10 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.fechacaptura) }}
@@ -51,7 +40,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.monto) }}

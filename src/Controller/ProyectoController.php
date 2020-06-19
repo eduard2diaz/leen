@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\DiagnosticoPlantel;
 use App\Entity\Escuela;
 use App\Entity\Estatus;
+use App\Entity\Plantel;
 use App\Entity\PlanTrabajo;
 use App\Entity\Proyecto;
 use App\Entity\RendicionCuentas;
@@ -31,20 +32,18 @@ class ProyectoController extends AbstractController
         $form=$this->createForm(FiltroType::class,[],['action'=>$this->generateUrl('proyecto_index')]);
         $form->handleRequest($request);
 
-        $dql   = "SELECT p FROM App:Proyecto p JOIN p.estatus es WHERE es.estatus=:estatus";
+        $dql   = "SELECT p FROM App:Proyecto p";
         $data=$request->query->get('filtro');
 
         if ($form->isSubmitted() || $data!="") {
             if($form->isSubmitted())
                 $data = $form->getData()["filtro"];
-            $dql   = "SELECT p FROM App:Proyecto p JOIN p.estatus es JOIN p.escuela e WHERE es.estatus=:estatus  AND (e.escuela LIKE :value OR p.numero LIKE :value)";
+            $dql   = "SELECT p FROM App:Proyecto p JOIN p.plantel e WHERE (e.nombre LIKE :value OR p.numero LIKE :value)";
             $query = $this->getDoctrine()->getManager()->createQuery($dql);
             $query->setParameter('value',"%".$data."%");
-            $query->setParameter('estatus','Activo');
         }
         else{
             $query = $this->getDoctrine()->getManager()->createQuery($dql);
-            $query->setParameter('estatus', 'Activo');
         }
 
         $proyectos = $paginator->paginate(
@@ -62,29 +61,29 @@ class ProyectoController extends AbstractController
 
 
     /**
-     * @Route("/{id}/findbyescuela", name="proyecto_findby_escuela", methods={"GET"})
+     * @Route("/{id}/findbyplantel", name="proyecto_findby_plantel", methods={"GET"})
      */
-    public function findByEscuela(Escuela $escuela): Response
+    public function findByPlantel(Plantel $plantel): Response
     {
-        $proyectos = $this->getDoctrine()->getRepository(Proyecto::class)->findByEscuela($escuela);
+        $proyectos = $this->getDoctrine()->getRepository(Proyecto::class)->findByPlantel($plantel);
 
-        return $this->render('proyecto/findbyescuela.html.twig', [
+        return $this->render('proyecto/findbyplantel.html.twig', [
             'proyectos' => $proyectos,
-            'escuela' => $escuela,
+            'plantel' => $plantel,
         ]);
     }
 
     /**
      * @Route("/{id}/new", name="proyecto_new", methods={"GET","POST"},options={"expose"=true})
      */
-    public function new(Request $request,Escuela $escuela): Response
+    public function new(Request $request,Plantel $plantel): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $proyecto = new Proyecto();
-        $proyecto->setEscuela($escuela);
-        $form = $this->createForm(ProyectoType::class, $proyecto, ['action' => $this->generateUrl('proyecto_new',['id'=>$escuela->getId()])]);
+        $proyecto->setPlantel($plantel);
+        $form = $this->createForm(ProyectoType::class, $proyecto, ['action' => $this->generateUrl('proyecto_new',['id'=>$plantel->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -96,7 +95,6 @@ class ProyectoController extends AbstractController
                     'id' => $proyecto->getId(),
                     'numero' => $proyecto->getNumero(),
                     'fechainicio' => $proyecto->getFechainicio()->format('Y-m-d'),
-                    'estatus' => EstatusExtension::drawAsHtmlStatic($proyecto->getEstatus()->getCode(),$proyecto->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('proyecto/_form.html.twig', [
@@ -117,9 +115,6 @@ class ProyectoController extends AbstractController
      */
     public function show(Request $request, Proyecto $proyecto): Response
     {
-        if (!$request->isXmlHttpRequest())
-            throw $this->createAccessDeniedException();
-
         $gastos=$this->getDoctrine()->getRepository(Proyecto::class)->findSumaGastos($proyecto->getId());
         return $this->render('proyecto/show.html.twig', [
             'proyecto' => $proyecto,
@@ -148,7 +143,6 @@ class ProyectoController extends AbstractController
                 return $this->json(['mensaje' => 'El tipo de asentamiento fue actualizado satisfactoriamente',
                     'numero' => $proyecto->getNumero(),
                     'fechainicio' => $proyecto->getFechainicio()->format('Y-m-d'),
-                    'estatus' => EstatusExtension::drawAsHtmlStatic($proyecto->getEstatus()->getCode(),$proyecto->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('proyecto/_form.html.twig', [
@@ -181,28 +175,23 @@ class ProyectoController extends AbstractController
             || !$this->esEliminable($proyecto))
             throw $this->createAccessDeniedException();
 
+        $plantel_id=$proyecto->getPlantel()->getId();
         $em = $this->getDoctrine()->getManager();
-        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
-
-        if(!$estatus)
-            throw new \Exception('No existe el estatus');
-
-        $proyecto->setEstatus($estatus);
+        $em->remove($proyecto);
         $em->flush();
         $this->addFlash('success','El proyecto fue eliminado satisfactoriamente');
         return $this->json([
-            'url'=>$this->generateUrl('proyecto_index')
+            'url'=>$this->generateUrl('proyecto_findby_plantel',['id'=>$plantel_id])
         ]);
     }
 
     private function esEliminable(Proyecto $proyecto)
     {
         $em = $this->getDoctrine()->getManager();
-        $diagnostico=$em->getRepository(DiagnosticoPlantel::class)->findOneByProyecto($proyecto);
         $plan_trabajo=$em->getRepository(PlanTrabajo::class)->findOneByProyecto($proyecto);
         $control_gasto=$em->getRepository(ControlGastos::class)->findOneByProyecto($proyecto);
         $rendicion_cuenta=$em->getRepository(RendicionCuentas::class)->findOneByProyecto($proyecto);
-        return $diagnostico==null && $plan_trabajo==null && $control_gasto==null && $rendicion_cuenta==null;
+        return $plan_trabajo==null && $control_gasto==null && $rendicion_cuenta==null;
     }
 
 

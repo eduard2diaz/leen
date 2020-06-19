@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CondicionEducativaAlumnosRepository")
+ * @ORM\Entity
  */
 class CondicionEducativaAlumnos
 {
@@ -47,16 +47,10 @@ class CondicionEducativaAlumnos
     private $grado;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Escuela")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $estatus;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\EscuelaCCTS")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $ccts;
+    private $escuela;
 
     public function getId(): ?int
     {
@@ -118,29 +112,17 @@ class CondicionEducativaAlumnos
     /**
      * @return mixed
      */
-    public function getEstatus()
+    public function getEscuela()
     {
-        return $this->estatus;
+        return $this->escuela;
     }
 
     /**
-     * @param mixed $estatus
+     * @param mixed $escuela
      */
-    public function setEstatus($estatus): void
+    public function setEscuela($escuela): void
     {
-        $this->estatus = $estatus;
-    }
-
-    public function getCcts(): ?EscuelaCCTS
-    {
-        return $this->ccts;
-    }
-
-    public function setCcts(?EscuelaCCTS $ccts): self
-    {
-        $this->ccts = $ccts;
-
-        return $this;
+        $this->escuela = $escuela;
     }
 
     /**
@@ -150,7 +132,7 @@ class CondicionEducativaAlumnos
     {
         if (null==$this->getDiagnostico())
             $context->addViolation('Seleccione un diagnóstico.');
-        if (null==$this->getCcts())
-            $context->addViolation('Seleccione una clave del centro de trabajo.');
+        if (null==$this->getEscuela())
+            $context->addViolation('Seleccione una escuela.');
     }
 }

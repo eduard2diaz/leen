@@ -19,30 +19,12 @@ class ProyectoRepository extends ServiceEntityRepository
         parent::__construct($registry, Proyecto::class);
     }
 
-    // /**
-    //  * @return Proyecto[] Returns an array of Proyecto objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
 
     public function findSumaGastos($proyecto_id)
     {
-        $cadena = "SELECT SUM(cg.monto) FROM App:ControlGastos cg JOIN cg.proyecto p JOIN cg.estatus s WHERE p.id= :proyecto AND s.estatus=:estatus";
+        $cadena = "SELECT SUM(cg.monto) FROM App:ControlGastos cg JOIN cg.proyecto p WHERE p.id= :proyecto ";
         $consulta = $this->getEntityManager()->createQuery($cadena);
         $consulta->setParameter('proyecto', $proyecto_id);
-        $consulta->setParameter('estatus', 'Activo');
         return $consulta->getResult()[0][1]==null ? 0 : $consulta->getResult()[0][1];
     }
 

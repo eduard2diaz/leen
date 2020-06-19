@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Escuela;
 use App\Entity\Estatus;
+use App\Entity\Proyecto;
 use App\Entity\RendicionCuentas;
 use App\Form\RendicionCuentasType;
 use App\Repository\RendicionCuentasRepository;
@@ -21,27 +22,28 @@ class RendicionCuentasController extends AbstractController
     /**
      * @Route("/{id}/index", name="rendicion_cuentas_index", methods={"GET"})
      */
-    public function index(Escuela $escuela): Response
+    public function index(Proyecto $proyecto): Response
     {
         $em=$this->getDoctrine()->getManager();
-        $rendiciones=$em->getRepository(RendicionCuentas::class)->findActivos($escuela->getId());
+        $rendiciones=$em->getRepository(RendicionCuentas::class)->findByProyecto($proyecto);
 
         return $this->render('rendicion_cuentas/index.html.twig', [
             'rendicion_cuentas' => $rendiciones,
-            'escuela' => $escuela,
+            'proyecto' => $proyecto,
         ]);
     }
 
     /**
      * @Route("/{id}/new", name="rendicion_cuentas_new", methods={"GET","POST"})
      */
-    public function new(Escuela $escuela, Request $request): Response
+    public function new(Proyecto $proyecto, Request $request): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $rendicioncuentas = new RendicionCuentas();
-        $form = $this->createForm(RendicionCuentasType::class, $rendicioncuentas, ['action' => $this->generateUrl('rendicion_cuentas_new',['id'=>$escuela->getId()]),'escuela'=>$escuela->getId()]);
+        $rendicioncuentas->setProyecto($proyecto);
+        $form = $this->createForm(RendicionCuentasType::class, $rendicioncuentas, ['action' => $this->generateUrl('rendicion_cuentas_new',['id'=>$proyecto->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -50,7 +52,6 @@ class RendicionCuentasController extends AbstractController
                 $entityManager->persist($rendicioncuentas);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'La rendición de cuentas fue registrada satisfactoriamente',
-                    'proyecto' => $rendicioncuentas->getProyecto()->__toString(),
                     'tipoaccion' => $rendicioncuentas->getTipoAccion()->__toString(),
                     'fecha' => $rendicioncuentas->getFechacaptura()->format('Y-m-d'),
                     'id' => $rendicioncuentas->getId(),
@@ -59,12 +60,12 @@ class RendicionCuentasController extends AbstractController
                 $page = $this->renderView('rendicion_cuentas/_form.html.twig', [
                     'form' => $form->createView(),
                 ]);
-                return $this->json(['rendicion_cuentas' => $page, 'error' => true,]);
+                return $this->json(['form' => $page, 'error' => true,]);
             }
 
         return $this->render('rendicion_cuentas/new.html.twig', [
             'rendicion_cuentas' => $rendicioncuentas,
-            'escuela' => $escuela,
+            'proyecto' => $proyecto,
             'form' => $form->createView(),
         ]);
     }
@@ -90,7 +91,7 @@ class RendicionCuentasController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
-        $form = $this->createForm(RendicionCuentasType::class, $rendicioncuentas, ['action' => $this->generateUrl('rendicion_cuentas_edit', ['id' => $rendicioncuentas->getId()]),'escuela'=>$rendicioncuentas->getProyecto()->getEscuela()->getId()]);
+        $form = $this->createForm(RendicionCuentasType::class, $rendicioncuentas, ['action' => $this->generateUrl('rendicion_cuentas_edit', ['id' => $rendicioncuentas->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -108,7 +109,6 @@ class RendicionCuentasController extends AbstractController
                 $em->persist($rendicioncuentas);
                 $em->flush();
                 return $this->json(['mensaje' => 'La rendición de cuentas fue actualizada satisfactoriamente',
-                    'proyecto' => $rendicioncuentas->getProyecto()->__toString(),
                     'tipoaccion' => $rendicioncuentas->getTipoAccion()->__toString(),
                     'fecha' => $rendicioncuentas->getFechacaptura()->format('Y-m-d'),
                 ]);
@@ -140,10 +140,7 @@ class RendicionCuentasController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
-        if(!$estatus)
-            throw new \Exception('No existe el estatus');
-        $rendicioncuentas->setEstatus($estatus);
+        $em->remove($rendicioncuentas);
         $em->flush();
         return $this->json(['mensaje' => 'La rendición de cuentas fue eliminada satisfactoriamente']);
     }

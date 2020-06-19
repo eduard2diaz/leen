@@ -1,29 +1,27 @@
-var escuela_proyecto = function () {
+var plantel_escuela = function () {
     var table = null;
     var obj = null;
 
     var configurarDataTable = function () {
-        table = $('table#proyecto_entity_table').DataTable({
+        table = $('table#escuela_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
                 url: datatable_url
             },
             columns: [
                 {data: 'id'},
-                {data: 'numero'},
-                {data: 'fechainicio'},
-                {data: 'estatus'},
+                {data: 'nombre'},
+                {data: 'ccts'},
                 {data: 'acciones'}
             ]
         });
     }
 
     var configurarFormulario = function () {
-        $('select#proyecto_escuela').select2({
+        $('select#escuela_tipoensenanza').select2({
             dropdownParent: $("#basicmodal"),
+            placeholder: "Seleccione al menos un tipo de enseanza"
         });
-        $('input#proyecto_fechainicio').datepicker();
-        $('input#proyecto_fechafin').datepicker();
     }
 
     var edicion = function () {
@@ -40,8 +38,8 @@ var escuela_proyecto = function () {
                 },
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
-                        $('div#basicmodal').modal('show');
                         configurarFormulario();
+                        $('div#basicmodal').modal('show');
                     }
                 },
                 error: function () {
@@ -55,7 +53,7 @@ var escuela_proyecto = function () {
     }
 
     var newAction = function () {
-        $('div#basicmodal').on('submit', 'form#proyecto_new', function (evento) {
+        $('div#basicmodal').on('submit', 'form#escuela_new', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -79,17 +77,16 @@ var escuela_proyecto = function () {
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        proyectoCounter++;
+                        escuelaCounter++;
                         objeto = table.row.add({
-                            "id": proyectoCounter,
-                            "numero": data['numero'],
-                            "fechainicio": data['fechainicio'],
-                            "estatus": data['estatus'],
+                            "id": escuelaCounter,
+                            "nombre": data['nombre'],
+                            "ccts": data['ccts'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='btn btn-sm show-proyecto' data-href=" + Routing.generate('proyecto_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
+                                "<a class='btn btn-sm' href=" + Routing.generate('escuela_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('proyecto_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
+                                "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('escuela_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",
                         });
                         objeto.draw();
@@ -104,7 +101,7 @@ var escuela_proyecto = function () {
     }
 
     var edicionAction = function () {
-        $('div#basicmodal').on('submit', 'form#proyecto_edit', function (evento) {
+        $('div#basicmodal').on('submit', 'form#escuela_edit', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -125,9 +122,8 @@ var escuela_proyecto = function () {
                     } else{
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(2)').html(data['numero']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['fechainicio']);
-                        obj.parents('tr').children('td:nth-child(4)').html(data['estatus']);
+                        obj.parents('tr').children('td:nth-child(2)').html(data['nombre']);
+                        obj.parents('tr').children('td:nth-child(3)').html(data['ccts']);
                     }
 
                 },
@@ -139,15 +135,15 @@ var escuela_proyecto = function () {
     }
 
     var eliminar = function () {
-        $('div#basicmodal').on('click', 'a.eliminar_proyecto', function (evento) {
+        $('div#basicmodal').on('click', 'a.eliminar_escuela', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
             var token = $(this).attr('data-csrf');
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar proyecto',
-                message: '¿Está seguro que desea eliminar este proyecto?',
+                title: 'Eliminar escuela',
+                message: '¿Está seguro que desea eliminar este escuela?',
                 buttons: {
                     confirm: {
                         label: 'Si, estoy seguro',
@@ -173,7 +169,10 @@ var escuela_proyecto = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                document.location.href = data['url'];
+                                table.row(obj.parents('tr'))
+                                    .remove()
+                                    .draw('page');
+                                toastr.success(data['mensaje']);
                             },
                             error: function () {
                                 //base.Error();
@@ -184,34 +183,6 @@ var escuela_proyecto = function () {
         });
     }
 
-    var show = function () {
-        $('body').on('click', 'a.show-proyecto', function (evento) {
-            evento.preventDefault();
-            var link = $(this).attr('data-href');
-            obj = $(this);
-            $.ajax({
-                type: 'get',
-                dataType: 'html',
-                url: link,
-                beforeSend: function (data) {
-                    $.blockUI({message: '<small>Cargando...</small>'});
-                },
-                success: function (data) {
-                    if ($('div#basicmodal').html(data)) {
-                        $('div#basicmodal').modal('show');
-                    }
-                },
-                error: function () {
-                    //base.Error();
-                },
-                complete: function () {
-                    $.unblockUI();
-                }
-            });
-        });
-    }
-
-
     return {
         init: function () {
             $().ready(function () {
@@ -219,7 +190,6 @@ var escuela_proyecto = function () {
                     newAction();
                     edicionAction();
                     edicion();
-                    show();
                     eliminar();
                 }
             );

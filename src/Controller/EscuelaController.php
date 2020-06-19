@@ -3,14 +3,12 @@
 
 namespace App\Controller;
 
+use App\Entity\CondicionDocenteEducativa;
+use App\Entity\CondicionEducativaAlumnos;
 use App\Entity\Escuela;
-use App\Entity\EscuelaCCTS;
-use App\Entity\Estatus;
-use App\Entity\Proyecto;
+use App\Entity\Plantel;
 use App\Form\EscuelaType;
 use App\Form\FiltroType;
-use Doctrine\Persistence\ManagerRegistry;
-use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Knp\Component\Pager\PaginatorInterface;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-ini_set('memory_limit', '-1');
 
 /**
  * @Route("/escuela")
@@ -33,20 +30,18 @@ class EscuelaController extends AbstractController
         $form = $this->createForm(FiltroType::class, [], ['action' => $this->generateUrl('escuela_index')]);
         $form->handleRequest($request);
 
-        $dql = "SELECT e FROM App:Escuela e JOIN e.estatus es WHERE es.estatus=:estatus";
+        $dql = "SELECT e FROM App:Escuela e ";
         $data = $request->query->get('filtro');
 
         if ($form->isSubmitted() || $data != "") {
             if ($form->isSubmitted())
                 $data = $form->getData()["filtro"];
 
-            $dql = "SELECT e FROM App:Escuela e JOIN e.estatus es WHERE es.estatus=:estatus AND (e.escuela LIKE :value OR e.ccts LIKE :value)";
+            $dql = "SELECT e FROM App:Escuela e JOIN e.plantel p WHERE (e.nombre LIKE :value OR e.ccts LIKE :value OR p.nombre LIKE :value)";
             $query = $this->getDoctrine()->getManager()->createQuery($dql);
             $query->setParameter('value', "%" . $data . "%");
-            $query->setParameter('estatus', "Activo");
         } else {
             $query = $this->getDoctrine()->getManager()->createQuery($dql);
-            $query->setParameter('estatus', 'Activo');
         }
 
         $escuelas = $paginator->paginate(
@@ -63,17 +58,29 @@ class EscuelaController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="escuela_new", methods={"GET","POST"},options={"expose"=true})
+     * @Route("/{id}/findbyplantel", name="escuela_findby_plantel", methods={"GET"})
      */
-    public function new(Request $request): Response
+    public function findByPlantel(Plantel $plantel): Response
+    {
+        $escuelas = $this->getDoctrine()->getRepository(Escuela::class)->findByPlantel($plantel);
+
+        return $this->render('escuela/findbyplantel.html.twig', [
+            'escuelas' => $escuelas,
+            'plantel' => $plantel,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/new", name="escuela_new", methods={"GET","POST"},options={"expose"=true})
+     */
+    public function new(Request $request,Plantel $plantel): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $escuela = new Escuela();
-        $escuelaCCTS = new EscuelaCCTS();
-        $escuela->setCcts($escuelaCCTS);
-        $form = $this->createForm(EscuelaType::class, $escuela, ['action' => $this->generateUrl('escuela_new')]);
+        $escuela->setPlantel($plantel);
+        $form = $this->createForm(EscuelaType::class, $escuela, ['action' => $this->generateUrl('escuela_new',['id'=>$plantel->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -81,13 +88,10 @@ class EscuelaController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($escuela);
                 $entityManager->flush();
-
-                $entityManager->persist($escuelaCCTS);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'La escuela fue registrada satisfactoriamente');
-                return $this->json([
-                    'url' => $this->generateUrl('escuela_index')
+                return $this->json(['mensaje' => 'La escuela fue registrada satisfactoriamente',
+                    'id' => $escuela->getId(),
+                    'nombre' => $escuela->getNombre(),
+                    'ccts' => $escuela->getCcts()
                 ]);
             } else {
                 $page = $this->renderView('escuela/_form.html.twig', [
@@ -151,9 +155,9 @@ class EscuelaController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($escuela);
                 $em->flush();
-                $this->addFlash('success', 'La escuela fue actualizada satisfactoriamente');
-                return $this->json([
-                    'url' => $this->generateUrl('escuela_index')
+                return $this->json(['mensaje' => 'La escuela fue actualizada satisfactoriamente',
+                    'nombre' => $escuela->getNombre(),
+                    'ccts' => $escuela->getCcts()
                 ]);
             } else {
                 $page = $this->renderView('escuela/_form.html.twig', [
@@ -187,25 +191,17 @@ class EscuelaController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $estatus = $this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
-
-        if (!$estatus)
-            throw new \Exception('No existe el estatus');
-
-        $escuela->setEstatus($estatus);
+        $em->remove($escuela);
         $em->flush();
-
-        $this->addFlash('success', 'La escuela fue eliminada satisfactoriamente');
-        return $this->json([
-            'url' => $this->generateUrl('escuela_index')
-        ]);
+        return $this->json(['mensaje' => 'La escuela fue eliminada satisfactoriamente']);
     }
 
     private function esEliminable(Escuela $escuela)
     {
         $em = $this->getDoctrine()->getManager();
-        $proyecto=$em->getRepository(Proyecto::class)->findOneByEscuela($escuela);
-        return $proyecto==null;
+        $cde=$em->getRepository(CondicionDocenteEducativa::class)->findOneByEscuela($escuela);
+        $cea=$em->getRepository(CondicionEducativaAlumnos::class)->findOneByEscuela($escuela);
+        return $cde==null && $cea==null;
     }
 
 }

@@ -31,8 +31,7 @@ class CondicionDocenteEducativaController extends AbstractController
 
         $condicion_docente_educativa = new CondicionDocenteEducativa();
         $condicion_docente_educativa->setDiagnostico($diagnostico);
-        $escuela=$diagnostico->getProyecto()->getEscuela()->getId();
-        $form = $this->createForm(CondicionDocenteEducativaType::class, $condicion_docente_educativa, ['escuela'=>$escuela,'action' => $this->generateUrl('condicion_docente_educativa_new',['id'=>$diagnostico->getId()])]);
+        $form = $this->createForm(CondicionDocenteEducativaType::class, $condicion_docente_educativa, ['action' => $this->generateUrl('condicion_docente_educativa_new',['id'=>$diagnostico->getId()])]);
         $form->handleRequest($request);
         if ($form->isSubmitted())
             if ($form->isValid()) {
@@ -40,7 +39,7 @@ class CondicionDocenteEducativaController extends AbstractController
                 $entityManager->persist($condicion_docente_educativa);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'La condición docente educativa fue registrada satisfactoriamente',
-                    'ccts' => $condicion_docente_educativa->getCcts()->getValue(),
+                    'ccts' => $condicion_docente_educativa->getEscuela()->getCcts(),
                     'curp' => $condicion_docente_educativa->getCurp(),
                     'nombre' => $condicion_docente_educativa->getNombre(),
                     'grado' => $condicion_docente_educativa->getGrado()->getNombre(),
@@ -69,8 +68,7 @@ class CondicionDocenteEducativaController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
-        $escuela=$condicion_docente_educativa->getDiagnostico()->getProyecto()->getEscuela()->getId();
-        $form = $this->createForm(CondicionDocenteEducativaType::class, $condicion_docente_educativa, ['escuela'=>$escuela,'action' => $this->generateUrl('condicion_docente_educativa_edit', ['id' => $condicion_docente_educativa->getId()])]);
+        $form = $this->createForm(CondicionDocenteEducativaType::class, $condicion_docente_educativa, ['action' => $this->generateUrl('condicion_docente_educativa_edit', ['id' => $condicion_docente_educativa->getId()])]);
         $form->handleRequest($request);
         if ($form->isSubmitted())
             if ($form->isValid()) {
@@ -78,7 +76,7 @@ class CondicionDocenteEducativaController extends AbstractController
                 $em->persist($condicion_docente_educativa);
                 $em->flush();
                 return $this->json(['mensaje' => 'La condición docente educativa fue actualizada satisfactoriamente',
-                    'ccts' => $condicion_docente_educativa->getCcts()->getValue(),
+                    'ccts' => $condicion_docente_educativa->getEscuela()->getCcts(),
                     'curp' => $condicion_docente_educativa->getCurp(),
                     'nombre' => $condicion_docente_educativa->getNombre(),
                     'grado' => $condicion_docente_educativa->getGrado()->getNombre(),
@@ -111,10 +109,7 @@ class CondicionDocenteEducativaController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
-        if(!$estatus)
-            throw new \Exception('No existe el estatus');
-        $condicion_docente_educativa->setEstatus($estatus);
+        $em->remove($condicion_docente_educativa);
         $em->flush();
         return $this->json(['mensaje' => 'La condición docente educativa fue eliminada satisfactoriamente']);
     }

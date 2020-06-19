@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\RendicionCuentasRepository")
+ * @ORM\Entity
  */
 class RendicionCuentas
 {
@@ -24,12 +24,6 @@ class RendicionCuentas
      * @ORM\JoinColumn(nullable=false)
      */
     private $proyecto;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $estatus;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TipoAccion")
@@ -126,22 +120,6 @@ class RendicionCuentas
         $this->rendicionesarchivos = $rendicionesarchivos;
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEstatus()
-    {
-        return $this->estatus;
-    }
-
-    /**
-     * @param mixed $estatus
-     */
-    public function setEstatus($estatus): void
-    {
-        $this->estatus = $estatus;
     }
 
     /**

@@ -11,17 +11,11 @@ var tipocomprobante = function () {
             columns: [
                 {data: 'numero'},
                 {data: 'comprobante'},
-                {data: 'estatus'},
                 {data: 'acciones'}
             ]
         });
     }
 
-    var configurarFormulario = function () {
-        $('select#tipo_comprobante_estatus').select2({
-            dropdownParent: $("#basicmodal"),
-        });
-    }
 
 
     var edicion = function () {
@@ -38,7 +32,6 @@ var tipocomprobante = function () {
                 },
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
-                        configurarFormulario();
                         $('div#basicmodal').modal('show');
                     }
                 },
@@ -71,7 +64,6 @@ var tipocomprobante = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
-                        configurarFormulario();
                     } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
@@ -82,7 +74,6 @@ var tipocomprobante = function () {
                         objeto = table.row.add({
                             "numero": tipoComprobanteCounter,
                             "comprobante": data['comprobante'],
-                            "estatus": data['estatus'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn default btn-sm edicion' data-href=" + Routing.generate('tipo_comprobante_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +

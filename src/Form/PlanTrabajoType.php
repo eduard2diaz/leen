@@ -20,7 +20,6 @@ class PlanTrabajoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $escuela = $options['escuela'];
         $required=!$options['data']->getId() ? true : false;
         $builder
             ->add('fechacaptura',TextType::class,['label'=>'Fecha de captura','attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}','autocomplete' => 'off']])
@@ -34,26 +33,6 @@ class PlanTrabajoType extends AbstractType
 
         $builder->get('fechacaptura')->addModelTransformer(new DatetoStringTransformer());
 
-        $builder->add('proyecto', EntityType::class, array(
-            'class' => Proyecto::class,
-            'required'=>true,
-            'query_builder' => function (EntityRepository $repository) use ($escuela) {
-                $qb = $repository->createQueryBuilder('proyecto')
-                    ->innerJoin('proyecto.escuela', 'p');
-                if ($escuela instanceof Escuela) {
-                    $qb->where('p.id = :id')
-                        ->setParameter('id', $escuela);
-                } elseif (is_numeric($escuela)) {
-                    $qb->where('p.id = :id')
-                        ->setParameter('id', $escuela);
-                } else {
-                    $qb->where('p.id = :id')
-                        ->setParameter('id', null);
-                }
-                return $qb;
-            }
-
-        , 'attr' => array('class' => 'form-control input-medium')));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -61,6 +40,5 @@ class PlanTrabajoType extends AbstractType
         $resolver->setDefaults([
             'data_class' => PlanTrabajo::class,
         ]);
-        $resolver->setRequired(['escuela']);
     }
 }

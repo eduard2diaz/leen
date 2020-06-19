@@ -27,8 +27,7 @@ class CondicionEducativaAlumnosController extends AbstractController
 
         $condicion_educativa_alumno = new CondicionEducativaAlumnos();
         $condicion_educativa_alumno->setDiagnostico($diagnostico);
-        $escuela=$diagnostico->getProyecto()->getEscuela()->getId();
-        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicion_educativa_alumno, ['escuela'=>$escuela,'action' => $this->generateUrl('condicion_educativa_alumno_new',['id'=>$diagnostico->getId()])]);
+        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicion_educativa_alumno, ['action' => $this->generateUrl('condicion_educativa_alumno_new',['id'=>$diagnostico->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -36,8 +35,8 @@ class CondicionEducativaAlumnosController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($condicion_educativa_alumno);
                 $entityManager->flush();
-                return $this->json(['mensaje' => 'la condición docente educativa fue registrada satisfactoriamente',
-                    'ccts' => $condicion_educativa_alumno->getCcts()->getValue(),
+                return $this->json(['mensaje' => 'La condición educativa de los alumnos fue registrada satisfactoriamente',
+                    'ccts' => $condicion_educativa_alumno->getEscuela()->getCcts(),
                     'numalumnas' => $condicion_educativa_alumno->getNumalumnas(),
                     'numalumnos' => $condicion_educativa_alumno->getNumalumnos(),
                     'grado' => $condicion_educativa_alumno->getGrado()->getNombre(),
@@ -66,8 +65,7 @@ class CondicionEducativaAlumnosController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
-        $escuela=$condicion_educativa_alumno->getDiagnostico()->getProyecto()->getEscuela()->getId();
-        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicion_educativa_alumno, ['escuela'=>$escuela,'action' => $this->generateUrl('condicion_educativa_alumno_edit', ['id' => $condicion_educativa_alumno->getId()])]);
+        $form = $this->createForm(CondicionEducativaAlumnosType::class, $condicion_educativa_alumno, ['action' => $this->generateUrl('condicion_educativa_alumno_edit', ['id' => $condicion_educativa_alumno->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -75,8 +73,8 @@ class CondicionEducativaAlumnosController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($condicion_educativa_alumno);
                 $em->flush();
-                return $this->json(['mensaje' => 'El condicion_educativa_alumno fue actualizado satisfactoriamente',
-                    'ccts' => $condicion_educativa_alumno->getCcts()->getValue(),
+                return $this->json(['mensaje' => 'La condición educativa de los alumnos fue actualizada satisfactoriamente',
+                    'ccts' => $condicion_educativa_alumno->getEscuela()->getCcts(),
                     'numalumnas' => $condicion_educativa_alumno->getNumalumnas(),
                     'numalumnos' => $condicion_educativa_alumno->getNumalumnos(),
                     'grado' => $condicion_educativa_alumno->getGrado()->getNombre(),
@@ -109,14 +107,9 @@ class CondicionEducativaAlumnosController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
-
-        if(!$estatus)
-            throw new \Exception('No existe el estatus');
-
-        $condicion_educativa_alumno->setEstatus($estatus);
+        $em->remove($condicion_educativa_alumno);
         $em->flush();
-        return $this->json(['mensaje' => 'La condición educativa alumno fue eliminada satisfactoriamente']);
+        return $this->json(['mensaje' => 'La condición educativa de los alumnos fue eliminada satisfactoriamente']);
     }
 
 

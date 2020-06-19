@@ -48,7 +48,6 @@ class TipoAsentamientoController extends AbstractController
                 return $this->json(['mensaje' => 'El tipo de asentamiento fue registrado satisfactoriamente',
                     'nombre' => $tipoasentamiento->getNombre(),
                     'clave' => $tipoasentamiento->getClave(),
-                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipoasentamiento->getEstatus()->getCode(),$tipoasentamiento->getEstatus()->getEstatus()),
                     'id' => $tipoasentamiento->getId(),
                 ]);
             } else {
@@ -84,7 +83,6 @@ class TipoAsentamientoController extends AbstractController
                 return $this->json(['mensaje' => 'El tipo de asentamiento fue actualizado satisfactoriamente',
                     'nombre' => $tipoasentamiento->getNombre(),
                     'clave' => $tipoasentamiento->getClave(),
-                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipoasentamiento->getEstatus()->getCode(),$tipoasentamiento->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('tipo_asentamiento/_form.html.twig', [

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Escuela;
 use App\Entity\Estatus;
 use App\Entity\PlanTrabajo;
+use App\Entity\Proyecto;
 use App\Form\PlanTrabajoType;
 use App\Repository\PlanTrabajoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,27 +22,28 @@ class PlanTrabajoController extends AbstractController
     /**
      * @Route("/{id}/index", name="plan_trabajo_index", methods={"GET"})
      */
-    public function index(Escuela $escuela): Response
+    public function index(Proyecto $proyecto): Response
     {
         $em=$this->getDoctrine()->getManager();
-        $planTrabajos=$em->getRepository(PlanTrabajo::class)->findActivos($escuela->getId());
+        $planTrabajos=$em->getRepository(PlanTrabajo::class)->findByProyecto($proyecto);
 
         return $this->render('plan_trabajo/index.html.twig', [
             'plan_trabajos' => $planTrabajos,
-            'escuela' => $escuela,
+            'proyecto' => $proyecto,
         ]);
     }
 
     /**
      * @Route("/{id}/new", name="plan_trabajo_new", methods={"GET","POST"})
      */
-    public function new(Escuela $escuela, Request $request): Response
+    public function new(Proyecto $proyecto, Request $request): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $planTrabajo = new PlanTrabajo();
-        $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_new',['id'=>$escuela->getId()]),'escuela'=>$escuela->getId()]);
+        $planTrabajo->setProyecto($proyecto);
+        $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_new',['id'=>$proyecto->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -50,7 +52,6 @@ class PlanTrabajoController extends AbstractController
                 $entityManager->persist($planTrabajo);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El plan de trabajo fue registrado satisfactoriamente',
-                    'proyecto' => $planTrabajo->getProyecto()->__toString(),
                     'tipoaccion' => $planTrabajo->getTipoAccion()->__toString(),
                     'fecha' => $planTrabajo->getFechacaptura()->format('Y-m-d'),
                     'id' => $planTrabajo->getId(),
@@ -64,7 +65,7 @@ class PlanTrabajoController extends AbstractController
 
         return $this->render('plan_trabajo/new.html.twig', [
             'plan_trabajo' => $planTrabajo,
-            'escuela' => $escuela,
+            'proyecto' => $proyecto,
             'form' => $form->createView(),
         ]);
     }
@@ -90,7 +91,7 @@ class PlanTrabajoController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
-        $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_edit', ['id' => $planTrabajo->getId()]),'escuela'=>$planTrabajo->getProyecto()->getEscuela()->getId()]);
+        $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_edit', ['id' => $planTrabajo->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -108,7 +109,6 @@ class PlanTrabajoController extends AbstractController
                 $em->persist($planTrabajo);
                 $em->flush();
                 return $this->json(['mensaje' => 'El plan de trabajo fue actualizado satisfactoriamente',
-                    'proyecto' => $planTrabajo->getProyecto()->__toString(),
                     'tipoaccion' => $planTrabajo->getTipoAccion()->__toString(),
                     'fecha' => $planTrabajo->getFechacaptura()->format('Y-m-d'),
                 ]);
@@ -140,12 +140,7 @@ class PlanTrabajoController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
-
-        if(!$estatus)
-            throw new \Exception('No existe el estatus');
-
-        $planTrabajo->setEstatus($estatus);
+        $em->remove($planTrabajo);
         $em->flush();
         return $this->json(['mensaje' => 'El diagnóstico de plantel fue eliminado satisfactoriamente']);
     }

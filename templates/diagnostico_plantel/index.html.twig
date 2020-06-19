@@ -1,18 +1,18 @@
-{% extends 'escuela/show.html.twig' %}
+{% extends 'plantel/template.html.twig'%}
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
 {% endblock %}
 
-{% block escuela_show_header %}
+{% block plantel_show_header %}
     {{ parent() }}
     <h3 class="kt-subheader__title">Diagnósticos del plantel</h3>
     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-    <a href="{{ path('diagnostico_plantel_new',{'id':escuela.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion"  data-toggle="m-tooltip" data-skin="dark" data-placement="bottom" data-original-title="Adicionar diagnóstico">
+    <a href="{{ path('diagnostico_plantel_new',{'id':plantel.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion"  data-toggle="m-tooltip" data-skin="dark" data-placement="bottom" data-original-title="Adicionar diagnóstico">
         Nuevo
     </a>
-{% endblock escuela_show_header %}
+{% endblock plantel_show_header %}
 
-{% block escuela_show_body %}
+{% block plantel_show_body %}
 
     <div class="row">
         <div class="col-xl-12">
@@ -29,7 +29,6 @@
                         <tr>
                             <th>#</th>
                             <th>Identificador</th>
-                            <th>Proyecto</th>
                             <th>Fecha</th>
                             <th></th>
                         </tr>
@@ -40,7 +39,6 @@
                             <tr>
                                 <td>{{ i }}</td>
                                 <td>{{ diagnostico.iddiagnosticoplantel }}</td>
-                                <td>{{ diagnostico.proyecto }}</td>
                                 <td>{{ diagnostico.fecha | date('Y-m-d') }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">

@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TipoComprobanteRepository")
+ * @ORM\Entity
  * @UniqueEntity("comprobante")
  *
  */
@@ -39,12 +39,6 @@ class TipoComprobante
      * @ORM\Column(type="date")
      */
     private $fechacaptura;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $estatus;
 
     public function __construct()
     {
@@ -88,18 +82,6 @@ class TipoComprobante
     public function setFechacaptura(\DateTimeInterface $fechacaptura): self
     {
         $this->fechacaptura = $fechacaptura;
-
-        return $this;
-    }
-
-    public function getEstatus(): ?Estatus
-    {
-        return $this->estatus;
-    }
-
-    public function setEstatus(?Estatus $estatus): self
-    {
-        $this->estatus = $estatus;
 
         return $this;
     }

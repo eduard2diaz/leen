@@ -8,9 +8,6 @@
         {{ form_row(form.iddiagnosticoplantel) }}
     </div>
     <div class="col-md-4">
-        {{ form_row(form.proyecto) }}
-    </div>
-    <div class="col-md-4">
         {{ form_row(form.fecha) }}
     </div>
 </div>
@@ -230,13 +227,6 @@
     <li class="list-inline-item">
         {{ form_row(form.file) }}
     </li>
-
-    {% if diagnostico_plantel.id is not empty %}
-        <a class="btn btn-danger btn-sm  color-white eliminar_diagonostico_plantel"
-           data-href="{{ path('diagnostico_plantel_delete', { 'id': diagnostico_plantel.id }) }}"
-           data-csrf="{{ csrf_token('delete' ~ diagnostico_plantel.id) }}">
-            <i class="flaticon-delete-1"></i> Eliminar</a>
-    {% endif %}
 
     <li class="list-inline-item">
         <button class="btn btn-sm btn-primary mt-ladda-btn ladda-button" data-style="expand-right" type="submit">

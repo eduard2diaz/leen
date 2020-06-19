@@ -20,21 +20,17 @@ class GradoEnsenanzaRepository extends ServiceEntityRepository
         parent::__construct($registry, GradoEnsenanza::class);
     }
 
-    // /**
-    //  * @return GradoEnsenanza[] Returns an array of GradoEnsenanza objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByEscuelaJson($escuela)
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $consulta = "Select array_to_json(array_agg(data)) from(
+                     select g.id as id, g.nombre as nombre from grado_ensenanza as g join tipo_ensenanza te on g.tipoensenanza_id = te.id
+                     join escuela_tipo_ensenanza ete on(ete.tipo_ensenanza_id=te.id) join escuela e on(ete.escuela_id=e.id)
+                     where e.id=".$escuela.") as data
+        ";
+        $connection = $this->getEntityManager()->getConnection();
+        $statement = $connection->query($consulta);
+        $result = $statement->fetchAll();
+        return $result[0]['array_to_json'];
     }
-    */
 
 }

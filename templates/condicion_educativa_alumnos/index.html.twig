@@ -1,4 +1,4 @@
-<a data-href="{{ path('condicion_educativa_alumno_new',{'id':diagnostico_plantel.id}) }}" class="btn btn-sm btn-label-primary btn-bold btn-icon-h kt-margin-b-20 edicion_condicion_docente_educativa"   data-toggle="m-tooltip" data-skin="dark" data-placement="bottom" data-original-title="Adicionar condición educativa alumnos">
+<a data-href="{{ path('condicion_educativa_alumno_new',{'id':diagnostico_plantel.id}) }}" class="btn btn-sm btn-label-primary btn-bold btn-icon-h kt-margin-b-20 edicion_condicion_educativa_alumno"   data-toggle="m-tooltip" data-skin="dark" data-placement="bottom" data-original-title="Adicionar condición educativa alumnos">
     Nuevo
 </a>
 <table class="table table-hover" id="condicion_educativa_alumno_entity_table">
@@ -17,7 +17,7 @@
     {% for condicion_educativa_alumno in condicion_educativa_alumnos %}
         <tr>
             <td>{{ i }}</td>
-            <td>{{ condicion_educativa_alumno.ccts }}</td>
+            <td>{{ condicion_educativa_alumno.escuela.ccts }}</td>
             <td>{{ condicion_educativa_alumno.numalumnas }}</td>
             <td>{{ condicion_educativa_alumno.numalumnos }}</td>
             <td>{{ condicion_educativa_alumno.grado }}</td>

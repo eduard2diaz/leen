@@ -6,7 +6,7 @@ var condicion_docente_educativa = function () {
         $('select#condicion_docente_educativa_grado').select2({
             dropdownParent: $("#basicmodal"),
         });
-        $('select#condicion_docente_educativa_ccts').select2({
+        $('select#condicion_docente_educativa_escuela').select2({
             dropdownParent: $("#basicmodal"),
         });
     }
@@ -38,7 +38,7 @@ var condicion_docente_educativa = function () {
                 dataType: 'html',
                 url: link,
                 beforeSend: function (data) {
-                    $.blockUI({ message: '<small>Cargando...</small>' });
+                    $.blockUI({message: '<small>Cargando...</small>'});
                 },
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
@@ -68,10 +68,10 @@ var condicion_docente_educativa = function () {
                 type: "POST",
                 data: $(this).serialize(),
                 beforeSend: function () {
-                 //   l.start();
+                    //   l.start();
                 },
                 complete: function () {
-                  //  l.stop();
+                    //  l.stop();
                 },
                 success: function (data) {
                     if (data['error']) {
@@ -107,6 +107,36 @@ var condicion_docente_educativa = function () {
         });
     }
 
+    var escuelaCDEListener = function () {
+        $('div#basicmodal').on('change', 'select#condicion_docente_educativa_escuela', function (evento) {
+            if ($(this).val() > 0)
+                $.ajax({
+                    type: 'get',
+                    dataType: 'json',
+                    url: Routing.generate('grado_ensenanza_find_by_escuela', {'id': $(this).val()}),
+                    beforeSend: function (data) {
+                        $.blockUI({message: '<small>Cargando...</small>'});
+                    },
+                    success: function (data) {
+                        var cadena = "";
+                        var array = JSON.parse(data);
+                        console.log(array.length);
+                        if (data != null) {
+                            for (var i = 0; i < array.length; i++)
+                                cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
+                        }
+                        $('select#condicion_docente_educativa_grado').html(cadena);
+                    },
+                    error: function () {
+                        //base.Error();
+                    },
+                    complete: function () {
+                        $.unblockUI();
+                    }
+                });
+        });
+    }
+
     var edicionCDEAction = function () {
         $('div#basicmodal').on('submit', 'form#condicion_docente_educativa_edit', function (evento) {
             evento.preventDefault();
@@ -123,11 +153,10 @@ var condicion_docente_educativa = function () {
                     l.stop();
                 },
                 success: function (data) {
-                    if (data['error']){
+                    if (data['error']) {
                         padre.html(data['form']);
                         configurarFormulario();
-                    }
-                    else {
+                    } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
 
@@ -175,7 +204,7 @@ var condicion_docente_educativa = function () {
                                 _token: token
                             },
                             beforeSend: function () {
-                                $.blockUI({ message: '<h1><img src="busy.gif" /> Just a moment...</h1>' });
+                                $.blockUI({message: '<h1><img src="busy.gif" /> Just a moment...</h1>'});
                             },
                             complete: function () {
                                 $.unblockUI();
@@ -202,7 +231,7 @@ var condicion_docente_educativa = function () {
                     configurarDataTableCDE();
                     edicionCDE();
                     newCDEAction();
-
+                    escuelaCDEListener();
                     edicionCDEAction();
                     eliminarCDE();
                 }

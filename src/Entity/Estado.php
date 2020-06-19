@@ -38,12 +38,6 @@ class Estado
      */
     private $clave;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $estatus;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -76,17 +70,5 @@ class Estado
     public function __toString()
     {
         return $this->getNombre();
-    }
-
-    public function getEstatus(): ?Estatus
-    {
-        return $this->estatus;
-    }
-
-    public function setEstatus(?Estatus $estatus): self
-    {
-        $this->estatus = $estatus;
-
-        return $this;
     }
 }

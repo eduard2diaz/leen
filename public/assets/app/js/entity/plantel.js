@@ -1,19 +1,19 @@
-var escuela = function () {
+var plantel = function () {
 
     var configurarFormulario = function () {
-        $('select#escuela_d_codigo').select2({
+        $('select#plantel_d_codigo').select2({
             dropdownParent: $("#basicmodal"),
         });
-        $('select#escuela_tipoasentamiento').select2({
+        $('select#plantel_tipoasentamiento').select2({
             dropdownParent: $("#basicmodal"),
         });
-        $('select#escuela_estado').select2({
+        $('select#plantel_estado').select2({
             dropdownParent: $("#basicmodal"),
         });
-        $('select#escuela_municipio').select2({
+        $('select#plantel_municipio').select2({
             dropdownParent: $("#basicmodal"),
         });
-        $('select#escuela_tipoensenanza').select2({
+        $('select#plantel_tipoensenanza').select2({
             dropdownParent: $("#basicmodal"),
         });
     }
@@ -47,7 +47,7 @@ var escuela = function () {
 
 
     var newAction = function () {
-        $('div#basicmodal').on('submit', 'form#escuela_new', function (evento) {
+        $('div#basicmodal').on('submit', 'form#plantel_new', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -76,7 +76,7 @@ var escuela = function () {
     }
 
     var edicionAction = function () {
-        $('div#basicmodal').on('submit', 'form#escuela_edit', function (evento) {
+        $('div#basicmodal').on('submit', 'form#plantel_edit', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -107,7 +107,7 @@ var escuela = function () {
 
 
     var estadoListener = function () {
-        $('div#basicmodal').on('change', 'select#escuela_estado', function (evento)
+        $('div#basicmodal').on('change', 'select#plantel_estado', function (evento)
         {
             if ($(this).val() > 0)
                 $.ajax({
@@ -123,11 +123,11 @@ var escuela = function () {
                         if(data!=null) {
                             for (var i = 0; i < array.length; i++)
                                 cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
-                            $('select#escuela_municipio').html(cadena);
-                            $('select#escuela_municipio').change();
+                            $('select#plantel_municipio').html(cadena);
+                            $('select#plantel_municipio').change();
                         }else{
-                            $('select#escuela_municipio').html(cadena);
-                            $('select#escuela_d_codigo').html(cadena);
+                            $('select#plantel_municipio').html(cadena);
+                            $('select#plantel_d_codigo').html(cadena);
                         }
                     },
                     error: function () {
@@ -141,7 +141,7 @@ var escuela = function () {
     }
 
     var municipioListener = function () {
-        $('div#basicmodal').on('change', 'select#escuela_municipio', function (evento)
+        $('div#basicmodal').on('change', 'select#plantel_municipio', function (evento)
         {
             if ($(this).val() > 0)
                 $.ajax({
@@ -158,7 +158,7 @@ var escuela = function () {
                             for(var i=0;i<array.length;i++)
                                 cadena+="<option value="+array[i]['id']+">"+array[i]['nombre']+"</option>";
                         }
-                        $('select#escuela_d_codigo').html(cadena);
+                        $('select#plantel_d_codigo').html(cadena);
                     },
                     error: function () {
                         //base.Error();
@@ -171,15 +171,15 @@ var escuela = function () {
     }
 
     var eliminar = function () {
-        $('div#basicmodal').on('click', 'a.eliminar_escuela', function (evento) {
+        $('div#basicmodal').on('click', 'a.eliminar_plantel', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
             var token = $(this).attr('data-csrf');
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar escuela',
-                message: '¿Está seguro que desea eliminar esta escuela?',
+                title: 'Eliminar plantel',
+                message: '¿Está seguro que desea eliminar esta plantel?',
                 buttons: {
                     confirm: {
                         label: 'Si, estoy seguro',

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ControlGastos;
 use App\Entity\Escuela;
 use App\Entity\Estatus;
+use App\Entity\Proyecto;
 use App\Form\ControlGastosType;
 use App\Repository\ControlGastosRepository;
 use App\Tool\FileStorageManager;
@@ -21,27 +22,28 @@ class ControlGastosController extends AbstractController
     /**
      * @Route("/{id}/index", name="control_gastos_index", methods={"GET"})
      */
-    public function index(Escuela $escuela): Response
+    public function index(Proyecto $proyecto): Response
     {
         $em=$this->getDoctrine()->getManager();
-        $gastos=$consulta = $em->getRepository(ControlGastos::class)->findActivos($escuela->getId());
+        $gastos=$consulta = $em->getRepository(ControlGastos::class)->findByProyecto($proyecto);
 
         return $this->render('control_gastos/index.html.twig', [
             'control_gastos' => $gastos,
-            'escuela' => $escuela,
+            'proyecto' => $proyecto,
         ]);
     }
 
     /**
      * @Route("/{id}/new", name="control_gastos_new", methods={"GET","POST"})
      */
-    public function new(Escuela $escuela, Request $request): Response
+    public function new(Proyecto $proyecto, Request $request): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $controlgasto = new ControlGastos();
-        $form = $this->createForm(ControlGastosType::class, $controlgasto, ['action' => $this->generateUrl('control_gastos_new',['id'=>$escuela->getId()]),'escuela'=>$escuela->getId()]);
+        $controlgasto->setProyecto($proyecto);
+        $form = $this->createForm(ControlGastosType::class, $controlgasto, ['action' => $this->generateUrl('control_gastos_new',['id'=>$proyecto->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -50,7 +52,6 @@ class ControlGastosController extends AbstractController
                 $entityManager->persist($controlgasto);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El control de gastos fue registrado satisfactoriamente',
-                    'proyecto' => $controlgasto->getProyecto()->__toString(),
                     'tipocomprobante' => $controlgasto->getTipoComprobante()->__toString(),
                     'fecha' => $controlgasto->getFechacaptura()->format('Y-m-d'),
                     'id' => $controlgasto->getId(),
@@ -59,14 +60,14 @@ class ControlGastosController extends AbstractController
                 $page = $this->renderView('control_gastos/_form.html.twig', [
                     'form' => $form->createView(),
                     'control_gastos' => $controlgasto,
-                    'escuela' => $escuela,
+                    'proyecto' => $proyecto,
                 ]);
-                return $this->json(['control_gastos' => $page, 'error' => true,]);
+                return $this->json(['form' => $page, 'error' => true,]);
             }
 
         return $this->render('control_gastos/new.html.twig', [
             'control_gastos' => $controlgasto,
-            'escuela' => $escuela,
+            'proyecto' => $proyecto,
             'form' => $form->createView(),
         ]);
     }
@@ -92,7 +93,7 @@ class ControlGastosController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
-        $form = $this->createForm(ControlGastosType::class, $controlgastos, ['action' => $this->generateUrl('control_gastos_edit', ['id' => $controlgastos->getId()]),'escuela'=>$controlgastos->getProyecto()->getEscuela()->getId()]);
+        $form = $this->createForm(ControlGastosType::class, $controlgastos, ['action' => $this->generateUrl('control_gastos_edit', ['id' => $controlgastos->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -110,7 +111,6 @@ class ControlGastosController extends AbstractController
                 $em->persist($controlgastos);
                 $em->flush();
                 return $this->json(['mensaje' => 'El control de gastos fue actualizado satisfactoriamente',
-                    'proyecto' => $controlgastos->getProyecto()->__toString(),
                     'tipocomprobante' => $controlgastos->getTipoComprobante()->__toString(),
                     'fecha' => $controlgastos->getFechacaptura()->format('Y-m-d'),
                 ]);
@@ -142,12 +142,7 @@ class ControlGastosController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
-
-        if(!$estatus)
-            throw new \Exception('No existe el estatus');
-
-        $controlgastos->setEstatus($estatus);
+        $em->remove($controlgastos);
         $em->flush();
         return $this->json(['mensaje' => 'El control de gastos fue eliminado satisfactoriamente']);
     }

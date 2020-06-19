@@ -56,11 +56,11 @@ services:
             - { name: doctrine.event_subscriber,  connection: default }
         arguments: ['@service_container']
 
-    entidad_subscriber:
-        class: App\EventSubscriber\EntidadesSubscriber
-        public: true
-        tags:
-            - { name: doctrine.event_subscriber,  connection: default }
+ #   entidad_subscriber:
+  #      class: App\EventSubscriber\EntidadesSubscriber
+   #     public: true
+    #    tags:
+     #       - { name: doctrine.event_subscriber,  connection: default }
 
     control_gastos.validator:
         class: App\Validator\ControlGastosValidator

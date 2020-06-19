@@ -14,9 +14,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Estatus
 {
     const DELETE_CODE=0;
-    const ACTIVE_CODE=1;
-    const INACTIVE_CODE=2;
-    const CANCEL_CODE=3;
+    const INSERT_CODE=1;
+    const UPDATE_CODE=2;
 
     /**
      * @ORM\Id()

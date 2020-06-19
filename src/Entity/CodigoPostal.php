@@ -88,12 +88,6 @@ class CodigoPostal
      */
     private $ciudad;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $estatus;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -230,17 +224,5 @@ class CodigoPostal
                 else
                     if ($this->getCiudad()!=null && $this->getCiudad()->getMunicipio()->getId() != $this->getMunicipio()->getId())
                         $context->addViolation('Seleccione una ciudad que pertenezca a dicho municipio.');
-    }
-
-    public function getEstatus(): ?Estatus
-    {
-        return $this->estatus;
-    }
-
-    public function setEstatus(?Estatus $estatus): self
-    {
-        $this->estatus = $estatus;
-
-        return $this;
     }
 }

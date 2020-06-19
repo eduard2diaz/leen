@@ -10,7 +10,6 @@ var control_gastos = function () {
             },
             columns: [
                 {data: 'numero'},
-                {data: 'proyecto'},
                 {data: 'tipocomprobante'},
                 {data: 'fecha'},
                 {data: 'acciones'}
@@ -19,9 +18,6 @@ var control_gastos = function () {
     }
 
     var configurarFormulario = function () {
-        $('select#control_gastos_proyecto').select2({
-            dropdownParent: $("#basicmodal"),
-        });
         $('select#control_gastos_tipoComprobante').select2({
             dropdownParent: $("#basicmodal"),
         });
@@ -88,12 +84,11 @@ var control_gastos = function () {
                         controlGastosCounter++;
                         objeto = table.row.add({
                             "numero": controlGastosCounter,
-                            "proyecto": data['proyecto'],
                             "tipocomprobante": data['tipocomprobante'],
                             "fecha": data['fecha'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='btn default btn-sm showPlan' data-href=" + Routing.generate('control_gastos_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
+                                "<a class='btn default btn-sm show-controlgasto' data-href=" + Routing.generate('control_gastos_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('control_gastos_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",
@@ -138,9 +133,8 @@ var control_gastos = function () {
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(2)').html(data['proyecto']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['tipocomprobante']);
-                        obj.parents('tr').children('td:nth-child(4)').html(data['fecha']);
+                        obj.parents('tr').children('td:nth-child(2)').html(data['tipocomprobante']);
+                        obj.parents('tr').children('td:nth-child(3)').html(data['fecha']);
                     }
                 },
                 error: function () {
@@ -151,7 +145,7 @@ var control_gastos = function () {
     }
 
     var show = function () {
-        $('body').on('click', 'a.showPlan', function (evento) {
+        $('body').on('click', 'a.show-controlgasto', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
             obj = $(this);

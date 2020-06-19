@@ -1,19 +1,20 @@
-{% extends 'escuela/show.html.twig' %}
+{% embed 'proyecto/template.html.twig' with {'plantel': proyecto.plantel}%}
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('vendors/custom/datatables/datatables.bundle.css','template') }}"/>
     <link rel="stylesheet" href="{{ asset('vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css','template') }}"/>
 {% endblock %}
 
-{% block escuela_show_header %}
+{% block plantel_show_header %}
     {{ parent() }}
+    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
     <h3 class="kt-subheader__title">Rendiciones de cuentas</h3>
     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-    <a data-href="{{ path('rendicion_cuentas_new',{'id':escuela.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion" data-toggle="m-tooltip" data-skin="dark" data-placement="bottom" data-original-title="Adicionar rendición de cuenta">
+    <a data-href="{{ path('rendicion_cuentas_new',{'id':proyecto.id}) }}" class="btn btn-label-primary btn-bold btn-icon-h kt-margin-l-10 edicion" data-toggle="m-tooltip" data-skin="dark" data-placement="bottom" data-original-title="Adicionar rendición de cuenta">
         Nuevo
     </a>
-{% endblock escuela_show_header %}
+{% endblock plantel_show_header %}
 
-{% block escuela_show_body %}
+    {% block plantel_show_body %}
        <div class="row">
         <div class="col-xl-12">
             <!--begin:: Widgets/Daily Sales-->
@@ -28,7 +29,6 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Proyecto</th>
                             <th>Tipo de acción</th>
                             <th>Fecha</th>
                             <th></th>
@@ -39,7 +39,6 @@
                         {% for rendicion in rendicion_cuentas %}
                             <tr>
                                 <td>{{ i }}</td>
-                                <td>{{ rendicion.proyecto }}</td>
                                 <td>{{ rendicion.tipoAccion }}</td>
                                 <td>{{ rendicion.fechacaptura | date('Y-m-d') }}</td>
                                 <td>
@@ -69,3 +68,4 @@
         rendicion_cuentas.index();
     </script>
 {% endblock %}
+{% endembed %}

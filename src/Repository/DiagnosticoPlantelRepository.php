@@ -19,20 +19,6 @@ class DiagnosticoPlantelRepository extends ServiceEntityRepository
         parent::__construct($registry, DiagnosticoPlantel::class);
     }
 
-    public function findActivos($escuela)
-    {
-        return $this->createQueryBuilder('dp')
-            ->join('dp.proyecto','p')
-            ->join('p.escuela','e')
-            ->join('dp.estatus','es')
-            ->andWhere('es.estatus = :val')
-            ->andWhere('e.id = :escuela')
-            ->setParameter('val', 'Activo')
-            ->setParameter('escuela', $escuela)
-            ->getQuery()
-            ->getResult();
-    }
-
     public function findOneByTipoCondicion($tipo_condicion): ?DiagnosticoPlantel
     {
         $query= 'Select dp FROM App:DiagnosticoPlantel dp 

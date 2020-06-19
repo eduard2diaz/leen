@@ -12,7 +12,6 @@ var tipo_asentamiento = function () {
                 {data: 'numero'},
                 {data: 'nombre'},
                 {data: 'clave'},
-                {data: 'estatus'},
                 {data: 'acciones'}
             ]
         });
@@ -75,7 +74,6 @@ var tipo_asentamiento = function () {
                             "numero": tipoAsentamientoCounter,
                             "nombre": data['nombre'],
                             "clave": data['clave'],
-                            "estatus": data['estatus'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('tipo_asentamiento_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
@@ -118,7 +116,6 @@ var tipo_asentamiento = function () {
                         var pagina = table.page();
                         obj.parents('tr').children('td:nth-child(2)').html(data['nombre']);
                         obj.parents('tr').children('td:nth-child(3)').html(data['clave']);
-                        obj.parents('tr').children('td:nth-child(4)').html(data['estatus']);
                     }
                 },
                 error: function () {

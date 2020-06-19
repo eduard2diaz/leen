@@ -3,12 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\CodigoPostal;
-use App\Entity\Direccion;
-use App\Entity\Escuela;
 use App\Entity\Municipio;
+use App\Entity\Plantel;
 use App\Form\CodigoPostalType;
 use App\Form\FiltroType;
-use App\Repository\CodigoPostalRepository;
 use Knp\Component\Pager\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -168,7 +166,7 @@ class CodigoPostalController extends AbstractController
 
     private function esEliminable(CodigoPostal $codigoPostal){
         $em = $this->getDoctrine()->getManager();
-        $escuela=$em->getRepository(Escuela::class)->findOneBy(['d_codigo'=>$codigoPostal]);
+        $escuela=$em->getRepository(Plantel::class)->findOneBy(['d_codigo'=>$codigoPostal]);
         return  $escuela==null;
     }
 }

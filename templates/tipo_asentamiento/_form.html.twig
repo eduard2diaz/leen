@@ -30,7 +30,7 @@
 </div>
 <div class="modal-footer">
     <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
-    {% if eliminable is defined%}
+    {% if eliminable is defined and eliminable==true%}
         <a class="btn btn-danger btn-sm color-white eliminar_tipo_asentamiento"
            data-href="{{ path('tipo_asentamiento_delete', { 'id': tipoasentamiento.id }) }}"
            data-csrf="{{ csrf_token('delete' ~ tipoasentamiento.id) }}">

@@ -20,7 +20,7 @@ var condicion_educativa_alumno = function () {
     }
 
     var configurarFormularioCEA = function () {
-        $('select#condicion_educativa_alumnos_ccts').select2({
+        $('select#condicion_educativa_alumnos_escuela').select2({
             dropdownParent: $("#basicmodal"),
         });
         $('select#condicion_educativa_alumnos_grado').select2({
@@ -57,7 +57,6 @@ var condicion_educativa_alumno = function () {
     }
 
     var newCEAAction = function () {
-
         $('div#basicmodal').on('submit', 'form#condicion_educativa_alumno_new', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
@@ -103,6 +102,36 @@ var condicion_educativa_alumno = function () {
                 }
             });
 
+        });
+    }
+
+    var escuelaCEAListener = function () {
+        $('div#basicmodal').on('change', 'select#condicion_educativa_alumnos_escuela', function (evento) {
+            if ($(this).val() > 0)
+                $.ajax({
+                    type: 'get',
+                    dataType: 'json',
+                    url: Routing.generate('grado_ensenanza_find_by_escuela', {'id': $(this).val()}),
+                    beforeSend: function (data) {
+                        $.blockUI({message: '<small>Cargando...</small>'});
+                    },
+                    success: function (data) {
+                        var cadena = "";
+                        var array = JSON.parse(data);
+                        console.log(array.length);
+                        if (data != null) {
+                            for (var i = 0; i < array.length; i++)
+                                cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
+                        }
+                        $('select#condicion_educativa_alumnos_grado').html(cadena);
+                    },
+                    error: function () {
+                        //base.Error();
+                    },
+                    complete: function () {
+                        $.unblockUI();
+                    }
+                });
         });
     }
 
@@ -201,6 +230,7 @@ var condicion_educativa_alumno = function () {
                     configurarDataTableCEA();
                     edicionCEA();
                     newCEAAction();
+                    escuelaCEAListener();
                     edicionCEAAction();
                     eliminarCEA();
                 }

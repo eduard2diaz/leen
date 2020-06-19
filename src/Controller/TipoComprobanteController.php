@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\ControlGastos;
-use App\Entity\Estatus;
 use App\Entity\TipoComprobante;
 use App\Form\TipoComprobanteType;
-use App\Twig\EstatusExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +46,6 @@ class TipoComprobanteController extends AbstractController
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El tipo de comprobante fue registrado satisfactoriamente',
                     'comprobante' => $tipocomprobante->getComprobante(),
-                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipocomprobante->getEstatus()->getCode(),$tipocomprobante->getEstatus()->getEstatus()),
                     'id' => $tipocomprobante->getId(),
                 ]);
             } else {
@@ -96,7 +93,6 @@ class TipoComprobanteController extends AbstractController
                 $em->flush();
                 return $this->json(['mensaje' => 'El tipo de comprobante fue actualizado satisfactoriamente',
                     'comprobante' => $tipocomprobante->getComprobante(),
-                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipocomprobante->getEstatus()->getCode(),$tipocomprobante->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('tipo_comprobante/_form.html.twig', [
@@ -128,9 +124,7 @@ class TipoComprobanteController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $estatus=$em->getRepository(Estatus::class)->findOneByCode(Estatus::DELETE_CODE);
-        $tipocomprobante->setEstatus($estatus);
-        $em->persist($tipocomprobante);
+        $em->remove($tipocomprobante);
         $em->flush();
         return $this->json(['mensaje' => 'El tipo de comprobante fue eliminado satisfactoriamente']);
     }

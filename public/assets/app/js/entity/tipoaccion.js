@@ -11,15 +11,8 @@ var tipoaccion = function () {
             columns: [
                 {data: 'numero'},
                 {data: 'accion'},
-                {data: 'estatus'},
                 {data: 'acciones'}
             ]
-        });
-    }
-
-    var configurarFormulario = function () {
-        $('select#tipo_accion_estatus').select2({
-            dropdownParent: $("#basicmodal"),
         });
     }
 
@@ -38,7 +31,6 @@ var tipoaccion = function () {
                 },
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
-                        configurarFormulario();
                         $('div#basicmodal').modal('show');
                     }
                 },
@@ -71,7 +63,6 @@ var tipoaccion = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
-                        configurarFormulario();
                     } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
@@ -82,7 +73,6 @@ var tipoaccion = function () {
                         objeto = table.row.add({
                             "numero": tipoAccionCounter,
                             "accion": data['accion'],
-                            "estatus": data['estatus'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn default btn-sm edicion' data-href=" + Routing.generate('tipo_accion_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
@@ -119,7 +109,6 @@ var tipoaccion = function () {
                 success: function (data) {
                     if (data['error']){
                         padre.html(data['form']);
-                        configurarFormulario();
                     }
                     else {
                         if (data['mensaje'])
@@ -128,7 +117,6 @@ var tipoaccion = function () {
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
                         obj.parents('tr').children('td:nth-child(2)').html(data['accion']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['estatus']);
                     }
                 },
                 error: function () {

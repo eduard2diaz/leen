@@ -10,8 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\EscuelaRepository")
- * @UniqueEntity("coordenada")
+ * @ORM\Entity
  */
 class Escuela
 {
@@ -29,60 +28,16 @@ class Escuela
      *      maxMessage = "El nombre de la escuela no puede exceder los {{ limit }} caracteres",
      * )
      */
-    private $escuela;
+    private $nombre;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CodigoPostal")
-     */
-    private $d_codigo;
-
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * @Assert\Length(
-     *      max = 50,
-     *      maxMessage = "El nombre de calle no puede exceder los {{ limit }} caracteres",
-     *)
-     */
-    private $calle;
-
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * @Assert\Length(
-     *      max = 50,
-     *      maxMessage = "El nombre del asentamiento no puede exceder los {{ limit }} caracteres",
-     *)
-     */
-    private $asentamiento;
-
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=10)
      * @Assert\Length(
      *      max = 10,
-     *      maxMessage = "El número exterior no puede exceder los {{ limit }} caracteres",
-     *)
+     *      maxMessage = "La clave de la escuela no puede exceder los {{ limit }} caracteres",
+     * )
      */
-    private $noexterior;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TipoAsentamiento")
-     */
-    private $tipoasentamiento;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Municipio")
-     */
-    private $municipio;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estado")
-     */
-    private $estado;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $estatus;
+    private $ccts;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\TipoEnsenanza")
@@ -90,143 +45,19 @@ class Escuela
     private $tipoensenanza;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\EscuelaCCTS", mappedBy="escuela")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Plantel", inversedBy="escuelas")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $ccts_collection;
-
-    /**
-     * @ORM\Column(type="string", length=80)
-     * @Assert\Length(
-     *      max = 80,
-     *      maxMessage = "Ls coordenada no puede exceder los {{ limit }} caracteres",
-     *)
-     */
-    private $coordenada;
-
-    /**
-     * @Assert\Type(type="App\Entity\EscuelaCCTS")
-     * @Assert\Valid
-     */
-    private $ccts;
+    private $plantel;
 
     public function __construct()
     {
         $this->tipoensenanza = new ArrayCollection();
-        $this->ccts_collection = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEscuela(): ?string
-    {
-        return $this->escuela;
-    }
-
-    public function setEscuela(string $escuela): self
-    {
-        $this->escuela = $escuela;
-
-        return $this;
-    }
-
-    public function getDCodigo(): ?CodigoPostal
-    {
-        return $this->d_codigo;
-    }
-
-    public function setDCodigo(?CodigoPostal $d_codigo): self
-    {
-        $this->d_codigo = $d_codigo;
-
-        return $this;
-    }
-
-    public function getCalle(): ?string
-    {
-        return $this->calle;
-    }
-
-    public function setCalle(?string $calle): self
-    {
-        $this->calle = $calle;
-
-        return $this;
-    }
-
-    public function getAsentamiento(): ?string
-    {
-        return $this->asentamiento;
-    }
-
-    public function setAsentamiento(?string $asentamiento): self
-    {
-        $this->asentamiento = $asentamiento;
-
-        return $this;
-    }
-
-    public function getNoexterior(): ?string
-    {
-        return $this->noexterior;
-    }
-
-    public function setNoexterior(?string $noexterior): self
-    {
-        $this->noexterior = $noexterior;
-
-        return $this;
-    }
-
-    public function getTipoasentamiento(): ?TipoAsentamiento
-    {
-        return $this->tipoasentamiento;
-    }
-
-    public function setTipoasentamiento(?TipoAsentamiento $tipoasentamiento): self
-    {
-        $this->tipoasentamiento = $tipoasentamiento;
-
-        return $this;
-    }
-
-    public function getMunicipio(): ?Municipio
-    {
-        return $this->municipio;
-    }
-
-    public function setMunicipio(?Municipio $municipio): self
-    {
-        $this->municipio = $municipio;
-
-        return $this;
-    }
-
-    public function getEstado(): ?Estado
-    {
-        return $this->estado;
-    }
-
-    public function setEstado(?Estado $estado): self
-    {
-        $this->estado = $estado;
-
-        return $this;
-    }
-
-    public function getEstatus(): ?Estatus
-    {
-        return $this->estatus;
-    }
-
-    public function setEstatus(?Estatus $estatus): self
-    {
-        $this->estatus = $estatus;
-
-        return $this;
     }
 
     /**
@@ -246,18 +77,6 @@ class Escuela
         return $this;
     }
 
-    public function getCoordenada(): ?string
-    {
-        return $this->coordenada;
-    }
-
-    public function setCoordenada(string $coordenada): self
-    {
-        $this->coordenada = $coordenada;
-
-        return $this;
-    }
-
     public function removeTipoensenanza(TipoEnsenanza $tipoensenanza): self
     {
         if ($this->tipoensenanza->contains($tipoensenanza)) {
@@ -267,49 +86,48 @@ class Escuela
         return $this;
     }
 
-    public function addCct(EscuelaCCTS $cct): self
+    /**
+     * @return mixed
+     */
+    public function getNombre()
     {
-        if (!$this->ccts_collection->contains($cct)) {
-            $this->ccts_collection[] = $cct;
-            $cct->setEscuela($this);
-        }
-
-        return $this;
+        return $this->nombre;
     }
 
-    public function getccts_collection(){
-        return $this->ccts_collection;
-    }
-
-    public function removeCct(EscuelaCCTS $cct): self
+    /**
+     * @param mixed $nombre
+     */
+    public function setNombre($nombre): void
     {
-        if ($this->ccts_collection->contains($cct)) {
-            $this->ccts_collection->removeElement($cct);
-            // set the owning side to null (unless already changed)
-            if ($cct->getEscuela() === $this) {
-                $cct->setEscuela(null);
-            }
-        }
-
-        return $this;
+        $this->nombre = $nombre;
     }
 
-    public function getCcts(): ?EscuelaCCTS
+    /**
+     * @return mixed
+     */
+    public function getCcts()
     {
         return $this->ccts;
     }
 
-    public function setCcts(EscuelaCCTS $ccts): self
+    /**
+     * @param mixed $ccts
+     */
+    public function setCcts($ccts): void
     {
         $this->ccts = $ccts;
-        $ccts->setEscuela($this);
-
-        return $this;
     }
 
-    public function __toString()
+    public function getPlantel(): ?Plantel
     {
-        return $this->getEscuela();
+        return $this->plantel;
+    }
+
+    public function setPlantel(?Plantel $plantel): self
+    {
+        $this->plantel = $plantel;
+
+        return $this;
     }
 
     /**
@@ -319,21 +137,12 @@ class Escuela
     {
         if($this->getTipoensenanza()->isEmpty())
             $context->addViolation('Seleccione al menos un tipo de enseñanza.');
-
-        if (null==$this->getEstado())
-            $context->addViolation('Seleccione un estado.');
-        else
-            if (null==$this->getMunicipio())
-                $context->addViolation('Seleccione un municipio.');
-            else
-                if ($this->getEstado()->getId()!=$this->getMunicipio()->getEstado()->getId())
-                    $context->addViolation('Seleccione un municipio que pertenezca a dicho estado.');
-                else
-                    if (null==$this->getDCodigo())
-                        $context->addViolation('Seleccione un código postal.');
-                    else
-                        if ($this->getDCodigo()->getMunicipio()->getId()!=$this->getMunicipio()->getId())
-                            $context->addViolation('Seleccione un código postal que pertenezca a dicho municipio.');
     }
+
+    public function __toString()
+    {
+        return $this->getNombre().'('.$this->getCcts().')';
+    }
+
 
 }

@@ -22,10 +22,10 @@ class DiagnosticoPlantel
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Proyecto")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Plantel")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $proyecto;
+    private $plantel;
 
     /**
      * @ORM\Column(type="integer")
@@ -54,12 +54,6 @@ class DiagnosticoPlantel
      * @ORM\JoinColumn(nullable=false)
      */
     private $idcondicionessanitarios;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $estatus;
 
     /**
      * @ORM\Column(type="integer")
@@ -298,16 +292,20 @@ class DiagnosticoPlantel
         return $this->id;
     }
 
-    public function getProyecto(): ?Proyecto
+    /**
+     * @return mixed
+     */
+    public function getPlantel()
     {
-        return $this->proyecto;
+        return $this->plantel;
     }
 
-    public function setProyecto(?Proyecto $proyecto): self
+    /**
+     * @param mixed $plantel
+     */
+    public function setPlantel($plantel): void
     {
-        $this->proyecto = $proyecto;
-
-        return $this;
+        $this->plantel = $plantel;
     }
 
     public function getNumeroaulas(): ?int
@@ -815,21 +813,7 @@ class DiagnosticoPlantel
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEstatus()
-    {
-        return $this->estatus;
-    }
 
-    /**
-     * @param mixed $estatus
-     */
-    public function setEstatus($estatus): void
-    {
-        $this->estatus = $estatus;
-    }
 
     /**
      * Sets file.
@@ -854,10 +838,7 @@ class DiagnosticoPlantel
      */
     public function validate(ExecutionContextInterface $context)
     {
-        if (null==$this->getProyecto())
-            $context->addViolation('Seleccione un proyecto.');
-        else
-        if ($this->getFecha()<$this->getProyecto()->getFechainicio())
-            $context->addViolation('La fecha del diagnóstico no puede ser inferior a la fecha de inicio del proyecto.');
+        if (null==$this->getPlantel())
+            $context->addViolation('Seleccione un plantel.');
     }
 }

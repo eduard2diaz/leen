@@ -1,18 +1,28 @@
-var escuela_ccts = function () {
+var plantel_proyecto = function () {
     var table = null;
     var obj = null;
 
     var configurarDataTable = function () {
-        table = $('table#escuela_ccts_entity_table').DataTable({
+        table = $('table#proyecto_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
                 url: datatable_url
             },
             columns: [
-                {data: 'value'},
+                {data: 'id'},
+                {data: 'numero'},
+                {data: 'fechainicio'},
                 {data: 'acciones'}
             ]
         });
+    }
+
+    var configurarFormulario = function () {
+        $('select#proyecto_escuela').select2({
+            dropdownParent: $("#basicmodal"),
+        });
+        $('input#proyecto_fechainicio').datepicker();
+        $('input#proyecto_fechafin').datepicker();
     }
 
     var edicion = function () {
@@ -30,6 +40,7 @@ var escuela_ccts = function () {
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
                         $('div#basicmodal').modal('show');
+                        configurarFormulario();
                     }
                 },
                 error: function () {
@@ -43,7 +54,7 @@ var escuela_ccts = function () {
     }
 
     var newAction = function () {
-        $('div#basicmodal').on('submit', 'form#escuela_ccts_new', function (evento) {
+        $('div#basicmodal').on('submit', 'form#proyecto_new', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -60,17 +71,23 @@ var escuela_ccts = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
+                        configurarFormulario();
                     }else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
+                        proyectoCounter++;
                         objeto = table.row.add({
-                            "value": data['value'],
+                            "id": proyectoCounter,
+                            "numero": data['numero'],
+                            "fechainicio": data['fechainicio'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
-                                "<a class='font-weight-bold text-uppercase edicion' data-href=" + Routing.generate('escuela_ccts_edit', {id: data['id']}) + ">Editar</a></li>" +
+                                "<a class='btn btn-sm' href=" + Routing.generate('proyecto_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
+                                "<li class='list-inline-item'>" +
+                                "<a class='btn btn-primary btn-sm edicion' data-href=" + Routing.generate('proyecto_edit', {id: data['id']}) + "><i class='fa fa-edit'></i>Editar</a></li>" +
                                 "</ul>",
                         });
                         objeto.draw();
@@ -85,7 +102,7 @@ var escuela_ccts = function () {
     }
 
     var edicionAction = function () {
-        $('div#basicmodal').on('submit', 'form#escuela_ccts_edit', function (evento) {
+        $('div#basicmodal').on('submit', 'form#proyecto_edit', function (evento) {
             evento.preventDefault();
             var padre = $(this).parent();
             var l = Ladda.create(document.querySelector('.ladda-button'));
@@ -102,10 +119,12 @@ var escuela_ccts = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
+                        configurarFormulario();
                     } else{
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(1)').html(data['value']);
+                        obj.parents('tr').children('td:nth-child(2)').html(data['numero']);
+                        obj.parents('tr').children('td:nth-child(3)').html(data['fechainicio']);
                     }
 
                 },
@@ -117,15 +136,15 @@ var escuela_ccts = function () {
     }
 
     var eliminar = function () {
-        $('div#basicmodal').on('click', 'a.eliminar_escuela_ccts', function (evento) {
+        $('div#basicmodal').on('click', 'a.eliminar_proyecto', function (evento) {
             evento.preventDefault();
             var link = $(this).attr('data-href');
             var token = $(this).attr('data-csrf');
             $('div#basicmodal').modal('hide');
 
             bootbox.confirm({
-                title: 'Eliminar ccts',
-                message: '¿Está seguro que desea eliminar este ccts?',
+                title: 'Eliminar proyecto',
+                message: '¿Está seguro que desea eliminar este proyecto?',
                 buttons: {
                     confirm: {
                         label: 'Si, estoy seguro',
@@ -151,10 +170,7 @@ var escuela_ccts = function () {
                                 $.unblockUI();
                             },
                             success: function (data) {
-                                table.row(obj.parents('tr'))
-                                    .remove()
-                                    .draw('page');
-                                toastr.success(data['mensaje']);
+                                document.location.href = data['url'];
                             },
                             error: function () {
                                 //base.Error();

@@ -10,7 +10,6 @@ var rendicion_cuentas = function () {
             },
             columns: [
                 {data: 'numero'},
-                {data: 'proyecto'},
                 {data: 'tipoaccion'},
                 {data: 'fecha'},
                 {data: 'acciones'}
@@ -19,9 +18,6 @@ var rendicion_cuentas = function () {
     }
 
     var configurarFormulario = function () {
-        $('select#rendicion_cuentas_proyecto').select2({
-            dropdownParent: $("#basicmodal"),
-        });
         $('select#rendicion_cuentas_tipoAccion').select2({
             dropdownParent: $("#basicmodal"),
         });
@@ -88,7 +84,6 @@ var rendicion_cuentas = function () {
                         rendicionCuentasCounter++;
                         objeto = table.row.add({
                             "numero": rendicionCuentasCounter,
-                            "proyecto": data['proyecto'],
                             "tipoaccion": data['tipoaccion'],
                             "fecha": data['fecha'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
@@ -138,9 +133,8 @@ var rendicion_cuentas = function () {
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(2)').html(data['proyecto']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['tipoaccion']);
-                        obj.parents('tr').children('td:nth-child(4)').html(data['fecha']);
+                        obj.parents('tr').children('td:nth-child(2)').html(data['tipoaccion']);
+                        obj.parents('tr').children('td:nth-child(3)').html(data['fecha']);
                     }
                 },
                 error: function () {

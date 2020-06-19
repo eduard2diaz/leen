@@ -99,33 +99,6 @@ var diagnostico_plantel = function () {
         });
     }
 
-  /*  var show = function () {
-        $('body').on('click', 'a.showDiagnostico', function (evento) {
-            evento.preventDefault();
-            var link = $(this).attr('data-href');
-            obj = $(this);
-            $.ajax({
-                type: 'get',
-                dataType: 'html',
-                url: link,
-                beforeSend: function (data) {
-                    $.blockUI({ message: '<small>Cargando...</small>' });
-                },
-                success: function (data) {
-                    if ($('div#basicmodal').html(data)) {
-                        $('div#basicmodal').modal('show');
-                    }
-                },
-                error: function () {
-                    //base.Error();
-                },
-                complete: function () {
-                    $.unblockUI();
-                }
-            });
-        });
-    }*/
-
     var eliminar = function () {
         $('body').on('click', 'a.eliminar_diagonostico_plantel', function (evento) {
             evento.preventDefault();
@@ -177,7 +150,6 @@ var diagnostico_plantel = function () {
         index: function () {
             $().ready(function () {
                     configurarDataTable();
-                    show();
                 }
             );
         },
@@ -185,13 +157,13 @@ var diagnostico_plantel = function () {
             $().ready(function () {
                 addEditAction();
                 configurarFormulario();
-                eliminar();
                 }
             );
         },
         show: function () {
             $().ready(function () {
                 personalizarDataTableShow();
+                eliminar();
                 }
             );
         }

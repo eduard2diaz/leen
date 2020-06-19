@@ -22,10 +22,10 @@ class Proyecto
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Escuela")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Plantel")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $escuela;
+    private $plantel;
 
     /**
      * @ORM\Column(type="date")
@@ -33,7 +33,7 @@ class Proyecto
     private $fechainicio;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date",nullable=true)
      */
     private $fechafin;
 
@@ -54,27 +54,9 @@ class Proyecto
      */
     private $numero;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estatus")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $estatus;
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEscuela(): ?Escuela
-    {
-        return $this->escuela;
-    }
-
-    public function setEscuela(?Escuela $escuela): self
-    {
-        $this->escuela = $escuela;
-
-        return $this;
     }
 
     public function getFechainicio(): ?\DateTimeInterface
@@ -94,7 +76,7 @@ class Proyecto
         return $this->fechafin;
     }
 
-    public function setFechafin(\DateTimeInterface $fechafin): self
+    public function setFechafin(?\DateTimeInterface $fechafin): self
     {
         $this->fechafin = $fechafin;
 
@@ -130,16 +112,20 @@ class Proyecto
         return $this;
     }
 
-    public function getEstatus(): ?Estatus
+    /**
+     * @return mixed
+     */
+    public function getPlantel()
     {
-        return $this->estatus;
+        return $this->plantel;
     }
 
-    public function setEstatus(?Estatus $estatus): self
+    /**
+     * @param mixed $plantel
+     */
+    public function setPlantel($plantel): void
     {
-        $this->estatus = $estatus;
-
-        return $this;
+        $this->plantel = $plantel;
     }
 
     /**
@@ -147,9 +133,9 @@ class Proyecto
      */
     public function validate(ExecutionContextInterface $context)
     {
-        if (null==$this->getEscuela())
-            $context->addViolation('Seleccione una escuela.');
-        if ($this->getFechainicio()>$this->getFechafin())
+        if (null==$this->getPlantel())
+            $context->addViolation('Seleccione un plantel.');
+        if($this->getFechafin()!=null && $this->getFechainicio()>$this->getFechafin())
             $context->addViolation('Compruebe las fechas de inicio y fin.');
     }
 

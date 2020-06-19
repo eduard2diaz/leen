@@ -34,7 +34,7 @@ class MunicipioController extends AbstractController
             if($form->isSubmitted())
                 $data = $form->getData()["filtro"];
 
-            $dql   = "SELECT m FROM App:Municipio m JOIN m.estado e WHERE m.nombre LIKE :value OR e.nombre LIKE :value";
+            $dql   = "SELECT m FROM App:Municipio m JOIN m.estado e WHERE m.nombre LIKE :value OR e.nombre LIKE :value OR m.clave LIKE :value";
             $query = $this->getDoctrine()->getManager()->createQuery($dql)->setParameter('value',"%".$data."%");
         }
         else
@@ -96,7 +96,6 @@ class MunicipioController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $municipio_array=$em->getRepository(Municipio::class)->findByEstadoJson($estado->getId());
-
         return $this->json($municipio_array);
     }
 
@@ -174,7 +173,6 @@ class MunicipioController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $ciudad=$em->getRepository(Ciudad::class)->findOneByMunicipio($municipio);
-        $codigospostales=$em->getRepository(CodigoPostal::class)->findOneByMunicipio($municipio);
-        return $ciudad==null && $codigospostales==null;
+        return $ciudad==null;
     }
 }

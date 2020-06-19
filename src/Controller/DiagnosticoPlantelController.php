@@ -8,6 +8,7 @@ use App\Entity\DiagnosticoPlantel;
 use App\Entity\Escuela;
 use App\Entity\Estatus;
 use App\Entity\GradoEnsenanza;
+use App\Entity\Plantel;
 use App\Form\DiagnosticoPlantelType;
 use App\Repository\DiagnosticoPlantelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,24 +25,25 @@ class DiagnosticoPlantelController extends AbstractController
     /**
      * @Route("/{id}/index", name="diagnostico_plantel_index", methods={"GET"})
      */
-    public function index(Escuela $escuela): Response
+    public function index(Plantel $plantel): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $diagnosticos=$em->getRepository(DiagnosticoPlantel::class)->findActivos($escuela->getId());
+        $diagnosticos=$em->getRepository(DiagnosticoPlantel::class)->findByPlantel($plantel->getId());
 
         return $this->render('diagnostico_plantel/index.html.twig', [
             'diagnosticos' => $diagnosticos,
-            'escuela' => $escuela,
+            'plantel' => $plantel,
         ]);
     }
 
     /**
      * @Route("/{id}/new", name="diagnostico_plantel_new", methods={"GET","POST"})
      */
-    public function new(Request $request, Escuela $escuela): Response
+    public function new(Request $request, Plantel $plantel): Response
     {
         $diagnosticoPlantel = new DiagnosticoPlantel();
-        $form = $this->createForm(DiagnosticoPlantelType::class, $diagnosticoPlantel,['escuela'=>$escuela->getId()]);
+        $diagnosticoPlantel->setPlantel($plantel);
+        $form = $this->createForm(DiagnosticoPlantelType::class, $diagnosticoPlantel);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -53,19 +55,19 @@ class DiagnosticoPlantelController extends AbstractController
                     $entityManager->persist($diagnosticoPlantel);
                     $entityManager->flush();
                     $this->addFlash('success', 'El diagnóstico del plantel fue registrado satisfactoriamente');
-                    return $this->json(['url' => $this->generateUrl('diagnostico_plantel_index', ['id' => $escuela->getId()], 1)]);
+                    return $this->json(['url' => $this->generateUrl('diagnostico_plantel_index', ['id' => $plantel->getId()], 1)]);
                 } else {
                     $page = $this->renderView('diagnostico_plantel/_form.html.twig', [
                         'form' => $form->createView(),
                         'diagnostico_plantel' => $diagnosticoPlantel,
-                        'escuela' => $escuela,
+                        'plantel' => $plantel,
                     ]);
                     return $this->json(['form' => $page, 'error' => true,]);
                 }
 
         return $this->render('diagnostico_plantel/new.html.twig', [
             'diagnostico_plantel' => $diagnosticoPlantel,
-            'escuela' => $escuela,
+            'plantel' => $plantel,
             'form' => $form->createView(),
         ]);
     }
@@ -77,14 +79,14 @@ class DiagnosticoPlantelController extends AbstractController
     {
         $entityManager=$this->getDoctrine()->getManager();
 
-        $condicion_docente_educativas = $entityManager->getRepository(CondicionDocenteEducativa::class)->findActivos($diagnosticoPlantel->getId());
-        $condicion_educativa_alumnos = $entityManager->getRepository(CondicionEducativaAlumnos::class)->findActivos($diagnosticoPlantel->getId());
+        $condicion_docente_educativas = $entityManager->getRepository(CondicionDocenteEducativa::class)->findByDiagnostico($diagnosticoPlantel);
+        $condicion_educativa_alumnos = $entityManager->getRepository(CondicionEducativaAlumnos::class)->findByDiagnostico($diagnosticoPlantel);
 
         return $this->render('diagnostico_plantel/show.html.twig', [
             'diagnostico_plantel' => $diagnosticoPlantel,
             'condicion_docente_educativas' => $condicion_docente_educativas,
             'condicion_educativa_alumnos' => $condicion_educativa_alumnos,
-            'escuela' => $diagnosticoPlantel->getProyecto()->getEscuela(),
+            'eliminable'=>$this->esEliminable($diagnosticoPlantel)
         ]);
     }
 
@@ -93,14 +95,13 @@ class DiagnosticoPlantelController extends AbstractController
      */
     public function edit(Request $request, DiagnosticoPlantel $diagnosticoPlantel): Response
     {
-        $form = $this->createForm(DiagnosticoPlantelType::class, $diagnosticoPlantel,['escuela'=>$diagnosticoPlantel->getProyecto()->getEscuela()]);
+        $form = $this->createForm(DiagnosticoPlantelType::class, $diagnosticoPlantel);
         $form->handleRequest($request);
 
-        $escuela = $diagnosticoPlantel->getProyecto()->getEscuela();
         $entityManager = $this->getDoctrine()->getManager();
 
-        $condicion_docente_educativas = $entityManager->getRepository(CondicionDocenteEducativa::class)->findActivos($diagnosticoPlantel->getId());
-        $condicion_educativa_alumnos = $entityManager->getRepository(CondicionEducativaAlumnos::class)->findActivos($diagnosticoPlantel->getId());
+        $condicion_docente_educativas = $entityManager->getRepository(CondicionDocenteEducativa::class)->findByDiagnostico($diagnosticoPlantel);
+        $condicion_educativa_alumnos = $entityManager->getRepository(CondicionEducativaAlumnos::class)->findByDiagnostico($diagnosticoPlantel);
 
         if ($form->isSubmitted())
             if (!$request->isXmlHttpRequest())
@@ -120,19 +121,17 @@ class DiagnosticoPlantelController extends AbstractController
                     $entityManager->persist($diagnosticoPlantel);
                     $entityManager->flush();
                     $this->addFlash('success', 'El diagnóstico del plantel fue actualizado satisfactoriamente');
-                    return $this->json(['url' => $this->generateUrl('diagnostico_plantel_index', ['id' => $escuela->getId()], 1)]);
+                    return $this->json(['url' => $this->generateUrl('diagnostico_plantel_index', ['id' => $diagnosticoPlantel->getPlantel()->getId()], 1)]);
                 } else {
                     $page = $this->renderView('diagnostico_plantel/_form.html.twig', [
                         'form' => $form->createView(),
                         'diagnostico_plantel' => $diagnosticoPlantel,
-                        'escuela' => $escuela,
                     ]);
                     return $this->json(['form' => $page, 'error' => true,]);
                 }
 
         return $this->render('diagnostico_plantel/edit.html.twig', [
             'diagnostico_plantel' => $diagnosticoPlantel,
-            'escuela' => $escuela,
             'condicion_docente_educativas' => $condicion_docente_educativas,
             'condicion_educativa_alumnos' => $condicion_educativa_alumnos,
             'action' => 'Actualizar',
@@ -145,17 +144,15 @@ class DiagnosticoPlantelController extends AbstractController
      */
     public function delete(Request $request, DiagnosticoPlantel $diagnosticoPlantel): Response
     {
-        if (!$request->isXmlHttpRequest() || !$this->isCsrfTokenValid('delete' . $diagnosticoPlantel->getId(), $request->query->get('_token')))
+        if (!$request->isXmlHttpRequest() || !$this->esEliminable($diagnosticoPlantel) ||!$this->isCsrfTokenValid('delete' . $diagnosticoPlantel->getId(), $request->query->get('_token')))
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
-        $estatus=$this->getDoctrine()->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
-        if(!$estatus)
-            throw new \Exception('No existe el estatus');
-        $diagnosticoPlantel->setEstatus($estatus);
+        $plantel=$diagnosticoPlantel->getPlantel()->getId();
+        $em->remove($diagnosticoPlantel);
         $em->flush();
         $this->addFlash('success','El diagnóstico de plantel fue eliminado satisfactoriamente');
-        return $this->json(['url' => $this->generateUrl('diagnostico_plantel_index',['id'=>$diagnosticoPlantel->getProyecto()->getEscuela()->getId()])]);
+        return $this->json(['url' => $this->generateUrl('diagnostico_plantel_index',['id'=>$plantel])]);
     }
 
     /**
@@ -165,6 +162,14 @@ class DiagnosticoPlantelController extends AbstractController
     {
         $ruta = $this->getParameter('storage_directory') . DIRECTORY_SEPARATOR . $diagnosticoPlantel->getDiagnosticoarchivo();
         return FileStorageManager::Download($ruta);
+    }
+
+    private function esEliminable(DiagnosticoPlantel $diagnostico)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cde=$em->getRepository(CondicionDocenteEducativa::class)->findOneByDiagnostico($diagnostico);
+        $cea=$em->getRepository(CondicionDocenteEducativa::class)->findOneByDiagnostico($diagnostico);
+        return $cde==null && $cea==null;
     }
 
 

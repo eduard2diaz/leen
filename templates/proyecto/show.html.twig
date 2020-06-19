@@ -1,49 +1,45 @@
-<div class="modal-dialog modal-lg">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">
-                Detalles del proyecto
-            </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="modal-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <table class="table table-striped">
-                        <tbody>
-                        <tr>
-                            <th>Número</th>
-                            <td colspan="3">{{ proyecto.numero }}</td>
-                        </tr>
-                        <tr>
-                            <th>Escuela</th>
-                            <td colspan="3">{{ proyecto.escuela }}</td>
-                        </tr>
-                        <tr>
-                            <th>Fecha de inicio</th>
-                            <td>{{ proyecto.fechainicio | date('Y-m-d') }}</td>
-                            <th>Fecha de fin</th>
-                            <td>{{ proyecto.fechafin | date('Y-m-d') }}</td>
-                        </tr>
-                        <tr>
-                            <th>Monto asignado</th>
-                            <td>{{ proyecto.montoasignado }}</td>
-                            <th>Monto gastado</th>
-                            <td>{{ montogastado }}</td>
-                        </tr>
-                        <tr>
-                            <th>Saldo final</th>
-                            <td>{{ saldofinal }}</td>
-                            <th>Estatus</th>
-                            <td>{{ draw_estatus(proyecto.estatus.code,proyecto.estatus.estatus) }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+{% embed 'proyecto/template.html.twig'  with {'plantel': proyecto.plantel} %}
+
+    {% block plantel_show_body %}
+        <div class="row">
+            <div class="col-xl-12">
+                <!--begin:: Widgets/Daily Sales-->
+                <div class="kt-portlet kt-portlet--height-fluid">
+                    <div class="kt-widget14">
+                        <div class="kt-widget14__header kt-margin-b-30">
+                            <h3 class="kt-widget14__title">
+                                Detalles del proyecto
+                            </h3>
+                        </div>
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>Número</th>
+                                <td colspan="3">{{ proyecto.numero }}</td>
+                            </tr>
+                            <tr>
+                                <th>Plantel</th>
+                                <td>{{ proyecto.plantel.nombre }}</td>
+                                <th>Monto asignado</th>
+                                <td>{{ proyecto.montoasignado }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha de inicio</th>
+                                <td>{{ proyecto.fechainicio | date('Y-m-d') }}</td>
+                                <th>Monto gastado</th>
+                                <td>{{ montogastado }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha de fin</th>
+                                <td>{{ proyecto.fechafin | date('Y-m-d') }}</td>
+                                <th>Saldo final</th>
+                                <td>{{ saldofinal }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="modal-footer">
-            <a class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="flaticon-cancel"></i> Cancelar</a>
-        </div>
-    </div>
-</div>
+    {% endblock %}
+    {% endembed %}

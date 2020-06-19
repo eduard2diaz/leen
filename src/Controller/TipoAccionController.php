@@ -23,9 +23,7 @@ class TipoAccionController extends AbstractController
      */
     public function index(): Response
     {
-        $tipoaccions = $this->getDoctrine()
-            ->getRepository(TipoAccion::class)
-            ->findActivos();
+        $tipoaccions = $this->getDoctrine()->getRepository(TipoAccion::class)->findAll();
 
         return $this->render('tipo_accion/index.html.twig', [
             'tipo_accions' => $tipoaccions,
@@ -51,7 +49,6 @@ class TipoAccionController extends AbstractController
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El tipo de acción fue registrado satisfactoriamente',
                     'accion' => $tipoaccion->getAccion(),
-                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipoaccion->getEstatus()->getCode(),$tipoaccion->getEstatus()->getEstatus()),
                     'id' => $tipoaccion->getId(),
                 ]);
             } else {
@@ -99,7 +96,6 @@ class TipoAccionController extends AbstractController
                 $em->flush();
                 return $this->json(['mensaje' => 'El tipo de acción fue actualizado satisfactoriamente',
                     'accion' => $tipoaccion->getAccion(),
-                    'estatus' => EstatusExtension::drawAsHtmlStatic($tipoaccion->getEstatus()->getCode(),$tipoaccion->getEstatus()->getEstatus()),
                 ]);
             } else {
                 $page = $this->renderView('tipo_accion/_form.html.twig', [
@@ -132,9 +128,7 @@ class TipoAccionController extends AbstractController
 
 
         $em = $this->getDoctrine()->getManager();
-        $estatus=$em->getRepository(Estatus::class)->findOneByEstatus('Eliminado');
-        $tipoaccion->setEstatus($estatus);
-        $em->persist($tipoaccion);
+        $em->remove($tipoaccion);
         $em->flush();
         return $this->json(['mensaje' => 'El tipo de acción fue eliminado satisfactoriamente']);
     }
