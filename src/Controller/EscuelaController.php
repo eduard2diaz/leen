@@ -112,7 +112,7 @@ class EscuelaController extends AbstractController
      */
     public function show(Escuela $escuela): Response
     {
-        return $this->render('escuela/details.html.twig', [
+        return $this->render('escuela/show.html.twig', [
             'escuela' => $escuela
         ]);
     }

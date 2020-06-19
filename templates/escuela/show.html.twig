@@ -1,4 +1,45 @@
-{% extends 'layout/autenticado.html.twig' %}
-{% block body %}
+{% embed 'plantel/template.html.twig' with {'plantel':escuela.plantel}%}
+    {% block plantel_show_header %}
+        {{ parent() }}
+        <h3 class="kt-subheader__title">Escuela: {{ escuela.nombre }}</h3>
+    {% endblock plantel_show_header %}
 
-{% endblock %}
+    {% block plantel_show_body %}
+
+        <div class="row">
+            <div class="col-xl-12">
+                <!--begin:: Widgets/Daily Sales-->
+                <div class="kt-portlet kt-portlet--height-fluid">
+                    <div class="kt-widget14">
+                        <div class="kt-widget14__header kt-margin-b-30">
+                            <h3 class="kt-widget14__title">
+                                Información general
+                            </h3>
+
+                        </div>
+                        <table class="table table-hover">
+                            <tr>
+                                <th>Nombre</th>
+                                <td colspan="3">{{ escuela.nombre }}</td>
+                                <th>Clave del Centro de Trabajo</th>
+                                <td>{{ escuela.ccts }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="6" class="text-center">Plantel</th>
+                            </tr>
+                            <tr>
+                                <th>Nombre</th>
+                                <td>{{ escuela.plantel }}</td>
+                                <th>Estado</th>
+                                <td>{{ escuela.plantel.estado }}</td>
+                                <th>Municipio</th>
+                                <td>{{ escuela.plantel.municipio }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+{% endembed %}

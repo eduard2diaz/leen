@@ -16,7 +16,7 @@ class MapsType extends AbstractType
     {
         $builder
             ->add('estado',EntityType::class,['class'=>Estado::class])
-            ->add('escuela', TextType::class, ['required'=>false,'attr' => ['class' => 'form-control','autocomplete'=>'off']])
+            ->add('plantel', TextType::class, ['required'=>false,'attr' => ['class' => 'form-control','autocomplete'=>'off']])
         ;
     }
 

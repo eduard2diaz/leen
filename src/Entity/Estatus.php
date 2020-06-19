@@ -7,7 +7,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\EstatusRepository")
+ * @ORM\Entity
  * @UniqueEntity("estatus")
  * @UniqueEntity("code")
  */

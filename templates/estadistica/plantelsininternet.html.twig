@@ -13,10 +13,10 @@
                 <div class="kt-widget14">
                     <div class="kt-widget14__header kt-margin-b-30">
                         <h3 class="kt-widget14__title">
-                            Escuelas sin energía eléctrica
+                            Planteles sin internet
                         </h3>
                     </div>
-                        <table class="table" id="escuela_entity_table">
+                        <table class="table" id="plantel_entity_table">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -26,15 +26,15 @@
                             </thead>
                             <tbody>
                             {% set i=1 %}
-                            {% for escuela in escuelas %}
+                            {% for plantel in plantels %}
                                 <tr>
                                     <td>{{ i }}</td>
-                                    <td>{{ escuela.escuela }}</td>
+                                    <td>{{ plantel.nombre }}</td>
                                     <td>
                                         <ul class="hidden_element list-inline pull-right">
                                             <li class="list-inline-item">
                                                 <a class="btn default btn-sm"
-                                                   href="{{ path('escuela_show', {'id': escuela.id}) }}"><i
+                                                   href="{{ path('plantel_show', {'id': plantel.id}) }}"><i
                                                             class="fa fa-eye"></i>Visualizar</a>
                                             </li>
                                         </ul>
@@ -49,7 +49,7 @@
                             </tbody>
                         </table>
                         <div class="navigation">
-                            {{ knp_pagination_render(escuelas) }}
+                            {{ knp_pagination_render(plantels) }}
                         </div>
                 </div>
             </div>

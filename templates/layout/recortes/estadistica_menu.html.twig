@@ -6,27 +6,19 @@
                     <h3 class="kt-menu__heading kt-menu__toggle"><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Escuelas & Proyectos</span><i class="kt-menu__ver-arrow la la-angle-right"></i></h3>
                     <ul class="kt-menu__inner">
                         <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_localidad') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-map"></i><span class="kt-menu__link-text">Resumen por localidad</span></a></li>
+                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_plantel_proyecto') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-graphic-2"></i><span class="kt-menu__link-text">Planteles con proyectos</span></a></li>
                         <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_proyectos') }}" class="kt-menu__link "><i class="kt-menu__link-icon flaticon-graphic-2"></i><span class="kt-menu__link-text">Escuelas con proyectos</span></a></li>
                     </ul>
                 </li>
                 <li class="kt-menu__item ">
                     <h3 class="kt-menu__heading kt-menu__toggle"><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Resumen por servicios</span><i class="kt-menu__ver-arrow la la-angle-right"></i></h3>
                     <ul class="kt-menu__inner">
-                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_sin_sanitarios') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Escuelas sin sanitarios</span></a></li>
-                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_sin_biblioteca') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Escuelas sin bibliotecas</span></a></li>
-                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_sin_aguapotable') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Escuelas sin agua potable</span></a></li>
-                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_sin_drenaje') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Escuelas sin drenaje</span></a></li>
-                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_sin_electricidad') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Escuelas sin energía eléctrica</span></a></li>
-                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_sin_internet') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Escuelas sin internet</span></a></li>
-                    </ul>
-                </li>
-                <li class="kt-menu__item ">
-                    <h3 class="kt-menu__heading kt-menu__toggle"><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Proyectos</span><i class="kt-menu__ver-arrow la la-angle-right"></i></h3>
-                    <ul class="kt-menu__inner">
-                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_proyectos_estatus',{'estatus':'Activo'})}}" class="kt-menu__link "><span class="kt-menu__link-text">Escuela con proyectos activos</span></a></li>
-                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_proyectos_estatus',{'estatus':'Inactivo'})}}" class="kt-menu__link "><span class="kt-menu__link-text">Escuela con proyectos inactivos</span></a></li>
-                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_proyectos_estatus',{'estatus':'Cancelado'})}}" class="kt-menu__link "><span class="kt-menu__link-text">Escuela con proyectos cancelados</span></a></li>
-                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_escuela_proyectos_estatus',{'estatus':'Eliminado'})}}" class="kt-menu__link "><span class="kt-menu__link-text">Escuela con proyectos eliminados</span></a></li>
+                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_plantel_sin_sanitarios') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Planteles sin sanitarios</span></a></li>
+                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_plantel_sin_biblioteca') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Planteles sin bibliotecas</span></a></li>
+                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_plantel_sin_aguapotable') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Planteles sin agua potable</span></a></li>
+                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_plantel_sin_drenaje') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Planteles sin drenaje</span></a></li>
+                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_plantel_sin_electricidad') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Planteles sin energía eléctrica</span></a></li>
+                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('estadistica_plantel_sin_internet') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Planteles sin internet</span></a></li>
                     </ul>
                 </li>
             </ul>

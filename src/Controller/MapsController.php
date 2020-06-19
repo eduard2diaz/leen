@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Escuela;
 use App\Entity\Estado;
+use App\Entity\Plantel;
 use App\Form\MapsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,7 @@ class MapsController extends AbstractController
             $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
             $conn->connect();
 
-            $escuela = $request->request->get('maps')['escuela'];
+            $plantel = $request->request->get('maps')['plantel'];
             $estado = $request->request->get('maps')['estado'];
             $estadoObj = $this->getDoctrine()->getManager()
                 ->getRepository(Estado::class)->find($estado);
@@ -39,18 +40,19 @@ class MapsController extends AbstractController
 
             $condicion = "est.nombre LIKE '%" . $estadoObj->getNombre() . "%'";
 
-            if ($escuela != "")
-                $condicion .= "AND esc2.escuela like '%" . $escuela . "%'";
+            if ($plantel != "")
+                $condicion .= "AND p2.nombre like '%" . $plantel . "%'";
 
-            $consulta = "SELECT row_to_json(fc)
+            $consulta="SELECT row_to_json(fc)
        FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features
        FROM ( SELECT 'Feature' As type
-              , ST_AsGeoJSON(esc.coordenada)::json As geometry
+              , ST_AsGeoJSON(p.coordenada)::json As geometry
               , row_to_json(lp) As properties
-               FROM escuela As esc
-               INNER JOIN (SELECT esc2.id FROM escuela as esc2 join estado as est 
-						   ON (est.id = esc2.estado_id) where " . $condicion . ") As lp
-               ON esc.id = lp.id ) As f ) As fc;";
+               FROM plantel As p
+               INNER JOIN (SELECT p2.id FROM plantel as p2 join estado as est 
+						   ON (est.id = p2.estado_id) where " . $condicion . ") As lp
+               ON p.id = lp.id ) As f ) As fc;";
+
 
             $statement = $conn->query($consulta);
             $result = $statement->fetchAll();
@@ -74,16 +76,17 @@ class MapsController extends AbstractController
         $id = $request->request->get('id');
 
         $em=$this->getDoctrine()->getManager();
-        $escuela=$em->getRepository(Escuela::class)->find($id);
-        $result=['nombre'=>'Undefined','estado'=>'Undefined','municipio'=>'Undefined','cctt'=>'Undefined'];
-        if($escuela!=null){
-            $result['nombre']=$escuela->getEscuela();
-            $result['estado']=$escuela->getEstado()->getNombre();
-            $result['municipio']=$escuela->getMunicipio()->getNombre();
-            $result['cctt']=$escuela->getccts_collection()->first()->getValue();
+        $plantel=$em->getRepository(Plantel::class)->find($id);
+        $result=['nombre'=>'Undefined','estado'=>'Undefined','municipio'=>'Undefined','escuelas'=>[]];
+        if($plantel!=null){
+            $result['nombre']=$plantel->getNombre();
+            $result['estado']=$plantel->getEstado()->getNombre();
+            $result['municipio']=$plantel->getMunicipio()->getNombre();
+            foreach ($plantel->getEscuelas() as $escuela)
+                $result['escuelas'][]=['nombre'=>$escuela->getNombre(),'ccts'=>$escuela->getCcts()];
         }
 
-        return $this->render('maps/info_escuela.html.twig', ['escuela' => $result]);
+        return $this->render('maps/info_plantel.html.twig', ['plantel' => $result]);
     }
 
 

@@ -36,7 +36,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nombre</th>
-                                <th>Código postal</th>
+                                <th>CCTS</th>
+                                <th>Plantel</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -45,8 +46,9 @@
                             {% for escuela in result %}
                                 <tr>
                                     <td>{{ i }}</td>
-                                    <td>{{ escuela.escuela }}</td>
-                                    <td>{% if escuela.getDCodigo() is not empty %}  {{ escuela.getDCodigo().__toString() }} {% endif %}</td>
+                                    <td>{{ escuela.nombre }}</td>
+                                    <td>{{ escuela.ccts }}</td>
+                                    <td>{{ escuela.plantel }}</td>
                                     <td>
                                         <ul class="hidden_element list-inline pull-right">
                                             <li class="list-inline-item">

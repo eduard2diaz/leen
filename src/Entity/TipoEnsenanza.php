@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TipoEnsenanzaRepository")
+ * @ORM\Entity
  * @UniqueEntity("nombre")
  */
 class TipoEnsenanza
