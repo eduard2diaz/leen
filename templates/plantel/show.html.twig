@@ -19,35 +19,9 @@
                         <table class="table kt-margin-t-20">
                             <tr>
                                 <th>Nombre</th>
-                                <td colspan="3">{{ plantel.nombre }}</td>
-                            </tr>
-                            <tr>
-                                <th>Código Postal</th>
-                                <td>{% if plantel.getDCodigo() is not empty %}  {{ plantel.getDCodigo().__toString() }} {% endif %}</td>
-                            </tr>
-                            <tr>
-                                <th>Asentamiento</th>
-                                <td>{{ plantel.asentamiento }}</td>
+                                <td>{{ plantel.nombre }}</td>
                                 <th>Tipo de asentamiento</th>
                                 <td>{{ plantel.tipoasentamiento }}</td>
-                            </tr>
-                            <tr>
-                                <th>Estado</th>
-                                <td>{{ plantel.estado }}</td>
-                                <th>Municipio</th>
-                                <td>{{ plantel.municipio }}</td>
-                            </tr>
-                            <tr>
-                                <th>Calle</th>
-                                <td>{{ plantel.calle }}</td>
-                                <th>Número Exterior</th>
-                                <td>{{ plantel.noexterior }}</td>
-                            </tr>
-                            <tr>
-                                <th>Latitud</th>
-                                <td>{{ plantel.latitud }}</td>
-                                <th>Longitud</th>
-                                <td>{{ plantel.longitud }}</td>
                             </tr>
                         </table>
                     </div>

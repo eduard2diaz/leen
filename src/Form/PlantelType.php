@@ -17,18 +17,8 @@ class PlantelType extends AbstractType
     {
         $builder
             ->add('nombre',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('estado',null,['required'=>true,'placeholder'=>'Seleccione un estado'])
             ->add('tipoasentamiento',null,['label'=>'Tipo de Asentamiento','placeholder'=>'Seleccione un tipo de asentamiento'])
-            ->add('asentamiento',TextType::class,['required'=>false,'attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('latitud',NumberType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('longitud',NumberType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('calle',TextType::class,['required'=>false,'attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('noexterior',TextType::class,['required'=>false,'label'=>'Número Exterior','attr'=>['class'=>'form-control','autocomplete'=>'off']])
         ;
-
-        $factory = $builder->getFormFactory();
-        $builder->addEventSubscriber(new AddMunicipioEstadoFieldSubscriber($factory));
-        $builder->addEventSubscriber(new AddCodigoPostalMunicipioFieldSubscriber($factory));
     }
 
     public function configureOptions(OptionsResolver $resolver)

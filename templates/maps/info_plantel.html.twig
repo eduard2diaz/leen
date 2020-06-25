@@ -1,14 +1,3 @@
 <b>Nombre: </b>{{ plantel.nombre }}<br/>
 <b>Estado: </b>{{ plantel.estado }}<br/>
 <b>Municipio: </b>{{ plantel.municipio }}<br/>
-<b>Escuelas</b>
-<ul class="list-inline kt-margin-l-20">
-{% for escuela in plantel.escuelas %}
-    <li   class="list-inline-item">
-    <ul class="list-inline">
-        <li  class="list-inline-item"><b>Nombre:</b> {{ escuela.nombre }}</li>
-        <li  class="list-inline-item"><b>CCTS:</b> {{ escuela.ccts }}</li>
-    </ul>
-    </li>
-{% endfor %}
-</ul>

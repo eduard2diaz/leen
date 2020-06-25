@@ -85,7 +85,7 @@ var maps = function () {
             }),
             ],
             view: new ol.View({
-                center: ol.proj.transform([-99.41, 25], 'EPSG:4218', 'EPSG:3857'),
+                center:  ol.proj.transform([-99.41,25], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 5
             })
         });
@@ -100,6 +100,7 @@ var maps = function () {
             $.ajax({
                 url: $(this).attr("action"),
                 type: "POST",
+                dataType: 'json',
                 data: $(this).serialize(),
                 beforeSend: function () {
                     $.blockUI({message: '<h1><img src="busy.gif" /> Just a moment...</h1>'});
@@ -164,13 +165,13 @@ var maps = function () {
 
             //Si selecciona un marcador
             if (feature) {
-                var id = feature.get('id');
+                var cctt = feature.get('cctt');
                 var coordinate = evt.coordinate;
 
                 $.ajax({
-                    url: Routing.generate('maps_findById'),
+                    url: Routing.generate('maps_findBycctt'),
                     type: "POST",
-                    data: {"id": id},
+                    data: {"cctt": cctt},
                     beforeSend: function () {
                     },
                     complete: function () {

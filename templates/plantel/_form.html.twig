@@ -4,7 +4,7 @@
 }}) }}
 <div class="modal-body" id="modal-body">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.nombre) }}
@@ -15,20 +15,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.asentamiento) }}
-                </label>
-                <div>
-                    {{ form_widget(form.asentamiento) }}
-                    {{ form_errors(form.asentamiento) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.tipoasentamiento) }}
@@ -39,90 +26,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.calle) }}
-                </label>
-                <div>
-                    {{ form_widget(form.calle) }}
-                    {{ form_errors(form.calle) }}
-                </div>
-            </div>
-        </div>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.noexterior) }}
-                </label>
-                <div>
-                    {{ form_widget(form.noexterior) }}
-                    {{ form_errors(form.noexterior) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.latitud) }}
-                </label>
-                <div>
-                    {{ form_widget(form.latitud) }}
-                    {{ form_errors(form.latitud) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.longitud) }}
-                </label>
-                <div>
-                    {{ form_widget(form.longitud) }}
-                    {{ form_errors(form.longitud) }}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.estado) }}
-                </label>
-                <div>
-                    {{ form_widget(form.estado) }}
-                    {{ form_errors(form.estado) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.municipio) }}
-                </label>
-                <div>
-                    {{ form_widget(form.municipio) }}
-                    {{ form_errors(form.municipio) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.d_codigo) }}
-                </label>
-                <div>
-                    {{ form_widget(form.d_codigo) }}
-                    {{ form_errors(form.d_codigo) }}
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 </div>
 {{ form_errors(form) }}
 {{ form_rest(form) }}

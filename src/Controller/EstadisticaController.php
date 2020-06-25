@@ -15,48 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class EstadisticaController extends AbstractController
 {
     /**
-     * @Route("/localidad", name="estadistica_escuela_localidad")
-     */
-    public function localidad(Request $request, PaginatorInterface $paginator)
-    {
-        $form=$this->createForm(EstadisticaLocalidadType::class,null,['action'=>$this->generateUrl('estadistica_escuela_localidad')]);
-
-        $parametersPOST=$request->request->all();
-        $parametersGET=$request->query->all();
-        $parameters= $request->isMethod('POST') ? $parametersPOST["estadistica_localidad"] : $parametersGET;
-        if(array_key_exists("estado",$parameters)){
-            $estado=$parameters["estado"];
-            $municipio=$parameters["municipio"];
-            $em=$this->getDoctrine()->getManager();
-            $query_string='SELECT esc FROM App:Escuela esc JOIN esc.plantel p JOIN p.estado est WHERE est.id= :estado';
-            $query_parameters=['estado'=>$estado];
-            if($municipio!=null && $municipio!='-1'){
-                $query_string='SELECT esc FROM App:Escuela esc JOIN esc.plantel p JOIN p.estado est JOIN p.municipio mun WHERE est.id= :estado AND mun.id= :municipio';
-                $query_parameters['municipio']=$municipio;
-            }
-
-            $consulta=$em->createQuery($query_string);
-            $consulta->setParameters($query_parameters);
-
-            $result = $paginator->paginate(
-                $consulta, /* query NOT result */
-                $request->query->getInt('page', 1),
-                $this->getParameter('knp_num_items_per_page')
-            );
-
-            return $this->render('estadistica/localidad.html.twig', [
-                'form' => $form->createView(),
-                'estado'=>$estado,
-                'municipio'=>$municipio,
-                'result'=>$result
-            ]);
-        }
-        return $this->render('estadistica/localidad.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
      * @Route("/plantel/proyecto", name="estadistica_plantel_proyecto")
      */
     public function plantelesProyecto(Request $request, PaginatorInterface $paginator)

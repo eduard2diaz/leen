@@ -31,7 +31,7 @@
                         <tr>
                             <th>#</th>
                             <th>Nombre</th>
-                            <th>Código postal</th>
+                            <th>Tipo de asentamiento</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -41,7 +41,7 @@
                             <tr>
                                 <td>{{ i }}</td>
                                 <td>{{ plantel.nombre }}</td>
-                                <td>{% if plantel.getDCodigo() is not empty %}  {{ plantel.getDCodigo().__toString() }} {% endif %}</td>
+                                <td>{{ plantel.tipoasentamiento }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item">
