@@ -4,6 +4,17 @@
 }}) }}
 <div class="modal-body" id="modal-body">
     <div class="row">
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.numero) }}
+                </label>
+                <div>
+                    {{ form_widget(form.numero) }}
+                    {{ form_errors(form.numero) }}
+                </div>
+            </div>
+        </div>
         <div class="col-md-8">
             <div class="form-group m-form__group">
                 <label>
@@ -15,14 +26,27 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-4">
             <div class="form-group m-form__group">
                 <label>
-                    {{ form_label(form.fechacaptura) }}
+                    {{ form_label(form.fechainicio) }}
                 </label>
                 <div>
-                    {{ form_widget(form.fechacaptura) }}
-                    {{ form_errors(form.fechacaptura) }}
+                    {{ form_widget(form.fechainicio) }}
+                    {{ form_errors(form.fechainicio) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.fechafin) }}
+                </label>
+                <div>
+                    {{ form_widget(form.fechafin) }}
+                    {{ form_errors(form.fechafin) }}
                 </div>
             </div>
         </div>
@@ -53,11 +77,11 @@
         <div class="col-md-4">
             <div class="form-group m-form__group">
                 <label>
-                    {{ form_label(form.totalrecursosasignados) }}
+                    {{ form_label(form.montoasignado) }}
                 </label>
                 <div>
-                    {{ form_widget(form.totalrecursosasignados) }}
-                    {{ form_errors(form.totalrecursosasignados) }}
+                    {{ form_widget(form.montoasignado) }}
+                    {{ form_errors(form.montoasignado) }}
                 </div>
             </div>
         </div>

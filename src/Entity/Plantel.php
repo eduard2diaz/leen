@@ -32,11 +32,6 @@ class Plantel
     private $nombre;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TipoAsentamiento")
-     */
-    private $tipoasentamiento;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Escuela", mappedBy="plantel")
      */
     private $escuelas;
@@ -50,18 +45,6 @@ class Plantel
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTipoasentamiento(): ?TipoAsentamiento
-    {
-        return $this->tipoasentamiento;
-    }
-
-    public function setTipoasentamiento(?TipoAsentamiento $tipoasentamiento): self
-    {
-        $this->tipoasentamiento = $tipoasentamiento;
-
-        return $this;
     }
 
     /**

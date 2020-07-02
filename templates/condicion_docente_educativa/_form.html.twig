@@ -52,8 +52,10 @@
         </div>
     </div>
 </div>
-<div class="modal-footer">
+{{ form_errors(form) }}
+{{ form_rest(form) }}
 
+<div class="modal-footer">
     {% if condicion_docente_educativa.id is not empty%}
         <li class="list-inline-item">
             <a class="btn btn-danger btn-sm  color-white eliminar_condicion_docente_educativa"

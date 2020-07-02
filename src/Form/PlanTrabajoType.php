@@ -22,16 +22,22 @@ class PlanTrabajoType extends AbstractType
     {
         $required=!$options['data']->getId() ? true : false;
         $builder
-            ->add('fechacaptura',TextType::class,['label'=>'Fecha de captura','attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}','autocomplete' => 'off']])
             ->add('descripcionaccion',TextareaType::class,['label'=>'Descripción','attr'=>['class'=>'form-control']])
             ->add('tiempoestimado',TextType::class,['label'=>'Tiempo estimado','attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('costoestimado',NumberType::class,['label'=>'Costo estimado','attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('totalrecursosasignados',NumberType::class,['label'=>'Total de recursos asignados','attr'=>['class'=>'form-control','autocomplete'=>'off']])
+
+            ->add('numero',TextType::class,['label'=>'Número','attr'=>['class'=>'form-control','autocomplete' => 'off']])
+            ->add('fechainicio',TextType::class,['label'=>'Fecha de Inicio','attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}',
+                'autocomplete' => 'off']])
+            ->add('fechafin',TextType::class,['required'=>false,'label'=>'Fecha de Fin','attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}',
+                'autocomplete' => 'off',]])
+            ->add('montoasignado',NumberType::class,['label'=>'Monto Asignado','attr'=>['class'=>'form-control','autocomplete'=>'off']])
             ->add('tipoAccion',null,['label'=>'Tipo de acción'])
             ->add('file', FileType::class, array('label'=>' ','required' => $required))
         ;
 
-        $builder->get('fechacaptura')->addModelTransformer(new DatetoStringTransformer());
+        $builder->get('fechainicio')->addModelTransformer(new DatetoStringTransformer());
+        $builder->get('fechafin')->addModelTransformer(new DatetoStringTransformer());
 
     }
 

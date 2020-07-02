@@ -5,7 +5,7 @@
     <thead>
     <tr>
         <th>#</th>
-        <th>CCts</th>
+        <th>Escuela</th>
         <th>Número de alumnas</th>
         <th>Número de alumnos</th>
         <th>Grado</th>
@@ -17,7 +17,7 @@
     {% for condicion_educativa_alumno in condicion_educativa_alumnos %}
         <tr>
             <td>{{ i }}</td>
-            <td>{{ condicion_educativa_alumno.escuela.ccts }}</td>
+            <td>{{ condicion_educativa_alumno.escuela.nombre }}</td>
             <td>{{ condicion_educativa_alumno.numalumnas }}</td>
             <td>{{ condicion_educativa_alumno.numalumnos }}</td>
             <td>{{ condicion_educativa_alumno.grado }}</td>

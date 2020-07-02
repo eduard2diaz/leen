@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Escuela;
 use App\Entity\Estatus;
+use App\Entity\Plantel;
 use App\Entity\PlanTrabajo;
 use App\Entity\Proyecto;
 use App\Form\PlanTrabajoType;
@@ -20,30 +21,42 @@ use App\Tool\FileStorageManager;
 class PlanTrabajoController extends AbstractController
 {
     /**
+     * @Route("/{id}/findbyplantel", name="plantrabajo_findby_plantel", methods={"GET"})
+     */
+    public function findByPlantel(Plantel $plantel): Response
+    {
+        $planestrabajo = $this->getDoctrine()->getRepository(PlanTrabajo::class)->findByPlantel($plantel);
+
+        return $this->render('plan_trabajo/findbyplantel.html.twig', [
+            'planestrabajo' => $planestrabajo,
+            'plantel' => $plantel,
+        ]);
+    }
+
+    /**
      * @Route("/{id}/index", name="plan_trabajo_index", methods={"GET"})
      */
-    public function index(Proyecto $proyecto): Response
+    public function index(): Response
     {
         $em=$this->getDoctrine()->getManager();
-        $planTrabajos=$em->getRepository(PlanTrabajo::class)->findByProyecto($proyecto);
+        $planTrabajos=null;
 
         return $this->render('plan_trabajo/index.html.twig', [
             'plan_trabajos' => $planTrabajos,
-            'proyecto' => $proyecto,
         ]);
     }
 
     /**
      * @Route("/{id}/new", name="plan_trabajo_new", methods={"GET","POST"})
      */
-    public function new(Proyecto $proyecto, Request $request): Response
+    public function new(Request $request,Plantel $plantel): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $planTrabajo = new PlanTrabajo();
-        $planTrabajo->setProyecto($proyecto);
-        $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_new',['id'=>$proyecto->getId()])]);
+        $planTrabajo->setPlantel($plantel);
+        $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_new',['id'=>$plantel->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -52,8 +65,8 @@ class PlanTrabajoController extends AbstractController
                 $entityManager->persist($planTrabajo);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El plan de trabajo fue registrado satisfactoriamente',
-                    'tipoaccion' => $planTrabajo->getTipoAccion()->__toString(),
-                    'fecha' => $planTrabajo->getFechacaptura()->format('Y-m-d'),
+                    'numero' => $planTrabajo->getNumero(),
+                    'fechainicio' => $planTrabajo->getFechainicio()->format('Y-m-d'),
                     'id' => $planTrabajo->getId(),
                 ]);
             } else {
@@ -65,7 +78,6 @@ class PlanTrabajoController extends AbstractController
 
         return $this->render('plan_trabajo/new.html.twig', [
             'plan_trabajo' => $planTrabajo,
-            'proyecto' => $proyecto,
             'form' => $form->createView(),
         ]);
     }
@@ -73,13 +85,14 @@ class PlanTrabajoController extends AbstractController
     /**
      * @Route("/{id}/show", name="plan_trabajo_show", methods={"GET"}, options={"expose"=true})
      */
-    public function show(PlanTrabajo $planTrabajo, Request $request): Response
+    public function show(PlanTrabajo $planTrabajo): Response
     {
-        if (!$request->isXmlHttpRequest())
-            throw $this->createAccessDeniedException();
+        $gastos=$this->getDoctrine()->getRepository(PlanTrabajo::class)->findSumaGastos($planTrabajo->getId());
 
         return $this->render('plan_trabajo/show.html.twig', [
             'plan_trabajo' => $planTrabajo,
+            'montogastado' => $gastos,
+            'saldofinal' => $planTrabajo->getMontoasignado()-$gastos,
         ]);
     }
 
@@ -109,8 +122,8 @@ class PlanTrabajoController extends AbstractController
                 $em->persist($planTrabajo);
                 $em->flush();
                 return $this->json(['mensaje' => 'El plan de trabajo fue actualizado satisfactoriamente',
-                    'tipoaccion' => $planTrabajo->getTipoAccion()->__toString(),
-                    'fecha' => $planTrabajo->getFechacaptura()->format('Y-m-d'),
+                    'numero' => $planTrabajo->getNumero(),
+                    'fechainicio' => $planTrabajo->getFechainicio()->format('Y-m-d'),
                 ]);
             } else {
                 $page = $this->renderView('plan_trabajo/_form.html.twig', [

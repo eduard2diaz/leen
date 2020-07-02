@@ -12,14 +12,14 @@ class ControlGastos extends Constraint
     public $message = 'Los gastos registrados superan al monto asignado al proyecto.';
     public $service = 'control_gastos.validator';
     public $em = null;
-    public $proyecto;
+    public $plantrabajo;
     public $repositoryMethod = 'findBy';
     public $errorPath = 'monto';
     public $ignoreNull = true;
 
     public function getRequiredOptions()
     {
-        return ['proyecto'];
+        return ['plantrabajo'];
     }
 
     public function validatedBy()
@@ -34,6 +34,6 @@ class ControlGastos extends Constraint
 
     public function getDefaultOption()
     {
-        return 'proyecto';
+        return 'plantrabajo';
     }
 }

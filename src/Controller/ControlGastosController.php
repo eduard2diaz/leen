@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\ControlGastos;
 use App\Entity\Escuela;
 use App\Entity\Estatus;
-use App\Entity\Proyecto;
+use App\Entity\PlanTrabajo;
 use App\Form\ControlGastosType;
 use App\Repository\ControlGastosRepository;
 use App\Tool\FileStorageManager;
@@ -22,27 +22,27 @@ class ControlGastosController extends AbstractController
     /**
      * @Route("/{id}/index", name="control_gastos_index", methods={"GET"})
      */
-    public function index(Proyecto $proyecto): Response
+    public function index(PlanTrabajo $planTrabajo): Response
     {
         $em=$this->getDoctrine()->getManager();
-        $gastos=$consulta = $em->getRepository(ControlGastos::class)->findByProyecto($proyecto);
+        $gastos=$consulta = $em->getRepository(ControlGastos::class)->findByPlantrabajo($planTrabajo);
 
         return $this->render('control_gastos/index.html.twig', [
             'control_gastos' => $gastos,
-            'proyecto' => $proyecto,
+            'plantrabajo' => $planTrabajo,
         ]);
     }
 
     /**
      * @Route("/{id}/new", name="control_gastos_new", methods={"GET","POST"})
      */
-    public function new(Proyecto $proyecto, Request $request): Response
+    public function new(PlanTrabajo $proyecto, Request $request): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $controlgasto = new ControlGastos();
-        $controlgasto->setProyecto($proyecto);
+        $controlgasto->setPlanTrabajo($proyecto);
         $form = $this->createForm(ControlGastosType::class, $controlgasto, ['action' => $this->generateUrl('control_gastos_new',['id'=>$proyecto->getId()])]);
         $form->handleRequest($request);
 

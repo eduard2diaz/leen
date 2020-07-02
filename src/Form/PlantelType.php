@@ -17,7 +17,6 @@ class PlantelType extends AbstractType
     {
         $builder
             ->add('nombre',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('tipoasentamiento',null,['label'=>'Tipo de Asentamiento','placeholder'=>'Seleccione un tipo de asentamiento'])
         ;
     }
 

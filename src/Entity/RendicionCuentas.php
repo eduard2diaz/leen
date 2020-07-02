@@ -20,10 +20,10 @@ class RendicionCuentas
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Proyecto")
+     * @ORM\ManyToOne(targetEntity="App\Entity\PlanTrabajo")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $proyecto;
+    private $plantrabajo;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TipoAccion")
@@ -62,17 +62,18 @@ class RendicionCuentas
         return $this->id;
     }
 
-    public function getProyecto(): ?Proyecto
+    public function getPlanTrabajo(): ?PlanTrabajo
     {
-        return $this->proyecto;
+        return $this->plantrabajo;
     }
 
-    public function setProyecto(?Proyecto $proyecto): self
+    public function setPlanTrabajo(?PlanTrabajo $plantrabajo): self
     {
-        $this->proyecto = $proyecto;
+        $this->plantrabajo = $plantrabajo;
 
         return $this;
     }
+
 
     public function getTipoAccion(): ?TipoAccion
     {
@@ -145,8 +146,8 @@ class RendicionCuentas
      */
     public function validate(ExecutionContextInterface $context)
     {
-        if (null==$this->getProyecto())
-            $context->addViolation('Seleccione un proyecto.');
+        if (null==$this->getPlanTrabajo())
+            $context->addViolation('Seleccione un plan de trabajo.');
 
         if (null==$this->getTipoAccion())
             $context->addViolation('Seleccione un tipo de acción.');

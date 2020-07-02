@@ -1,23 +1,5 @@
 var plantel = function () {
 
-    var configurarFormulario = function () {
-        $('select#plantel_d_codigo').select2({
-            dropdownParent: $("#basicmodal"),
-        });
-        $('select#plantel_tipoasentamiento').select2({
-            dropdownParent: $("#basicmodal"),
-        });
-        $('select#plantel_estado').select2({
-            dropdownParent: $("#basicmodal"),
-        });
-        $('select#plantel_municipio').select2({
-            dropdownParent: $("#basicmodal"),
-        });
-        $('select#plantel_tipoensenanza').select2({
-            dropdownParent: $("#basicmodal"),
-        });
-    }
-
     var edicion = function () {
         $('body').on('click', 'a.edicion', function (evento) {
             evento.preventDefault();
@@ -32,7 +14,6 @@ var plantel = function () {
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
                         $('div#basicmodal').modal('show');
-                        configurarFormulario();
                     }
                 },
                 error: function () {
@@ -64,7 +45,6 @@ var plantel = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
-                        configurarFormulario();
                     } else
                         document.location.href=data['url'];
                 },
@@ -102,71 +82,6 @@ var plantel = function () {
                     //base.Error();
                 }
             });
-        });
-    }
-
-
-    var estadoListener = function () {
-        $('div#basicmodal').on('change', 'select#plantel_estado', function (evento)
-        {
-            if ($(this).val() > 0)
-                $.ajax({
-                    type: 'get', //Se uso get pues segun los desarrolladores de yahoo es una mejoria en el rendimineto de las peticiones ajax
-                    dataType: 'json',
-                    url: Routing.generate('municipio_find_by_estado', {'id': $(this).val()}),
-                    beforeSend: function (data) {
-                        $.blockUI({message: '<small>Cargando...</small>'});
-                    },
-                    success: function (data) {
-                        var cadena="";
-                        var array=JSON.parse(data);
-                        if(data!=null) {
-                            for (var i = 0; i < array.length; i++)
-                                cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
-                            $('select#plantel_municipio').html(cadena);
-                            $('select#plantel_municipio').change();
-                        }else{
-                            $('select#plantel_municipio').html(cadena);
-                            $('select#plantel_d_codigo').html(cadena);
-                        }
-                    },
-                    error: function () {
-                        //base.Error();
-                    },
-                    complete: function () {
-                        $.unblockUI();
-                    }
-                });
-        });
-    }
-
-    var municipioListener = function () {
-        $('div#basicmodal').on('change', 'select#plantel_municipio', function (evento)
-        {
-            if ($(this).val() > 0)
-                $.ajax({
-                    type: 'get', //Se uso get pues segun los desarrolladores de yahoo es una mejoria en el rendimineto de las peticiones ajax
-                    dataType: 'json',
-                    url: Routing.generate('codigo_postal_find_by_municipio', {'id': $(this).val()}),
-                    beforeSend: function (data) {
-                        $.blockUI({message: '<small>Cargando...</small>'});
-                    },
-                    success: function (data) {
-                        var cadena="";
-                        var array=JSON.parse(data);
-                        if(data!=null){
-                            for(var i=0;i<array.length;i++)
-                                cadena+="<option value="+array[i]['id']+">"+array[i]['nombre']+"</option>";
-                        }
-                        $('select#plantel_d_codigo').html(cadena);
-                    },
-                    error: function () {
-                        //base.Error();
-                    },
-                    complete: function () {
-                        $.unblockUI();
-                    }
-                });
         });
     }
 

@@ -36,7 +36,7 @@ class CondicionEducativaAlumnosController extends AbstractController
                 $entityManager->persist($condicion_educativa_alumno);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'La condición educativa de los alumnos fue registrada satisfactoriamente',
-                    'ccts' => $condicion_educativa_alumno->getEscuela()->getCcts(),
+                    'ccts' => $condicion_educativa_alumno->getEscuela()->getNombre(),
                     'numalumnas' => $condicion_educativa_alumno->getNumalumnas(),
                     'numalumnos' => $condicion_educativa_alumno->getNumalumnos(),
                     'grado' => $condicion_educativa_alumno->getGrado()->getNombre(),
@@ -74,7 +74,7 @@ class CondicionEducativaAlumnosController extends AbstractController
                 $em->persist($condicion_educativa_alumno);
                 $em->flush();
                 return $this->json(['mensaje' => 'La condición educativa de los alumnos fue actualizada satisfactoriamente',
-                    'ccts' => $condicion_educativa_alumno->getEscuela()->getCcts(),
+                    'ccts' => $condicion_educativa_alumno->getEscuela()->getNombre(),
                     'numalumnas' => $condicion_educativa_alumno->getNumalumnas(),
                     'numalumnos' => $condicion_educativa_alumno->getNumalumnos(),
                     'grado' => $condicion_educativa_alumno->getGrado()->getNombre(),

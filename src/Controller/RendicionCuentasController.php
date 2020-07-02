@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Escuela;
 use App\Entity\Estatus;
-use App\Entity\Proyecto;
+use App\Entity\PlanTrabajo;
 use App\Entity\RendicionCuentas;
 use App\Form\RendicionCuentasType;
 use App\Repository\RendicionCuentasRepository;
@@ -22,28 +22,28 @@ class RendicionCuentasController extends AbstractController
     /**
      * @Route("/{id}/index", name="rendicion_cuentas_index", methods={"GET"})
      */
-    public function index(Proyecto $proyecto): Response
+    public function index(PlanTrabajo $plantrabajo): Response
     {
         $em=$this->getDoctrine()->getManager();
-        $rendiciones=$em->getRepository(RendicionCuentas::class)->findByProyecto($proyecto);
+        $rendiciones=$em->getRepository(RendicionCuentas::class)->findByPlantrabajo($plantrabajo);
 
         return $this->render('rendicion_cuentas/index.html.twig', [
             'rendicion_cuentas' => $rendiciones,
-            'proyecto' => $proyecto,
+            'plantrabajo' => $plantrabajo,
         ]);
     }
 
     /**
      * @Route("/{id}/new", name="rendicion_cuentas_new", methods={"GET","POST"})
      */
-    public function new(Proyecto $proyecto, Request $request): Response
+    public function new(PlanTrabajo $plantrabajo, Request $request): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $rendicioncuentas = new RendicionCuentas();
-        $rendicioncuentas->setProyecto($proyecto);
-        $form = $this->createForm(RendicionCuentasType::class, $rendicioncuentas, ['action' => $this->generateUrl('rendicion_cuentas_new',['id'=>$proyecto->getId()])]);
+        $rendicioncuentas->setPlanTrabajo($plantrabajo);
+        $form = $this->createForm(RendicionCuentasType::class, $rendicioncuentas, ['action' => $this->generateUrl('rendicion_cuentas_new',['id'=>$plantrabajo->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
@@ -65,7 +65,7 @@ class RendicionCuentasController extends AbstractController
 
         return $this->render('rendicion_cuentas/new.html.twig', [
             'rendicion_cuentas' => $rendicioncuentas,
-            'proyecto' => $proyecto,
+            'proyecto' => $plantrabajo,
             'form' => $form->createView(),
         ]);
     }

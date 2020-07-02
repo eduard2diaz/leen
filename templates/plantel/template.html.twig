@@ -34,12 +34,12 @@
                                 </a>
                             </li>
                             <li class="kt-nav__item">
-                                <a href="{{ path('proyecto_findby_plantel',{'id':plantel.id}) }}" class="kt-nav__link">
+                                <a href="{{ path('plantrabajo_findby_plantel',{'id':plantel.id}) }}" class="kt-nav__link">
                                     <i class="kt-nav__link-icon flaticon2-analytics-2"></i>
-                                    <span class="kt-nav__link-text">Proyectos</span>
+                                    <span class="kt-nav__link-text">Planes de Trabajo</span>
                                 </a>
-                                {% block proyecto_suboptions %}
-                                {% endblock proyecto_suboptions %}
+                                {% block plan_trabajo_suboptions %}
+                                {% endblock plan_trabajo_suboptions %}
                             </li>
                             <li class="kt-nav__item">
                                 <a href="{{ path('diagnostico_plantel_index',{'id':plantel.id}) }}" class="kt-nav__link">
@@ -47,10 +47,7 @@
                                     <span class="kt-nav__link-text">Diagnóstico del plantel</span>
                                 </a>
                             </li>
-
-
                         </ul>
-
                         <!--end::Nav-->
                     </div>
                 </div>

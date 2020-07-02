@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Plantel;
+use App\Entity\PlanTrabajo;
 use App\Entity\Proyecto;
 use App\Entity\DiagnosticoPlantel;
 use App\Entity\Escuela;
@@ -168,7 +169,7 @@ class PlantelController extends AbstractController
     private function esEliminable(Plantel $plantel)
     {
         $em = $this->getDoctrine()->getManager();
-        $proyecto=$em->getRepository(Proyecto::class)->findOneByPlantel($plantel);
+        $proyecto=$em->getRepository(PlanTrabajo::class)->findOneByPlantel($plantel);
         $escuela=$em->getRepository(Escuela::class)->findOneByPlantel($plantel);
         $diagnostico=$em->getRepository(DiagnosticoPlantel::class)->findOneByPlantel($plantel);
         return $proyecto==null && $escuela==null && $diagnostico==null;

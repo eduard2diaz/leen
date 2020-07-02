@@ -14,7 +14,7 @@ class EscuelaType extends AbstractType
     {
         $builder
             ->add('nombre',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
-            ->add('ccts',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
+            ->add('ccts',TextType::class,['label'=>'Clave del Centro de Trabajo','attr'=>['class'=>'form-control','autocomplete'=>'of']])
             ->add('tipoensenanza',null,['required'=>true,'label'=>'Tipo de Enseñanza','placeholder'=>'Seleccione un tipo de enseñanza'])
         ;
     }

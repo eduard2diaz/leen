@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity
- * @UniqueEntity(fields={"accion"},message="Este valor ya ha sido usado con este Estatus")
+ * @UniqueEntity("accion")
  */
 class TipoAccion
 {

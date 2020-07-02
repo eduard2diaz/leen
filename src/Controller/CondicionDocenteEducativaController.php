@@ -39,7 +39,7 @@ class CondicionDocenteEducativaController extends AbstractController
                 $entityManager->persist($condicion_docente_educativa);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'La condición docente educativa fue registrada satisfactoriamente',
-                    'ccts' => $condicion_docente_educativa->getEscuela()->getCcts(),
+                    'ccts' => $condicion_docente_educativa->getEscuela()->getNombre(),
                     'curp' => $condicion_docente_educativa->getCurp(),
                     'nombre' => $condicion_docente_educativa->getNombre(),
                     'grado' => $condicion_docente_educativa->getGrado()->getNombre(),
@@ -76,7 +76,7 @@ class CondicionDocenteEducativaController extends AbstractController
                 $em->persist($condicion_docente_educativa);
                 $em->flush();
                 return $this->json(['mensaje' => 'La condición docente educativa fue actualizada satisfactoriamente',
-                    'ccts' => $condicion_docente_educativa->getEscuela()->getCcts(),
+                    'ccts' => $condicion_docente_educativa->getEscuela()->getNombre(),
                     'curp' => $condicion_docente_educativa->getCurp(),
                     'nombre' => $condicion_docente_educativa->getNombre(),
                     'grado' => $condicion_docente_educativa->getGrado()->getNombre(),

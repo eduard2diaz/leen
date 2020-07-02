@@ -35,14 +35,14 @@ class ControlGastosValidator extends ConstraintValidator
                 throw new ConstraintDefinitionException(sprintf('Unable to find the object manager associated with an entity of class "%s".', get_class($value)));
         }
 
-        $proyecto = $pa->getValue($value, $constraint->proyecto);
+        $plantrabajo = $pa->getValue($value, $constraint->plantrabajo);
         $id = $pa->getValue($value, 'id');
 
-        $monto=$em->getRepository(\App\Entity\Proyecto::class)->findSumaGastos($proyecto);
+        $monto=$em->getRepository(\App\Entity\PlanTrabajo::class)->findSumaGastos($plantrabajo);
         if (!$id)
             $monto+=$pa->getValue($value, 'monto');
 
-        if ($monto> $proyecto->getMontoAsignado())
+        if ($monto> $plantrabajo->getMontoAsignado())
             $this->context->buildViolation($constraint->message)->atPath($constraint->errorPath)->addViolation();
     }
 }
