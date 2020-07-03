@@ -27,5 +27,13 @@ class PlanTrabajoRepository extends ServiceEntityRepository
         $consulta->setParameter('plan', $plan_id);
         return $consulta->getResult()[0][1]==null ? 0 : $consulta->getResult()[0][1];
     }
+    
+    public function nextNumber($plantel_id)
+    {
+        $cadena = "SELECT MAX(pt.numero) FROM App:PlanTrabajo pt JOIN pt.plantel p WHERE p.id= :plantel ";
+        $consulta = $this->getEntityManager()->createQuery($cadena);
+        $consulta->setParameter('plantel', $plantel_id);
+        return $consulta->getResult()[0][1]==null ? 1 : $consulta->getResult()[0][1]+1;
+    }
 
 }

@@ -77,7 +77,7 @@ class PlantelController extends AbstractController
 
                 $this->addFlash('success', 'El plantel fue registrado satisfactoriamente');
                 return $this->json([
-                    'url' => $this->generateUrl('plantel_index')
+                    'url' => $this->generateUrl('escuela_findby_plantel',['id'=>$plantel->getId()])
                 ]);
             } else {
                 $page = $this->renderView('plantel/_form.html.twig', [

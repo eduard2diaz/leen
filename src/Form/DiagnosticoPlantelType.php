@@ -54,7 +54,6 @@ class DiagnosticoPlantelType extends AbstractType
             ->add('idcondiciontelefono',null,['label'=>'Condiciones de la telefonía','attr'=>['class'=>'form-control']])
             ->add('internet',CheckboxType::class,['required'=>false])
             ->add('idcondicioninternet',null,['label'=>'Condiciones del internet','attr'=>['class'=>'form-control']])
-            ->add('iddiagnosticoplantel',IntegerType::class,['label'=>'Identificador del diagnóstico','attr'=>['class'=>'form-control']])
             ->add('fecha',TextType::class,['attr'=>['class'=>'form-control', 'pattern'=>'\d{4}-\d{2}-\d{2}','autocomplete' => 'off']])
 
             ->add('descrip_num_aulas',ObservacionesType::class)

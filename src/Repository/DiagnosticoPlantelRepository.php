@@ -42,4 +42,12 @@ class DiagnosticoPlantelRepository extends ServiceEntityRepository
         return $consulta->getOneOrNullResult();
     }
 
+    public function nextNumber($plantel_id)
+    {
+        $cadena = "SELECT MAX(dp.iddiagnosticoplantel) FROM App:DiagnosticoPlantel dp JOIN dp.plantel p WHERE p.id= :plantel ";
+        $consulta = $this->getEntityManager()->createQuery($cadena);
+        $consulta->setParameter('plantel', $plantel_id);
+        return $consulta->getResult()[0][1]==null ? 1 : $consulta->getResult()[0][1]+1;
+    }
+
 }

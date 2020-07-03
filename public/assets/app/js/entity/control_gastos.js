@@ -9,7 +9,7 @@ var control_gastos = function () {
                 url: datatable_url
             },
             columns: [
-                {data: 'numero'},
+                {data: 'numero_comprobante'},
                 {data: 'tipocomprobante'},
                 {data: 'fecha'},
                 {data: 'acciones'}
@@ -81,9 +81,8 @@ var control_gastos = function () {
 
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        controlGastosCounter++;
                         objeto = table.row.add({
-                            "numero": controlGastosCounter,
+                            "numero_comprobante": data['numero_comprobante'],
                             "tipocomprobante": data['tipocomprobante'],
                             "fecha": data['fecha'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +

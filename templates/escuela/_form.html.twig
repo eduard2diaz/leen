@@ -4,18 +4,7 @@
 }}) }}
 <div class="modal-body" id="modal-body">
     <div class="row">
-        <div class="col-md-8">
-            <div class="form-group m-form__group">
-                <label>
-                    {{ form_label(form.nombre) }}
-                </label>
-                <div>
-                    {{ form_widget(form.nombre) }}
-                    {{ form_errors(form.nombre) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
+     <div class="col-md-5">
             <div class="form-group m-form__group">
                 <label>
                     {{ form_label(form.ccts) }}
@@ -26,6 +15,18 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-7">
+            <div class="form-group m-form__group">
+                <label>
+                    {{ form_label(form.nombre) }}
+                </label>
+                <div>
+                    {{ form_widget(form.nombre) }}
+                    {{ form_errors(form.nombre) }}
+                </div>
+            </div>
+        </div>
+       
     </div>
     <div class="row">
         <div class="col-md-8">

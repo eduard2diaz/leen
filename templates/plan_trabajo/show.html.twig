@@ -18,10 +18,10 @@
                                 <td colspan="3">{{ plan_trabajo.numero }}</td>
                             </tr>
                             <tr>
-                                <th>Plantel</th>
-                                <td>{{ plan_trabajo.plantel.nombre }}</td>
                                 <th>Monto asignado</th>
                                 <td>{{ plan_trabajo.montoasignado }}</td>
+                                <th>Costo estimado</th>
+                                <td>{{ plan_trabajo.costoestimado }}</td>
                             </tr>
                             <tr>
                                 <th>Fecha de inicio</th>
@@ -47,10 +47,8 @@
                                 <td>{{ plan_trabajo.tiempoestimado }}</td>
                             </tr>
                             <tr>
-                                <th>Costo estimado</th>
-                                <td>{{ plan_trabajo.costoestimado }}</td>
                                 <th>Descripción</th>
-                                <td>{{ plan_trabajo.descripcionaccion }}</td>
+                                <td colspan="3">{{ plan_trabajo.descripcionaccion }}</td>
                             </tr>
                             </tbody>
                         </table>

@@ -28,7 +28,7 @@
                     <table class="table" id="gasto_entity_table">
                         <thead>
                         <tr>
-                            <th>#</th>
+                            <th>Numero de comprobante</th>
                             <th>Tipo de comprobante</th>
                             <th>Fecha</th>
                             <th></th>
@@ -38,7 +38,7 @@
                         {% set i=1 %}
                         {% for gasto in control_gastos %}
                             <tr>
-                                <td>{{ i }}</td>
+                                <td>{{ gasto.numerocomprobante }}</td>
                                 <td>{{ gasto.tipocomprobante }}</td>
                                 <td>{{ gasto.fechacaptura | date('Y-m-d') }}</td>
                                 <td>
@@ -64,7 +64,6 @@
     <script src="{{ asset('vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.js','template') }}" type="text/javascript"></script>
     <script src="{{ asset('js/entity/control_gastos.js','app') }}" type="text/javascript"></script>
     <script>
-        var controlGastosCounter='{{ control_gastos |length }}';
         $.fn.datepicker.defaults.format = 'yyyy-mm-dd';
         control_gastos.index();
     </script>

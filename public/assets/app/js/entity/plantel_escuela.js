@@ -10,8 +10,8 @@ var plantel_escuela = function () {
             },
             columns: [
                 {data: 'id'},
-                {data: 'nombre'},
                 {data: 'ccts'},
+                {data: 'nombre'},
                 {data: 'acciones'}
             ]
         });
@@ -80,8 +80,8 @@ var plantel_escuela = function () {
                         escuelaCounter++;
                         objeto = table.row.add({
                             "id": escuelaCounter,
-                            "nombre": data['nombre'],
                             "ccts": data['ccts'],
+                            "nombre": data['nombre'],
                             "acciones": "<ul class='hidden_element list-inline pull-right'>" +
                                 "<li class='list-inline-item'>" +
                                 "<a class='btn btn-sm' href=" + Routing.generate('escuela_show', {id: data['id']}) + "><i class='fa fa-eye'></i>Visualizar</a></li>" +
@@ -122,8 +122,8 @@ var plantel_escuela = function () {
                     } else{
                         $('div#basicmodal').modal('hide');
                         var pagina = table.page();
-                        obj.parents('tr').children('td:nth-child(2)').html(data['nombre']);
-                        obj.parents('tr').children('td:nth-child(3)').html(data['ccts']);
+                        obj.parents('tr').children('td:nth-child(2)').html(data['ccts']);
+                        obj.parents('tr').children('td:nth-child(3)').html(data['nombre']);
                     }
 
                 },

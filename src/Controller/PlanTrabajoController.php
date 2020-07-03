@@ -54,14 +54,18 @@ class PlanTrabajoController extends AbstractController
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
+        $entityManager = $this->getDoctrine()->getManager();
         $planTrabajo = new PlanTrabajo();
         $planTrabajo->setPlantel($plantel);
+        $numero=$entityManager->getRepository(PlanTrabajo::class)->nextNumber($planTrabajo->getPlantel()->getId());
+        $planTrabajo->setNumero($numero);
+
         $form = $this->createForm(PlanTrabajoType::class, $planTrabajo, ['action' => $this->generateUrl('plan_trabajo_new',['id'=>$plantel->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
             if ($form->isValid()) {
-                $entityManager = $this->getDoctrine()->getManager();
+
                 $entityManager->persist($planTrabajo);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El plan de trabajo fue registrado satisfactoriamente',

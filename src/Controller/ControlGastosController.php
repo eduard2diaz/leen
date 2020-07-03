@@ -36,38 +36,43 @@ class ControlGastosController extends AbstractController
     /**
      * @Route("/{id}/new", name="control_gastos_new", methods={"GET","POST"})
      */
-    public function new(PlanTrabajo $proyecto, Request $request): Response
+    public function new(PlanTrabajo $planTrabajo, Request $request): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $controlgasto = new ControlGastos();
-        $controlgasto->setPlanTrabajo($proyecto);
-        $form = $this->createForm(ControlGastosType::class, $controlgasto, ['action' => $this->generateUrl('control_gastos_new',['id'=>$proyecto->getId()])]);
+        $controlgasto->setPlanTrabajo($planTrabajo);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $numero=$entityManager->getRepository(ControlGastos::class)->nextNumber($controlgasto->getPlanTrabajo()->getId());
+        $controlgasto->setNumeroCOmprobante($numero);
+        $form = $this->createForm(ControlGastosType::class, $controlgasto, ['action' => $this->generateUrl('control_gastos_new',['id'=>$planTrabajo->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted())
             if ($form->isValid()) {
-                $entityManager = $this->getDoctrine()->getManager();
+
                 $entityManager->persist($controlgasto);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El control de gastos fue registrado satisfactoriamente',
                     'tipocomprobante' => $controlgasto->getTipoComprobante()->__toString(),
                     'fecha' => $controlgasto->getFechacaptura()->format('Y-m-d'),
+                    'numero_comprobante'=>$numero,
                     'id' => $controlgasto->getId(),
                 ]);
             } else {
                 $page = $this->renderView('control_gastos/_form.html.twig', [
                     'form' => $form->createView(),
                     'control_gastos' => $controlgasto,
-                    'proyecto' => $proyecto,
+                    'plantrabajo' => $planTrabajo,
                 ]);
                 return $this->json(['form' => $page, 'error' => true,]);
             }
 
         return $this->render('control_gastos/new.html.twig', [
             'control_gastos' => $controlgasto,
-            'proyecto' => $proyecto,
+            'plantrabajo' => $planTrabajo,
             'form' => $form->createView(),
         ]);
     }

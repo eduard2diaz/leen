@@ -5,10 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlanTrabajoRepository")
+ * @UniqueEntity(fields={"plantel","numero"})
  */
 class PlanTrabajo
 {
@@ -44,11 +46,7 @@ class PlanTrabajo
     private $montoasignado;
 
     /**
-     * @ORM\Column(type="string", length=10)
-     * @Assert\Length(
-     *      max = 10,
-     *      maxMessage = "El número del proyecto no puede exceder los {{ limit }} caracteres",
-     *)
+     * @ORM\Column(type="integer")
      */
     private $numero;
 
@@ -230,12 +228,12 @@ class PlanTrabajo
         $this->plantel = $plantel;
     }
 
-    public function getNumero(): ?string
+    public function getNumero(): ?int
     {
         return $this->numero;
     }
 
-    public function setNumero(string $numero): self
+    public function setNumero(int $numero): self
     {
         $this->numero = $numero;
 

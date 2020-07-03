@@ -16,7 +16,7 @@ class PlantelType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre',TextType::class,['attr'=>['class'=>'form-control','autocomplete'=>'off']])
+            ->add('nombre',TextType::class,['label'=>'Identificador del plantel','attr'=>['class'=>'form-control','autocomplete'=>'off']])
         ;
     }
 

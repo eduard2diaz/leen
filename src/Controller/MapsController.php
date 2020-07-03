@@ -86,7 +86,7 @@ class MapsController extends AbstractController
     private function executeQuery($query)
     {
         $connectionParams = array(
-            'dbname' => 'prueba',
+            'dbname' => 'gis',
             'user' => 'postgres',
             'password' => 'postgres',
             'host' => 'localhost',

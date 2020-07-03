@@ -43,6 +43,11 @@ class DiagnosticoPlantelController extends AbstractController
     {
         $diagnosticoPlantel = new DiagnosticoPlantel();
         $diagnosticoPlantel->setPlantel($plantel);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $numero=$entityManager->getRepository(DiagnosticoPlantel::class)->nextNumber($plantel->getId());
+        $diagnosticoPlantel->setIddiagnosticoplantel($numero);
+
         $form = $this->createForm(DiagnosticoPlantelType::class, $diagnosticoPlantel);
         $form->handleRequest($request);
 
@@ -51,11 +56,11 @@ class DiagnosticoPlantelController extends AbstractController
                 throw $this->createAccessDeniedException();
             else
                 if ($form->isValid()) {
-                    $entityManager = $this->getDoctrine()->getManager();
+
                     $entityManager->persist($diagnosticoPlantel);
                     $entityManager->flush();
                     $this->addFlash('success', 'El diagnóstico del plantel fue registrado satisfactoriamente');
-                    return $this->json(['url' => $this->generateUrl('diagnostico_plantel_index', ['id' => $plantel->getId()], 1)]);
+                    return $this->json(['url' => $this->generateUrl('diagnostico_plantel_edit', ['id' => $diagnosticoPlantel->getId()])]);
                 } else {
                     $page = $this->renderView('diagnostico_plantel/_form.html.twig', [
                         'form' => $form->createView(),

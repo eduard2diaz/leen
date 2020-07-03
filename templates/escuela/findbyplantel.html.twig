@@ -31,8 +31,8 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Nombre</th>
                             <th>CCTS</th>
+                            <th>Nombre</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -41,8 +41,8 @@
                         {% for escuela in escuelas %}
                             <tr>
                                 <td>{{ i }}</td>
-                                <td>{{ escuela.nombre }}</td>
                                 <td>{{ escuela.ccts }}</td>
+                                <td>{{ escuela.nombre }}</td>
                                 <td>
                                     <ul class="hidden_element list-inline pull-right">
                                         <li class="list-inline-item"><a class="btn default btn-sm" href="{{ path('escuela_show', {'id': escuela.id}) }}"><i class="fa fa-eye"></i>Visualizar</a></li>

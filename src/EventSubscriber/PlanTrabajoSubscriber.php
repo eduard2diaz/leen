@@ -31,6 +31,7 @@ class PlanTrabajoSubscriber  implements EventSubscriber
     {
         $entity = $args->getEntity();
         if ($entity instanceof PlanTrabajo) {
+
             $ruta=$this->getServiceContainer()->getParameter('storage_directory');
             $file=$entity->getFile();
             $nombreArchivo=FileStorageManager::Upload($ruta,$file);

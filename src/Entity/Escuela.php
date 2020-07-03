@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity
+ * @UniqueEntity("ccts")
  */
 class Escuela
 {

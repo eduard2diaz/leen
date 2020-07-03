@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ControlGastosRepository")
  * @ControlGastosConstraint(plantrabajo="plantrabajo")
  */
 class ControlGastos
@@ -50,6 +50,9 @@ class ControlGastos
 
     /**
      * @ORM\Column(type="float")
+     *  @Assert\Range(
+     *      min = 1,
+     * )
      */
     private $monto;
 
