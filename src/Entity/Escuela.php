@@ -34,7 +34,7 @@ class Escuela
     /**
      * @ORM\Column(type="string", length=10)
      * @Assert\Length(
-     *      max = 10,
+     *      max = 11,
      *      maxMessage = "La clave de la escuela no puede exceder los {{ limit }} caracteres",
      * )
      */

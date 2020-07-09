@@ -242,7 +242,7 @@ class PlanTrabajo
 
     public function __toString()
     {
-        return $this->getNumero();
+        return (String)$this->getNumero();
     }
 
     /**

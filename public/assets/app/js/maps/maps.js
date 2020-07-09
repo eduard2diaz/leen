@@ -109,10 +109,14 @@ var maps = function () {
                     $.unblockUI();
                 },
                 success: function (response) {
-
+                    mi_json=JSON.parse(response);
+                    if (mi_json.features==null)
+                        toastr.error("No se encontraron resultados");
+                    else{
                     var source = new ol.source.Vector({
                         loader: function (extent, resolution, projection) {
                             var format = new ol.format.GeoJSON();
+
                             var features = format.readFeatures(response,
                                 {featureProjection: projection});
                             source.addFeatures(features);
@@ -124,6 +128,7 @@ var maps = function () {
                         source: source,
                     });
                     mapa.addLayer(geojson_vectorLayer);
+                    }
                 },
                 error: function () {
                     //base.Error();
@@ -149,8 +154,6 @@ var maps = function () {
         //mapa.on('singleclick', function (evt) {
         mapa.on('pointermove', function (evt) {
             unselectPreviousFeatures();
-            //console.log("se movio");
-
             /*
               Tomo el valor actual del popup y lo oculto, a fin de que no se quede marcado si
               ya salio del elemento

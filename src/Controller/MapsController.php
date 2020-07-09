@@ -34,14 +34,14 @@ class MapsController extends AbstractController
             if ($escuela != "")
                 $condicion .= " AND esc.nom_cct like '%" . $escuela . "%'";
 
-            $consulta = "SELECT row_to_json(fc)
+            $consulta="SELECT row_to_json(fc)
                             FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features
                                     FROM (
                                         SELECT 'Feature' As type
-                                        , ST_AsGeoJSON(esc.the_geom)::json As geometry
+                                        , gis.ST_AsGeoJSON(esc.the_geom)::json As geometry
                                         , row_to_json(lp) As properties
-                                        FROM escuela As esc
-                                            INNER JOIN (SELECT cctt FROM escuela) As lp
+                                        FROM gis.escuela As esc
+                                            INNER JOIN (SELECT cctt FROM gis.escuela as e1 join public.escuela as e2 on(e1.cctt=e2.ccts) ) As lp
                                                     ON esc.cctt = lp.cctt
                                                     WHERE " . $condicion . "
                                 ) As f ) As fc  ;";
@@ -64,7 +64,7 @@ class MapsController extends AbstractController
             throw $this->createAccessDeniedException();
 
         $cctt = $request->request->get('cctt');
-        $consulta="select nom_ent as estado, nom_cct as nombre, nom_mun as municipio from escuela where cctt ='".$cctt."' LIMIT 1";
+        $consulta="select nom_ent as estado, nom_cct as nombre, nom_mun as municipio from gis.escuela where cctt ='".$cctt."' LIMIT 1";
         $result = ['nombre' => 'Undefined', 'estado' => 'Undefined', 'municipio' => 'Undefined'];
 
         $query_result=$this->executeQuery($consulta);
@@ -79,21 +79,13 @@ class MapsController extends AbstractController
 
     private function obtenerEstados()
     {
-        $query = "select DISTINCT(e.nom_ent) as nombre from escuela as e";
+        $query = "select DISTINCT(e.nom_ent) as nombre from gis.escuela as e";
         return $this->executeQuery($query);
     }
 
     private function executeQuery($query)
     {
-
-        $connectionParams = array(
-            'dbname' => 'gis',
-            'user' => 'postgres',
-            'password' => 'postgres',
-            'host' => 'localhost',
-            'driver' => 'pdo_pgsql',
-        );
-        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
+        $conn = $this->getDoctrine()->getConnection();
         $conn->connect();
         if (!$conn->isConnected())
             throw new \Exception('No se puedo establecer la conexión al servidor de mapas');
