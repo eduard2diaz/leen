@@ -22,6 +22,15 @@ var control_gastos = function () {
             dropdownParent: $("#basicmodal"),
         });
         $('input#control_gastos_fechacaptura').datepicker();
+        $("body div#basicmodal form[name='control_gastos']").validate({
+            rules: {
+                'control_gastos[tipoComprobante]': {required: true},
+                'control_gastos[fechacaptura]': {required: true},
+                'control_gastos[monto]': {required: true},
+                'control_gastos[concepto]': {required: true},
+                'control_gastos[file]': {required: true},
+            }
+        });
     }
 
     var edicion = function () {

@@ -24,7 +24,7 @@ class CondicionEducativaAlumnosType extends AbstractType
             ->add('numalumnas',IntegerType::class,['label'=>'Número de alumnas','attr'=>['class'=>'form-control']])
             ->add('numalumnos',IntegerType::class,['label'=>'Número de alumnos','attr'=>['class'=>'form-control']])
             ->add('escuela', EntityType::class, array(
-                'placeholder'=>'Seleccione un estado',
+                'placeholder'=>'Seleccione una escuela',
                 'class' => Escuela::class,
                 'required' => true,
                 'query_builder' => function (EntityRepository $repository) use ($plantel) {

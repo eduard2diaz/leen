@@ -1,5 +1,13 @@
 var plantel = function () {
 
+    var configurarFormulario = function () {
+        $("body div#basicmodal form[name='plantel']").validate({
+            rules: {
+                'plantel[nombre]': {required: true},
+            }
+        });
+    }
+
     var edicion = function () {
         $('body').on('click', 'a.edicion', function (evento) {
             evento.preventDefault();
@@ -14,6 +22,7 @@ var plantel = function () {
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
                         $('div#basicmodal').modal('show');
+                        configurarFormulario();
                     }
                 },
                 error: function () {
@@ -45,6 +54,7 @@ var plantel = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
+                        configurarFormulario();
                     } else
                         document.location.href=data['url'];
                 },

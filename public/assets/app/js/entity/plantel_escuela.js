@@ -22,6 +22,13 @@ var plantel_escuela = function () {
             dropdownParent: $("#basicmodal"),
             placeholder: "Seleccione al menos un tipo de enseanza"
         });
+        $("body div#basicmodal form[name='escuela']").validate({
+            rules: {
+                'escuela[ccts]': {required: true},
+                'escuela[nombre]': {required: true},
+                'escuela[tipoensenanza][]': {required: true},
+            }
+        });
     }
 
     var edicion = function () {

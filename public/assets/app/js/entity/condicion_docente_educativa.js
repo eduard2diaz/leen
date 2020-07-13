@@ -9,6 +9,14 @@ var condicion_docente_educativa = function () {
         $('select#condicion_docente_educativa_escuela').select2({
             dropdownParent: $("#basicmodal"),
         });
+        $("body div#basicmodal form[name='condicion_docente_educativa']").validate({
+            rules: {
+                'condicion_docente_educativa[escuela]': {required: true},
+                'condicion_docente_educativa[curp]': {required: true},
+                'condicion_docente_educativa[nombre]': {required: true},
+                'condicion_docente_educativa[grado]': {required: true},
+            }
+        });
     }
 
     var configurarDataTableCDE = function () {
@@ -68,10 +76,10 @@ var condicion_docente_educativa = function () {
                 type: "POST",
                 data: $(this).serialize(),
                 beforeSend: function () {
-                    //   l.start();
+                       l.start();
                 },
                 complete: function () {
-                    //  l.stop();
+                      l.stop();
                 },
                 success: function (data) {
                     if (data['error']) {

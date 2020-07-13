@@ -64,6 +64,33 @@ var diagnostico_plantel = function () {
         $('select#diagnostico_plantel_idcondiciontelefono').select2();
         $('select#diagnostico_plantel_idcondicioninternet').select2();
         $('input#diagnostico_plantel_fecha').datepicker();
+
+        $("body form[name='diagnostico_plantel']").validate({
+            rules: {
+                'diagnostico_plantel[fecha]': {required: true},
+                'diagnostico_plantel[numeroaulas]': {required: true},
+                'diagnostico_plantel[numerosanitarios]': {required: true},
+                'diagnostico_plantel[file]': {required: true},
+                'diagnostico_plantel[idcondicionesAula]': {required: true},
+                'diagnostico_plantel[idcondicionessanitarios]': {required: true},
+                'diagnostico_plantel[numerooficinas]': {required: true},
+                'diagnostico_plantel[idcondicionoficina]': {required: true},
+                'diagnostico_plantel[numerobibliotecas]': {required: true},
+                'diagnostico_plantel[idcondicionesbliblioteca]': {required: true},
+                'diagnostico_plantel[numeroaulasmedios]': {required: true},
+                'diagnostico_plantel[idcondicionaulamedios]': {required: true},
+                'diagnostico_plantel[numeropatio]': {required: true},
+                'diagnostico_plantel[idcondicionpatio]': {required: true},
+                'diagnostico_plantel[numerocanchasdeportivas]': {required: true},
+                'diagnostico_plantel[numerobarda]': {required: true},
+                'diagnostico_plantel[idcondicionbarda]': {required: true},
+                'diagnostico_plantel[idcondicionagua]': {required: true},
+                'diagnostico_plantel[idcondiciondrenaje]': {required: true},
+                'diagnostico_plantel[idcondicionenergia]': {required: true},
+                'diagnostico_plantel[idcondiciontelefono]': {required: true},
+                'diagnostico_plantel[idcondicioninternet]': {required: true},
+            }
+        });
     }
 
     var addEditAction = function () {

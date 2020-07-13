@@ -16,7 +16,14 @@ var tipocomprobante = function () {
         });
     }
 
-
+    var configurarFormulario = function () {
+        $("body div#basicmodal form[name='tipo_comprobante']").validate({
+            rules: {
+                'tipo_comprobante[comprobante]': {required: true},
+                'tipo_comprobante[descripcion]': {required: true},
+            }
+        });
+    }
 
     var edicion = function () {
         $('body').on('click', 'a.edicion', function (evento) {
@@ -32,6 +39,7 @@ var tipocomprobante = function () {
                 },
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
+                        configurarFormulario();
                         $('div#basicmodal').modal('show');
                     }
                 },
@@ -64,6 +72,7 @@ var tipocomprobante = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
+                        configurarFormulario();
                     } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);

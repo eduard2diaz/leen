@@ -26,6 +26,14 @@ var condicion_educativa_alumno = function () {
         $('select#condicion_educativa_alumnos_grado').select2({
             dropdownParent: $("#basicmodal"),
         });
+        $("body div#basicmodal form[name='condicion_educativa_alumnos']").validate({
+            rules: {
+                'condicion_educativa_alumnos[numalumnos]': {required: true},
+                'condicion_educativa_alumnos[numalumnas]': {required: true},
+                'condicion_educativa_alumnos[escuela]': {required: true},
+                'condicion_educativa_alumnos[grado]': {required: true},
+            }
+        });
     }
 
     var edicionCEA = function () {
@@ -66,10 +74,10 @@ var condicion_educativa_alumno = function () {
                 type: "POST",
                 data: $(this).serialize(),
                 beforeSend: function () {
-                 //   l.start();
+                    l.start();
                 },
                 complete: function () {
-                  //  l.stop();
+                    l.stop();
                 },
                 success: function (data) {
                     if (data['error']) {

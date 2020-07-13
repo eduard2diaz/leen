@@ -22,6 +22,14 @@ var rendicion_cuentas = function () {
             dropdownParent: $("#basicmodal"),
         });
         $('input#rendicion_cuentas_fechacaptura').datepicker();
+        $("body div#basicmodal form[name='rendicion_cuentas']").validate({
+            rules: {
+                'rendicion_cuentas[tipoAccion]': {required: true},
+                'rendicion_cuentas[fechacaptura]': {required: true},
+                'rendicion_cuentas[monto]': {required: true},
+                'rendicion_cuentas[file]': {required: true},
+            }
+        });
     }
 
     var edicion = function () {

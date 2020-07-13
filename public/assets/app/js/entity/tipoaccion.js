@@ -16,6 +16,15 @@ var tipoaccion = function () {
         });
     }
 
+    var configurarFormulario = function () {
+        $("body div#basicmodal form[name='tipo_accion']").validate({
+            rules: {
+                'tipo_accion[accion]': {required: true},
+                'tipo_accion[descripcion]': {required: true},
+            }
+        });
+    }
+
 
     var edicion = function () {
         $('body').on('click', 'a.edicion', function (evento) {
@@ -32,6 +41,7 @@ var tipoaccion = function () {
                 success: function (data) {
                     if ($('div#basicmodal').html(data)) {
                         $('div#basicmodal').modal('show');
+                        configurarFormulario();
                     }
                 },
                 error: function () {
@@ -63,6 +73,7 @@ var tipoaccion = function () {
                 success: function (data) {
                     if (data['error']) {
                         padre.html(data['form']);
+                        configurarFormulario();
                     } else {
                         if (data['mensaje'])
                             toastr.success(data['mensaje']);
@@ -109,6 +120,7 @@ var tipoaccion = function () {
                 success: function (data) {
                     if (data['error']){
                         padre.html(data['form']);
+                        configurarFormulario();
                     }
                     else {
                         if (data['mensaje'])

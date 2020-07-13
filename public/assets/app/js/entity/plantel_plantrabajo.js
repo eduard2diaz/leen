@@ -23,6 +23,17 @@ var plantel_plantrabajo = function () {
         });
         $('input#plan_trabajo_fechainicio').datepicker();
         $('input#plan_trabajo_fechafin').datepicker();
+        $("body div#basicmodal form[name='plan_trabajo']").validate({
+            rules: {
+                'plan_trabajo[tipoAccion]': {required: true},
+                'plan_trabajo[fechainicio]': {required: true},
+                'plan_trabajo[tiempoestimado]': {required: true},
+                'plan_trabajo[costoestimado]': {required: true},
+                'plan_trabajo[montoasignado]': {required: true},
+                'plan_trabajo[descripcionaccion]': {required: true},
+                'plan_trabajo[file]': {required: true},
+            }
+        });
     }
 
     var edicion = function () {
