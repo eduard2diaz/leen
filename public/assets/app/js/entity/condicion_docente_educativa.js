@@ -9,6 +9,17 @@ var condicion_docente_educativa = function () {
         $('select#condicion_docente_educativa_escuela').select2({
             dropdownParent: $("#basicmodal"),
         });
+        $("input#condicion_docente_educativa_curp").maxlength({
+            alwaysShow: true,
+            validate: true,
+            threshold: 10,
+            warningClass: "label label-info",
+            limitReachedClass: "label label-warning",
+            placement: 'top',
+            preText: 'used ',
+            separator: ' of ',
+            postText: ' chars.'
+        });
         $("body div#basicmodal form[name='condicion_docente_educativa']").validate({
             rules: {
                 'condicion_docente_educativa[escuela]': {required: true},

@@ -21,7 +21,7 @@ class CondicionDocenteEducativaType extends AbstractType
     {
         $plantel=$options['data']->getDiagnostico()->getPlantel()->getId();
         $builder
-            ->add('curp',TextType::class,['attr'=>['class'=>'form-control']])
+            ->add('curp',TextType::class,['attr'=>['class'=>'form-control','maxlength'=>'18']])
             ->add('nombre',TextType::class,['attr'=>['class'=>'form-control']])
             ->add('escuela', EntityType::class, array(
             'placeholder'=>'Seleccione una escuela',
