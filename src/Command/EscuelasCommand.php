@@ -2,12 +2,8 @@
 
 namespace App\Command;
 
-use App\Entity\Ciudad;
-use App\Entity\CodigoPostal;
+use App\Entity\Plantel;
 use App\Entity\Escuela;
-use App\Entity\Estado;
-use App\Entity\Municipio;
-use App\Entity\TipoAsentamiento;
 use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -39,42 +35,35 @@ class EscuelasCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $reader = Reader::createFromPath('%kernel.root_dir%/../src/Data/escuelas.csv');
-        $header=['indice','idplantel','ccts','escuela','idcodigo','cv_cct'];
+        $header=['cct','nombre'];
         $records = $reader->getRecords($header);
         $i = 0;
         $ccts = "";
         $nombre = "";
-        $codigo = "";
-        $codigo = "";
-        $plantel = "";
-
         $count=$reader->count();
         $progressBar = new ProgressBar($output, $count);
 
         foreach ($records as $data) {
             if ($i != 0) {
                 //Obteniendo los datos
-                $plantel = $data['idplantel'];
-                $ccts = $data['ccts'];
-                $nombre = $data['escuela'];
-                $codigo = $data['idcodigo'];
-                $codigopostal=null;
-                if($codigo!=null)
-                $codigopostal = $this->manager->getRepository(CodigoPostal::class)
-                                              ->findOneBy(['d_cp' => $codigo]);
+                $ccts = $data['cct'];
+                $nombre = $data['nombre'];
 
-                $escuela = new Escuela();
-                $escuela->setEscuela($nombre);
-                $escuela->setCcts($ccts);
-                $escuela->setDCodigo($codigopostal);
-                $this->manager->persist($escuela);
-                $this->manager->flush();
-
+                $plantel = $this->manager->getRepository(Plantel::class)
+                                              ->findOneBy(['nombre' => $nombre]);
+                if($plantel!=null){
+                    $escuela = new Escuela();
+                    $escuela->setNombre($nombre);
+                    $escuela->setCcts($ccts);
+                    $escuela->setPlantel($plantel);
+                    $this->manager->persist($escuela);
+                }
             }
+
             $progressBar->advance();
             $i++;
         }
-
+        $this->manager->flush();
         $progressBar->finish();
 
         return 0;

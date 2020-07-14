@@ -148,8 +148,6 @@ var plantel = function () {
                     newAction();
                     edicion();
                     edicionAction();
-                    estadoListener();
-                    municipioListener();
                     eliminar();
                 }
             );
