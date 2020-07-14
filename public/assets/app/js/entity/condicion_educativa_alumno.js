@@ -124,14 +124,19 @@ var condicion_educativa_alumno = function () {
                         $.blockUI({message: '<small>Cargando...</small>'});
                     },
                     success: function (data) {
+                        if (data['empty']) {
+                            toastr.error("No han sido captados los grados de enseñanza de esta escuela");
+                        }
+                        else
+                        {
                         var cadena = "";
                         var array = JSON.parse(data);
-                        console.log(array.length);
                         if (data != null) {
                             for (var i = 0; i < array.length; i++)
                                 cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
                         }
                         $('select#condicion_educativa_alumnos_grado').html(cadena);
+                    }
                     },
                     error: function () {
                         //base.Error();

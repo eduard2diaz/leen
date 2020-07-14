@@ -14,13 +14,13 @@ class GradoEnsenanzaController extends AbstractController
     /**
      * @Route("/{id}/findbyescuela", name="grado_ensenanza_find_by_escuela", methods={"GET"},options={"expose"=true})
      */
-    public function findByEstado(Request $request, Escuela $escuela): Response
+    public function findByEscuela(Request $request, Escuela $escuela): Response
     {
         if (!$request->isXmlHttpRequest())
             throw $this->createAccessDeniedException();
 
         $em = $this->getDoctrine()->getManager();
         $grado_array=$em->getRepository(GradoEnsenanza::class)->findByEscuelaJson($escuela->getId());
-        return $this->json($grado_array);
+        return $grado_array!=null ? $this->json($grado_array) : $this->json(['empty'=>true]);
     }
 }

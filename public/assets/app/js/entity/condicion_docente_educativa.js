@@ -126,14 +126,19 @@ var condicion_docente_educativa = function () {
                         $.blockUI({message: '<small>Cargando...</small>'});
                     },
                     success: function (data) {
-                        var cadena = "";
-                        var array = JSON.parse(data);
-                        console.log(array.length);
-                        if (data != null) {
-                            for (var i = 0; i < array.length; i++)
-                                cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
+                        if (data['empty']) {
+                            toastr.error("No han sido captados los grados de enseñanza de esta escuela");
                         }
-                        $('select#condicion_docente_educativa_grado').html(cadena);
+                        else
+                        {
+                            var cadena = "";
+                            var array = JSON.parse(data);
+                            if (data != null) {
+                                for (var i = 0; i < array.length; i++)
+                                    cadena += "<option value=" + array[i]['id'] + ">" + array[i]['nombre'] + "</option>";
+                            }
+                            $('select#condicion_docente_educativa_grado').html(cadena);
+                        }
                     },
                     error: function () {
                         //base.Error();
