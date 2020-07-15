@@ -29,10 +29,10 @@ class MapsController extends AbstractController
             $escuela = $request->request->get('maps')['escuela'];
             $estado = $request->request->get('maps')['estado'];
 
-            $condicion = "esc.nom_ent='".$estado."'";
+            $condicion = "e1.nom_ent='".$estado."'";
 
             if ($escuela != "")
-                $condicion .= " AND esc.nom_cct like '%" . $escuela . "%'";
+                $condicion .= " AND e2.nombre like '%" . $escuela . "%'";
 
             $consulta="SELECT row_to_json(fc)
                             FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features
@@ -41,9 +41,8 @@ class MapsController extends AbstractController
                                         , gis.ST_AsGeoJSON(esc.the_geom)::json As geometry
                                         , row_to_json(lp) As properties
                                         FROM gis.escuela As esc
-                                            INNER JOIN (SELECT cctt FROM gis.escuela as e1 join public.escuela as e2 on(e1.cctt=e2.ccts) ) As lp
+                                            INNER JOIN (SELECT cctt FROM gis.escuela as e1 join public.escuela as e2 on(e1.cct=e2.ccts) WHERE " . $condicion . ") As lp
                                                     ON esc.cctt = lp.cctt
-                                                    WHERE " . $condicion . "
                                 ) As f ) As fc  ;";
 
             $result=$this->executeQuery($consulta);
