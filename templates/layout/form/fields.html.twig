@@ -14,7 +14,7 @@
     {% if errors|length > 0 %}
         <ul style="list-style: none;" class="kt-margin-t-5">
             {% for error in errors %}
-                <li><span class="badge badge-danger">Error</span> {{ error.message |trans}}</li>
+                <li><span class="badge badge-danger">Error</span> {{ error.message |trans}}!</li>
             {% endfor %}
         </ul>
     {% endif %}

@@ -27,7 +27,6 @@ var rendicion_cuentas = function () {
                 'rendicion_cuentas[tipoAccion]': {required: true},
                 'rendicion_cuentas[fechacaptura]': {required: true},
                 'rendicion_cuentas[monto]': {required: true},
-                'rendicion_cuentas[file]': {required: true},
             }
         });
     }

@@ -6,7 +6,7 @@ var plantel_escuela = function () {
         table = $('table#escuela_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
-                url: datatable_url
+                url: datatable_url,
             },
             columns: [
                 {data: 'id'},

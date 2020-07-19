@@ -18,6 +18,16 @@ var plantel_plantrabajo = function () {
     }
 
     var configurarFormulario = function () {
+        jQuery.validator.addMethod("greaterThan",
+            function (value, element, params) {
+                    fechaf=moment(value);
+                    fechai=moment($(params).val())
+                    if (fechaf.isValid() && fechai.isValid())
+                        return fechaf > fechai;
+                    else
+                        return true;
+            }, 'Tiene que ser mayor  que la fecha de inicio');
+
         $('select#plan_trabajo_tipoAccion').select2({
             dropdownParent: $("#basicmodal"),
         });
@@ -27,11 +37,11 @@ var plantel_plantrabajo = function () {
             rules: {
                 'plan_trabajo[tipoAccion]': {required: true},
                 'plan_trabajo[fechainicio]': {required: true},
+                'plan_trabajo[fechafin]':    {greaterThan: "#plan_trabajo_fechainicio"},
                 'plan_trabajo[tiempoestimado]': {required: true},
                 'plan_trabajo[costoestimado]': {required: true},
                 'plan_trabajo[montoasignado]': {required: true},
                 'plan_trabajo[descripcionaccion]': {required: true},
-                'plan_trabajo[file]': {required: true},
             }
         });
     }

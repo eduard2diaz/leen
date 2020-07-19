@@ -78,7 +78,7 @@ class MapsController extends AbstractController
 
     private function obtenerEstados()
     {
-        $query = "select DISTINCT(e.nom_ent) as nombre from gis.escuela as e";
+        $query = "select DISTINCT(e.nom_ent) as nombre from gis.escuela as e ORDER BY e.nom_ent ASC";
         return $this->executeQuery($query);
     }
 

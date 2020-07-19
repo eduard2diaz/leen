@@ -70,7 +70,6 @@ var diagnostico_plantel = function () {
                 'diagnostico_plantel[fecha]': {required: true},
                 'diagnostico_plantel[numeroaulas]': {required: true},
                 'diagnostico_plantel[numerosanitarios]': {required: true},
-                'diagnostico_plantel[file]': {required: true},
                 'diagnostico_plantel[idcondicionesAula]': {required: true},
                 'diagnostico_plantel[idcondicionessanitarios]': {required: true},
                 'diagnostico_plantel[numerooficinas]': {required: true},

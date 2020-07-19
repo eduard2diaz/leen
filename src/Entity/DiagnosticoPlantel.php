@@ -31,6 +31,7 @@ class DiagnosticoPlantel
      * @ORM\Column(type="integer")
      *  @Assert\Range(
      *      min = 0,
+     *      max = 99,
      * )
      */
     private $numeroaulas;
@@ -45,6 +46,7 @@ class DiagnosticoPlantel
      * @ORM\Column(type="integer")
      *  @Assert\Range(
      *      min = 0,
+     *      max = 99,
      * )
      */
     private $numerosanitarios;
@@ -59,6 +61,7 @@ class DiagnosticoPlantel
      * @ORM\Column(type="integer")
      *  @Assert\Range(
      *      min = 0,
+     *      max = 99,
      * )
      */
     private $numerooficinas;
@@ -73,6 +76,7 @@ class DiagnosticoPlantel
      * @ORM\Column(type="integer")
      *  @Assert\Range(
      *      min = 0,
+     *      max = 99,
      * )
      */
     private $numerobibliotecas;
@@ -87,6 +91,7 @@ class DiagnosticoPlantel
      * @ORM\Column(type="integer")
      *  @Assert\Range(
      *      min = 0,
+     *      max = 99,
      * )
      */
     private $numeroaulasmedios;
@@ -102,6 +107,7 @@ class DiagnosticoPlantel
      * @ORM\Column(type="integer")
      *  @Assert\Range(
      *      min = 0,
+     *      max = 99,
      * )
      */
     private $numeropatio;
@@ -116,6 +122,7 @@ class DiagnosticoPlantel
      * @ORM\Column(type="integer")
      *  @Assert\Range(
      *      min = 0,
+     *      max = 99,
      * )
      */
     private $numerocanchasdeportivas;
@@ -130,6 +137,7 @@ class DiagnosticoPlantel
      * @ORM\Column(type="integer")
      *  @Assert\Range(
      *      min = 0,
+     *      max = 99,
      * )
      */
     private $numerobarda;

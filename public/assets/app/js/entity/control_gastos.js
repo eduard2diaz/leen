@@ -28,7 +28,6 @@ var control_gastos = function () {
                 'control_gastos[fechacaptura]': {required: true},
                 'control_gastos[monto]': {required: true},
                 'control_gastos[concepto]': {required: true},
-                'control_gastos[file]': {required: true},
             }
         });
     }

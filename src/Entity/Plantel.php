@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity
-
  */
 class Plantel
 {

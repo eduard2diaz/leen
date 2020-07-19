@@ -26,7 +26,7 @@ class DatetoStringTransformer implements DataTransformerInterface
     public function reverseTransform($issueNumber)
     {
         if (!$issueNumber) {
-            return;
+            return null;
         }
 
         trim($issueNumber);

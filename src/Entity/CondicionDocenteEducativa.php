@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity
+ * @UniqueEntity(fields={"curp","grado","escuela"})
  */
 class CondicionDocenteEducativa
 {
@@ -29,6 +30,7 @@ class CondicionDocenteEducativa
      * @ORM\Column(type="string", length=18)
      * @Assert\Length(
      *      max = 18,
+     *      min = 18,
      *      maxMessage = "El CURP no puede exceder los {{ limit }} caracteres",
      *)
      */

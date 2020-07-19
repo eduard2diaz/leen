@@ -65,7 +65,6 @@ class PlanTrabajoController extends AbstractController
 
         if ($form->isSubmitted())
             if ($form->isValid()) {
-
                 $entityManager->persist($planTrabajo);
                 $entityManager->flush();
                 return $this->json(['mensaje' => 'El plan de trabajo fue registrado satisfactoriamente',
@@ -76,8 +75,9 @@ class PlanTrabajoController extends AbstractController
             } else {
                 $page = $this->renderView('plan_trabajo/_form.html.twig', [
                     'form' => $form->createView(),
+                    'plan_trabajo' => $planTrabajo,
                 ]);
-                return $this->json(['plan_trabajo' => $page, 'error' => true,]);
+                return $this->json(['form' => $page, 'error' => true,]);
             }
 
         return $this->render('plan_trabajo/new.html.twig', [
