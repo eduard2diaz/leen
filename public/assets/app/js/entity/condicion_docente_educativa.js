@@ -23,7 +23,8 @@ var condicion_docente_educativa = function () {
         tableCondicionDocente = $('table#condicion_docente_educativa_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
-                url: datatable_url
+                url: datatable_url,
+                "sEmptyTable":     "No hay condiciones docentes educativas que listar",
             },
             columns: [
                 {data: 'numero'},

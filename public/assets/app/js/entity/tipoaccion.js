@@ -6,7 +6,8 @@ var tipoaccion = function () {
         table = $('table#tipoaccion_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
-                url: datatable_url
+                url: datatable_url,
+                "sEmptyTable":     "No hay tipos de acción que listar",
             },
             columns: [
                 {data: 'numero'},

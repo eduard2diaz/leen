@@ -6,7 +6,8 @@ var rendicion_cuentas = function () {
         table = $('table#rendicion_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
-                url: datatable_url
+                url: datatable_url,
+                "sEmptyTable":     "No hay rendiciones de cuenta que listar",
             },
             columns: [
                 {data: 'numero'},

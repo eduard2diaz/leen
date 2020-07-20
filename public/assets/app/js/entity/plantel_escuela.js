@@ -7,6 +7,7 @@ var plantel_escuela = function () {
             "pagingType": "simple_numbers",
             "language": {
                 url: datatable_url,
+                "sEmptyTable":     "No hay escuelas que listar",
             },
             columns: [
                 {data: 'id'},

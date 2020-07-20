@@ -6,12 +6,12 @@ var diagnostico_plantel = function () {
         table = $('table#diagnostico_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
-                url: datatable_url
+                url: datatable_url,
+                "sEmptyTable":     "No hay diagnósticos que listar",
             },
             columns: [
                 {data: 'numero'},
                 {data: 'identificador'},
-                {data: 'proyecto'},
                 {data: 'fecha'},
                 {data: 'acciones'}
             ]

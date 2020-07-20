@@ -6,7 +6,8 @@ var control_gastos = function () {
         table = $('table#gasto_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
-                url: datatable_url
+                url: datatable_url,
+                "sEmptyTable":     "No hay controles de gastos que listar",
             },
             columns: [
                 {data: 'numero_comprobante'},

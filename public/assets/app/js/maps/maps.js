@@ -1,6 +1,6 @@
 var maps = function () {
     var mapa;
-    var popupGlobal=new ol.Overlay({
+    var popupGlobal = new ol.Overlay({
         element: document.getElementById('popup')
         //autoPan: true,
     });
@@ -9,11 +9,47 @@ var maps = function () {
         $('select#maps_estado').select2({
             placeholder: "Seleccione un estado"
         });
+        $('select#maps_municipio').select2({
+            placeholder: "Seleccione un municipio",
+            allowClear: true
+        });
+    }
+
+    var estadoListener = function () {
+        $('body').on('change', 'select#maps_estado', function (evento) {
+
+            if ($(this).val() != "") {
+                $.ajax({
+                    type: 'get',
+                    dataType: 'json',
+                    url: Routing.generate('maps_municipio_findby_estado', {'estado': $(this).val()}),
+                    beforeSend: function () {
+                        $.blockUI({message: '<small>Cargando...</small>'});
+                    },
+                    success: function (data) {
+                        var cadena = "";
+                        var array = JSON.parse(data);
+                        if (data != null) {
+                            for (var i = 0; i < array.length; i++)
+                                cadena += "<option value=" + array[i]['nombre'] + ">" + array[i]['nombre'] + "</option>";
+                        }
+                        $('select#maps_municipio').html(cadena);
+                    },
+                    error: function () {
+                        //base.Error();
+                    },
+                    complete: function () {
+                        $.unblockUI();
+                    }
+                });
+            }
+
+        });
     }
 
     //-------------------------Inicio de los Estilos ------
 
-    var colores = ['#00A8C6','#C7F464','#FF6B6B','#C44D58','#D1F2A5','#EFFAB4','#FFC48C','#FF9F80','#F56991,','#4ECDC4','#40C0CB',"#8FBE00" ];
+    var colores = ['#00A8C6', '#C7F464', '#FF6B6B', '#C44D58', '#D1F2A5', '#EFFAB4', '#FFC48C', '#FF9F80', '#F56991,', '#4ECDC4', '#40C0CB', "#8FBE00"];
 
     var selectedStyle2 = new ol.style.Style({
         image: new ol.style.Circle({
@@ -48,7 +84,7 @@ var maps = function () {
         })
     });
 
-    var selectedTextStyleFunction = function(name) {
+    var selectedTextStyleFunction = function (name) {
         return new ol.style.Style({
             text: new ol.style.Text({
                 font: '14px helvetica,sans-serif',
@@ -85,7 +121,7 @@ var maps = function () {
             }),
             ],
             view: new ol.View({
-                center:  ol.proj.transform([-99.41,25], 'EPSG:4326', 'EPSG:3857'),
+                center: ol.proj.transform([-99.41, 25], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 5
             })
         });
@@ -109,25 +145,25 @@ var maps = function () {
                     $.unblockUI();
                 },
                 success: function (response) {
-                    mi_json=JSON.parse(response);
-                    if (mi_json.features==null)
+                    mi_json = JSON.parse(response);
+                    if (mi_json.features == null)
                         toastr.error("No se encontraron resultados");
-                    else{
-                    var source = new ol.source.Vector({
-                        loader: function (extent, resolution, projection) {
-                            var format = new ol.format.GeoJSON();
+                    else {
+                        var source = new ol.source.Vector({
+                            loader: function (extent, resolution, projection) {
+                                var format = new ol.format.GeoJSON();
 
-                            var features = format.readFeatures(response,
-                                {featureProjection: projection});
-                            source.addFeatures(features);
-                        },
-                        strategy: ol.loadingstrategy.bbox
-                    });
+                                var features = format.readFeatures(response,
+                                    {featureProjection: projection});
+                                source.addFeatures(features);
+                            },
+                            strategy: ol.loadingstrategy.bbox
+                        });
 
-                    var geojson_vectorLayer = new ol.layer.Vector({
-                        source: source,
-                    });
-                    mapa.addLayer(geojson_vectorLayer);
+                        var geojson_vectorLayer = new ol.layer.Vector({
+                            source: source,
+                        });
+                        mapa.addLayer(geojson_vectorLayer);
                     }
                 },
                 error: function () {
@@ -143,7 +179,7 @@ var maps = function () {
     //Limpia todos los puntos de coordenadas que han sido seleccionados
     function unselectPreviousFeatures() {
         var i;
-        for(i=0; i< selectedFeatures.length; i++) {
+        for (i = 0; i < selectedFeatures.length; i++) {
             selectedFeatures[i].setStyle(null);
         }
         selectedFeatures = [];
@@ -161,7 +197,7 @@ var maps = function () {
             var element = popupGlobal.getElement();
             $(element).popover('dispose');//Es el destroy de otras versiones de popover
 
-            var feature = mapa.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+            var feature = mapa.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
                 // Aquí se puede filtrar la feature
                 return feature;
             });
@@ -211,6 +247,7 @@ var maps = function () {
                     crearMapa();
                     cargandoEscuelas();
                     escuchandoEventos();
+                    estadoListener();
                 }
             );
         }

@@ -6,7 +6,8 @@ var plantel_plantrabajo = function () {
         table = $('table#plantrabajo_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
-                url: datatable_url
+                url: datatable_url,
+                "sEmptyTable":     "No hay planes de trabajo que listar",
             },
             columns: [
                 {data: 'id'},

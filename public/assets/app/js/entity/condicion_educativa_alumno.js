@@ -6,7 +6,8 @@ var condicion_educativa_alumno = function () {
         tableCondicionEducativa = $('table#condicion_educativa_alumno_entity_table').DataTable({
             "pagingType": "simple_numbers",
             "language": {
-                url: datatable_url
+                url: datatable_url,
+                "sEmptyTable":     "No hay condiciones educativas de alumnos que listar",
             },
             columns: [
                 {data: 'numero'},
