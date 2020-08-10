@@ -9,6 +9,7 @@
 
 		<!--begin::Fonts -->
 		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
 		<script>
 			WebFont.load({
                 google: {"families":["Poppins:300,400,500,600,700"]},
@@ -64,15 +65,14 @@
 				<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper " id="kt_wrapper">
 					<!-- begin:: Header -->
 					<div id="kt_header" class="kt-header kt-grid__item  kt-header--fixed " data-ktheader-minimize="on">
-						<div class="kt-header__top">
-							<div class="kt-container">
+
+						<div class="kt-header__top"  style="background-color: white !important;">
+
+							<div class="kt-container" style="margin-left: 0px !important;">
+								<img alt="Logo" src="{{asset('img/banner.jpeg','app')}}" class="rounded-lg w-100"/>
 								<!-- begin:: Brand -->
 								<div class="kt-header__brand   kt-grid__item" id="kt_header_brand">
 									<div class="kt-header__brand-logo">
-										<a href="{{path('index')}}">
-											<img alt="Logo" src="{{asset('media/logos/logo-2.png','template')}}" class="kt-header__brand-logo-default" />
-											<img alt="Logo" src="{{asset('media/logos/logo-2-sm.png','template')}}" class="kt-header__brand-logo-sticky" />
-										</a>
 									</div>
 								</div>
 								<!-- end:: Brand -->

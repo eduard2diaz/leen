@@ -5,6 +5,8 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "botman/botman": "^2.6",
+        "botman/driver-web": "^1.5",
         "friendsofsymfony/jsrouting-bundle": "^2.5",
         "knplabs/knp-paginator-bundle": "^5.2",
         "knplabs/knp-snappy-bundle": "^1.7",

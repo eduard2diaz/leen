@@ -1,4 +1,10 @@
 {
+    "botman/botman": {
+        "version": "2.6.0"
+    },
+    "botman/driver-web": {
+        "version": "1.5.1"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -105,6 +111,9 @@
     "egulias/email-validator": {
         "version": "2.1.17"
     },
+    "evenement/evenement": {
+        "version": "v3.0.1"
+    },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.3",
         "recipe": {
@@ -141,6 +150,9 @@
     "monolog/monolog": {
         "version": "2.0.2"
     },
+    "mpociot/pipeline": {
+        "version": "1.0.2"
+    },
     "nikic/php-parser": {
         "version": "v4.3.0"
     },
@@ -149,6 +161,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.3"
+    },
+    "opis/closure": {
+        "version": "3.5.5"
     },
     "php": {
         "version": "7.2"
@@ -177,6 +192,27 @@
     "psr/log": {
         "version": "1.1.2"
     },
+    "react/cache": {
+        "version": "v1.0.0"
+    },
+    "react/dns": {
+        "version": "v1.3.0"
+    },
+    "react/event-loop": {
+        "version": "v1.1.1"
+    },
+    "react/promise": {
+        "version": "v2.8.0"
+    },
+    "react/promise-timer": {
+        "version": "v1.6.0"
+    },
+    "react/socket": {
+        "version": "v1.5.0"
+    },
+    "react/stream": {
+        "version": "v1.1.1"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
@@ -188,6 +224,9 @@
         "files": [
             "config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "spatie/macroable": {
+        "version": "1.0.0"
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.3"
@@ -570,6 +609,9 @@
     },
     "symfony/yaml": {
         "version": "v5.0.4"
+    },
+    "tightenco/collect": {
+        "version": "v6.18.25"
     },
     "twig/extra-bundle": {
         "version": "v3.0.3"

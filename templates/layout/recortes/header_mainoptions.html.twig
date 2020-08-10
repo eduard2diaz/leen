@@ -1,4 +1,4 @@
-<div class="kt-header__bottom">
+<div class="kt-header__bottom" style="background-color: #ae0055 !important;">
     <div class="kt-container">
 
         <!-- begin: Header Menu -->
@@ -6,11 +6,11 @@
         </button>
         <div class="kt-header-menu-wrapper" id="kt_header_menu_wrapper">
             <div id="kt_header_menu" class="kt-header-menu kt-header-menu-mobile ">
-                <ul class="kt-menu__nav ">
-                    <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('index') }}"
-                                                                       class="kt-menu__link ">
+                <ul class="kt-menu__nav "  style="color: white !important;">
+                    <li class="kt-menu__item " aria-haspopup="true">
+                        <a href="{{ path('index') }}" class="kt-menu__link ">
                            <span
-                                    class="kt-menu__link-text">
+                                    class="kt-menu__link-text" style="color: white !important;">
                                 <i class="kt-menu__link-bullet  flaticon-home"></i>
                                 Inicio
                             </span>
@@ -19,9 +19,9 @@
                     <li class="kt-menu__item " aria-haspopup="true"><a href="{{ path('maps_index') }}"
                                                                        class="kt-menu__link ">
                            <span
-                                    class="kt-menu__link-text">
+                                    class="kt-menu__link-text" style="color: white !important;">
                                 <i class="kt-menu__link-bullet  flaticon-placeholder-3"></i>
-                                Mapa
+                                Ubicación
                             </span>
                         </a>
                     </li>
@@ -30,6 +30,7 @@
                     {% include 'layout/recortes/superadmin_menu.html.twig' %}
                 </ul>
             </div>
+            <!--
             <div class="kt-header-toolbar">
                 <div class="kt-quick-search" id="kt_quick_search_default">
                     <form method="get" class="kt-quick-search__form">
@@ -49,6 +50,7 @@
                     </div>
                 </div>
             </div>
+            -->
         </div>
 
         <!-- end: Header Menu -->
